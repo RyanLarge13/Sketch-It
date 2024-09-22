@@ -26,6 +26,12 @@ $ sudo apt update
 $ sudo apt upgrade
 $ sudo apt install libgtkmm-4.0-dev
 $ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+```
+
+nlomann-json is included as a header file under includes. Or use the link above to
+install it locally and add it to CMake. Check it out form the link above
+
+```
 $ cd includes/ && wget https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp
 ```
 

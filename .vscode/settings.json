@@ -6,6 +6,7 @@
     "gtkmm",
     "hexpand",
     "sigc",
+    "unfullscreen",
     "unparent",
     "USERCONFIG",
     "vexpand"

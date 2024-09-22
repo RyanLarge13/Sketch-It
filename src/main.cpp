@@ -44,11 +44,18 @@ class MyWindow : public Gtk::Window {
   Gtk::Popover popover;
   Gtk::Box* workAreaBox;
   Gtk::Box* sidebar;
+  Gtk::Box* toolbar;
+  Gtk::Box* topBar;
+  Gtk::Box* bottomBar;
   Gtk::Button* menu_btn_clicked = nullptr;
   Gtk::FileChooserDialog* fileChooser;
   std::pair<int, int> dems = std::make_pair(1250, 900);
 
   bool sidebarShow = true;
+  bool toolbarShow = true;
+  bool fullScreenOn = false;
+  bool topBarShow = true;
+  bool bottomBarShow = true;
 
   void setDefaultScreenSize() {
     auto display = Gdk::Display::get_default();
@@ -106,10 +113,23 @@ class MyWindow : public Gtk::Window {
     buildToolBar();
     buildCanvas();
     buildSideBar();
+    buildBottomBar();
+    buildTopBar();
+  }
+
+  void buildBottomBar() {}
+
+  void buildTopBar() {
+    topBar = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+    topBar->set_size_request(-1, 50);
+    topBar->set_hexpand(true);
+    topBar->set_vexpand(false);
+    topBar->get_style_context()->add_class("top-bar");
+    workAreaBox->append(*topBar);
   }
 
   void buildToolBar() {
-    Gtk::Box* toolbar = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
+    toolbar = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
     toolbar->set_size_request(40, -1);
     toolbar->set_hexpand(false);
     toolbar->set_vexpand(true);
@@ -186,10 +206,12 @@ class MyWindow : public Gtk::Window {
     Gtk::Box* editMenu =
         Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
     static const std::vector<MenuButtons> editMenuBtns = {
-        {"Full Screen", "menu-item-small", &MyWindow::full_screen},
+        {fullScreenOn ? "Exit Full Screen" : "Full Screen", "menu-item-small",
+            &MyWindow::full_screen},
         {sidebarShow ? "Hide Sidebar" : "Show Sidebar", "menu-item-small",
             &MyWindow::toggle_side_bar},
-        {"Hide Toolbar", "menu-item-small", &MyWindow::hide_tool_bar}};
+        {toolbarShow ? "Hide Toolbar" : "Show Toolbar", "menu-item-small",
+            &MyWindow::hide_tool_bar}};
     setUpPopover(editMenu, editMenuBtns);
   }
 
@@ -242,7 +264,17 @@ class MyWindow : public Gtk::Window {
 
   // View button signals
 
-  void full_screen(Gtk::Button*) { fullscreen(); }
+  void full_screen(Gtk::Button* clickedBtn) {
+    if (fullScreenOn == false) {
+      fullscreen();
+      clickedBtn->set_label("Exit Full Screen");
+      fullScreenOn = true;
+    } else {
+      unfullscreen();
+      clickedBtn->set_label("Full Screen");
+      fullScreenOn = false;
+    }
+  }
 
   void toggle_side_bar(Gtk::Button* clickedBtn) {
     if (sidebarShow) {
@@ -250,8 +282,7 @@ class MyWindow : public Gtk::Window {
       sidebar->set_visible(false);
       sidebarShow = false;
       return;
-    }
-    if (!sidebarShow) {
+    } else {
       clickedBtn->set_label("Hide Sidebar");
       sidebar->set_visible(true);
       sidebarShow = true;
@@ -259,7 +290,17 @@ class MyWindow : public Gtk::Window {
     }
   }
 
-  void hide_tool_bar(Gtk::Button*) {}
+  void hide_tool_bar(Gtk::Button* clickedBtn) {
+    if (toolbarShow) {
+      clickedBtn->set_label("Show Toolbar");
+      toolbar->set_visible(false);
+      toolbarShow = false;
+    } else {
+      clickedBtn->set_label("Hide Toolbar");
+      toolbar->set_visible(true);
+      toolbarShow = true;
+    }
+  }
 
   // Handle various file chooser methods
 
