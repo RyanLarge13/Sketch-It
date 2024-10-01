@@ -35,6 +35,7 @@ class MyWindow : public Gtk::Window {
     buildMenuBar(mainBox);
     setUpWorkArea(mainBox);
     add_controller(gesture);
+    initializeWorkArea(*this);
   }
 
  private:
@@ -109,28 +110,35 @@ class MyWindow : public Gtk::Window {
 
   void setUpWorkArea(Gtk::Box* mainBox) {
     workAreaBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+    buildTopBar(mainBox);
     mainBox->append(*workAreaBox);
     buildToolBar();
     buildCanvas();
     buildSideBar();
-    buildBottomBar();
-    buildTopBar();
+    buildBottomBar(mainBox);
   }
 
-  void buildBottomBar() {}
-
-  void buildTopBar() {
+  void buildTopBar(Gtk::Box* mainBox) {
     topBar = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
-    topBar->set_size_request(-1, 50);
+    topBar->set_size_request(-1, 40);
     topBar->set_hexpand(true);
     topBar->set_vexpand(false);
     topBar->get_style_context()->add_class("top-bar");
-    workAreaBox->append(*topBar);
+    mainBox->append(*topBar);
+  }
+
+  void buildBottomBar(Gtk::Box* mainBox) {
+    topBar = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+    topBar->set_size_request(-1, 40);
+    topBar->set_hexpand(true);
+    topBar->set_vexpand(false);
+    topBar->get_style_context()->add_class("bottom-bar");
+    mainBox->append(*topBar);
   }
 
   void buildToolBar() {
     toolbar = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
-    toolbar->set_size_request(40, -1);
+    toolbar->set_size_request(80, -1);
     toolbar->set_hexpand(false);
     toolbar->set_vexpand(true);
     toolbar->get_style_context()->add_class("tool-bar");
@@ -319,6 +327,15 @@ class MyWindow : public Gtk::Window {
 
   void mouseClickGeneric(int pressed, double x, double y) {
     std::cout << "generic mouse click" << "\n";
+  }
+
+  // Handling work area setup with user input
+
+  void initializeWorkArea(Gtk::Window& window) {
+    Gtk::Dialog setUpDialog = Gtk::Dialog("Set Up", window, true);
+    setUpDialog.set_default_size(600, 400);
+    setUpDialog.show();
+    std::cout << "Running dialog" << "\n";
   }
 };
 

@@ -1,32 +1,33 @@
 window {
-  background-color: #111;
 }
 
 .custom-menu-bar {
-  background-color: #222;
-  padding: 5px;
+  /* background-color: #222; */
 }
 
 .menu-item {
-  background-color: #999;
-  font-size: 15px;
+  font-size: 14px;
+  padding: 0;
+  min-width: 60px;
+  border-radius: 0;
 }
 
 .menu-item-small {
   min-width: 300px;
+  border-radius: 0;
+  padding: 5px;
+  margin: 0;
 }
 
 /* Tool bar classes */
 
 .tool-bar {
   padding: 10px;
-  background-color: #222;
 }
 
 /* sidebar classes */
 
 .side-bar {
-  background-color: #222;
 }
 
 /* canvas classes */
