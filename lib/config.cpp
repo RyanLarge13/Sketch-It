@@ -5,39 +5,24 @@
 
 #include "fileManager.h"
 
-struct ErrorMessages {
-  int level int num std::string err;
-  ErrorMessages() : level(level), num(num), err(err) {}
-};
-
-Config::Config(std::string fileName, bool errState) : errState(errState) {
+// Constructor
+Config::Config(std::string fileName, bool errState) : fileName(fileName) {
   std::string confFullPath = checkConfig(fileName);
-  std::vector<ErrorMessages> errors;
-  if (!confFullPath) {
+  if (confFullPath.empty()) {
     errState = true;
-    ErrorMessages newError = {1, errors.size(),
+    Config::ErrorMessage newError = {1, static_cast<int>(confErrors.size()),
         "Configuration file was not found or creation of your configuration "
         "file failed"};
-    errors.push_back(newError);
+    confErrors.push_back(newError);
+  }
+  if (!confFullPath.empty()) {
+    confFilePath = confFullPath;
+    userData = getConfigData();
+    // JSON validate data here
   }
 }
 
-void Config::getConfigRead(const std::string& pathToConf) {
-  std::string userConfigData;
-  ifstream configFile = std::filesystem::file(pathToConf);
-  if (!configFile.is_open()) {
-    // Do somethings
-    return;
-  }
-  while (std::get_line(configFile, line)) {
-    userConfigData += line + "\n";
-  }
-  file.close();
-  // What should I return from this function
-  // How should I handle errors from main?
-  return;
-}
-
+// Constructor methods
 std::string Config::checkConfig(const std::string& configName) {
   auto configDir = Glib::get_user_config_dir();
   if (!configDir) {
@@ -47,18 +32,40 @@ std::string Config::checkConfig(const std::string& configName) {
   try {
     Glib::mkdir_with_parents(configPath);
     return configPath;
-  } catch (const Glib::error& err) {
-    std::cout << "Could not create configuration file for sketch it. Error: "
-              << err.what() << endl;
+  } catch (const Glib::FileError& e) {
+    std::cout << "Error creating configuration file for Sketch It, Error: "
+              << e.what() << endl;
     return "";
   }
   return "";
 }
 
 // Getters
+std::string Config::getConfigData() {
+  std::string userConfigData;
+  std::ifstream configFile(confFilePath);
+  if (!configFile.is_open()) {
+    return "";
+  }
+  std::string line;
+  while (std::getline(configFile, line)) {
+    userConfigData += line + "\n";
+  }
+  if (configFile.fail() || configFile.eof()) {
+    return "";
+  }
+  configFile.close();
+  return userConfigData;
+}
 
-bool getErrorState() { return errState; }
+std::vector<Config::ErrorMessage> Config::getErrors() { return confErrors; }
 
-std::vector<ErrorMessages> getErrors() { return errors; }
+bool Config::getErrorState() { return errState; }
 
 // Setters
+void Config::setErrorMessage(
+    const int& severity, const std::string& errorMessage) {
+  Config::ErrorMessage newMessage = {
+      severity, static_cast<int>(confErrors.size()), errorMessage};
+  confErrors.push_back(newMessage);
+}
