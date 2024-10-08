@@ -52,9 +52,7 @@ class MyWindow : public Gtk::Window {
         display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
   }
 
-  void pullConfig() {
-    ifstream hasConf = conf.getConfig(".sketch-it.config.txt");
-  }
+  void pullConfig() {}
 };
 
 int main(int argc, char* argv[]) {

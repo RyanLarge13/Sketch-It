@@ -2,14 +2,15 @@
 #define CONFIG
 
 #include <fstream>
+#include <iostream>
 
 class Config {
  public:
   Config();
-  ifstream getConfig(const string& configName);
+  std::string checkConfig(const std::string& configName);
+  void getConfigRead(const std::string& pathToConf);
 
  private:
-  bool configExists();
 };
 
 #endif
