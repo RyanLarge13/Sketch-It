@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../lib/config.h"
+#include "../widgets/MessageDialog.h"
 
 class MyWindow : public Gtk::Window {
  public:
@@ -12,7 +13,17 @@ class MyWindow : public Gtk::Window {
     signal_realize().connect(
         sigc::mem_fun(*this, &MyWindow::setDefaultScreenSize));
     applyGlobalCSS();
-    pullConfig();
+    // Defining member objects
+    Config configManager("/sketch-it/config.json");
+    if (configManager.getErrorState()) {
+      std::vector<configManager::ErrorMessage> confErrors =
+          configManager.getErrors();
+      for (configManager::ErrorMessage error : confErrors) {
+        void response();
+        MessageDialog newErrorDialog(
+            error.message, true, response, "Close", "Reload Sketch It");
+      }
+    }
   }
 
  private:
@@ -51,8 +62,6 @@ class MyWindow : public Gtk::Window {
     Gtk::StyleContext::add_provider_for_display(
         display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
   }
-
-  void pullConfig() {}
 };
 
 int main(int argc, char* argv[]) {

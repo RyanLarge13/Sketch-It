@@ -6,7 +6,7 @@
 #include "fileManager.h"
 
 // Constructor
-Config::Config(std::string fileName, bool errState) : fileName(fileName) {
+Config::Config(std::string fileName) : fileName(fileName) {
   std::string confFullPath = checkConfig(fileName);
   if (confFullPath.empty()) {
     errState = true;
@@ -18,6 +18,11 @@ Config::Config(std::string fileName, bool errState) : fileName(fileName) {
   if (!confFullPath.empty()) {
     confFilePath = confFullPath;
     userData = getConfigData();
+    if (userData.empty()) {
+      Config::ErrorMessage newMessage = {1, static_cast<int>(confErrors.size()),
+          "No configuration set for Sketch It"};
+      confErrors.push_back(newMessage);
+    }
     // JSON validate data here
   }
 }
@@ -68,4 +73,8 @@ void Config::setErrorMessage(
   Config::ErrorMessage newMessage = {
       severity, static_cast<int>(confErrors.size()), errorMessage};
   confErrors.push_back(newMessage);
+}
+
+void Config::clearErrors(const int& index) {
+  confErrors.erase(confErrors.begin() + index);
 }
