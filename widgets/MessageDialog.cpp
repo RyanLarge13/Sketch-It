@@ -19,5 +19,9 @@ MessageDialog::MessageDialog(const std::string& message, const bool& err,
   dialogWidget.set_default_response(defaultRes);
   if (err) {
     dialogWidget.get_style_context().set_style("dialog-error");
-  }
+  };
+}
+
+Gtk::Dialog* MessageDialog::getDialogWidget() {
+  return *dialogWidget || nullptr;
 }

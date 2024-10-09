@@ -12,8 +12,11 @@ class MessageDialog : Gtk::Dialog {
       const void() & action, const std::string& cancelString,
       const std::string& acceptString);
   // Member variables
+  // Methods
+  Gtk::Dialog* getDialogWidget();
+
  private:
-  void() defaultAction;
+  void(*action());
   bool err;
   int defaultRes;
   std::string message;

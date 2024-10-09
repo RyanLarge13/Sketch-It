@@ -15,14 +15,12 @@ class MyWindow : public Gtk::Window {
     applyGlobalCSS();
     // Defining member objects
     Config configManager("/sketch-it/config.json");
-    if (configManager.getErrorState()) {
-      std::vector<configManager::ErrorMessage> confErrors =
-          configManager.getErrors();
-      for (configManager::ErrorMessage error : confErrors) {
-        void response();
-        MessageDialog newErrorDialog(
-            error.message, true, response, "Close", "Reload Sketch It");
-      }
+    if (configManager.errorState) {
+      Config::EventLog error = configManager.getLogAt(0);
+      MessageDialog newErrorDialog(
+          error.message, true, void(*myFunc()), "Close", "", 0);
+      newErrorDialog.getDialogWidget().show();
+      configManager.errorState = false;
     }
   }
 
