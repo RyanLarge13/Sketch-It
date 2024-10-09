@@ -4,33 +4,45 @@
 #include <fstream>
 #include <iostream>
 
+#include "json.hpp"
+
 class Config {
  public:
   // Member variables
-  bool errState;
+  enum StatusCodes : int {
+    FAILED_CREATE,
+    FAILED_READ,
+    FAILED_WRITE,
+    NEW_USER,
+    SUCCESS_READ,
+    SUCCESS_WRITE
+  };
+
+  bool errorState;
   std::string fileName;
   std::string userData;
   std::string confFilePath;
-  std::vector<ErrorMessage> confErrors = {3};
+  std::vector<EventLog> confLog = {3};
 
   // Constructor
-  Config(std::string fileName) : fileName(fileName) {};
+  Config(std::string fileName) : fileName(fileName){};
 
   // Methods
-  checkConfig(const std::string& configName);
+  EventLog getLogAt(const int& index);
+  void setEventLogMessage(const int& status, const std::string& message);
+  void clearError(const int& index);
+  std::string checkConfig(const std::string& configName);
   std::string getConfigData();
-  std::vector<ErrorMessage> getErrors();
-  void setErrorMessage(const int& severity, const std::string& errorMessage);
-  void clearErrors(const int& index);
-  bool getErrorState();
+  std::vector<EventLog> getLog();
 
  private:
   // Member variables
-  struct ErrorMessage {
-    int level int num std::string err;
-    ErrorMessage(int& l, int& n, std::string& e) : level(l), num(n), err(e) {}
+  struct EventLog {
+    int status;
+    std::string message;
+    EventLog(int& s, std::string& m) : status(l), err(m) {}
   };
-
+  nlohmann::json in_UserData;
   // Methods
 };
 

@@ -4,26 +4,36 @@
 #include <iostream>
 
 #include "fileManager.h"
+#include "json.hpp"
 
 // Constructor
 Config::Config(std::string fileName) : fileName(fileName) {
   std::string confFullPath = checkConfig(fileName);
   if (confFullPath.empty()) {
-    errState = true;
-    Config::ErrorMessage newError = {1, static_cast<int>(confErrors.size()),
+    Config::EventLog newError = {Config::StatusCodes::FAILED_CREATE,
         "Configuration file was not found or creation of your configuration "
         "file failed"};
-    confErrors.push_back(newError);
+    confLog.push_back(newError);
+    errorState = true;
+    return;
   }
-  if (!confFullPath.empty()) {
-    confFilePath = confFullPath;
-    userData = getConfigData();
-    if (userData.empty()) {
-      Config::ErrorMessage newMessage = {1, static_cast<int>(confErrors.size()),
-          "No configuration set for Sketch It"};
-      confErrors.push_back(newMessage);
-    }
-    // JSON validate data here
+  confFilePath = confFullPath;
+  configFileStr = getConfigData();
+  if (configFileStr.empty()) {
+    Config::EventLog newMessage = {
+        Config::StatusCodes::NEW_USER, "Welcome to Sketch It!"};
+    confLog.push_back(newMessage);
+    return;
+  }
+  try {
+    configFileStr >> in_UserData;
+  } catch (const nlohmann::json::parse_error& e) {
+    std::cout << "Error parsing json config: " << e.what() << std::endl;
+    Config::EventLog newError = {Config::StatusCodes::FAILED_READ,
+        "Misconfigured file for Sketch It. You can reset the file in your "
+        "settings"};
+    errorState = true;
+    return;
   }
 }
 
@@ -63,18 +73,23 @@ std::string Config::getConfigData() {
   return userConfigData;
 }
 
-std::vector<Config::ErrorMessage> Config::getErrors() { return confErrors; }
-
-bool Config::getErrorState() { return errState; }
-
-// Setters
-void Config::setErrorMessage(
-    const int& severity, const std::string& errorMessage) {
-  Config::ErrorMessage newMessage = {
-      severity, static_cast<int>(confErrors.size()), errorMessage};
-  confErrors.push_back(newMessage);
+Config::EventLog& Config::getLogAt(const int& index) {
+  if (index < 0 || index > confLog.size()) {
+    throw std::out_of_range(
+        "Cannot access configuration event log with out of bounds index");
+  }
+  return confLog[ index ];
 }
 
-void Config::clearErrors(const int& index) {
-  confErrors.erase(confErrors.begin() + index);
+std::vector<Config::EventLog> Config::getLog() { return confLog; }
+
+// Setters
+void Config::setEventLogMessage(
+    const int& severity, const std::string& message) {
+  Config::EventLog newMessage = {StatusCodes::severity, message};
+  confLog.push_back(newMessage);
+}
+
+void Config::clearError(const int& index) {
+  confLog.erase(confLog.begin() + index);
 }
