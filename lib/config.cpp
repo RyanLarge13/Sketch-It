@@ -1,13 +1,20 @@
 #include "config.h"
 
-#include <glibmm>
-#include <iostream>
+#include <glibmm.h>
 
-#include "fileManager.h"
+#include <iostream>
+#include <vector>
+
 #include "json.hpp"
 
 // Constructor
-Config::Config(std::string fileName) : fileName(fileName) {
+Config::Config(std::string fileName)
+    : fileName(fileName),
+      errorState(false),
+      userData(""),
+      confFilePath(""),
+      configFileStr(""),
+      confLog(std::vector<EventLog>(3)) {
   std::string confFullPath = checkConfig(fileName);
   if (confFullPath.empty()) {
     Config::EventLog newError = {Config::StatusCodes::FAILED_CREATE,
@@ -26,7 +33,7 @@ Config::Config(std::string fileName) : fileName(fileName) {
     return;
   }
   try {
-    configFileStr >> in_UserData;
+    std::istringstream(configFileStr) >> in_UserData;
   } catch (const nlohmann::json::parse_error& e) {
     std::cout << "Error parsing json config: " << e.what() << std::endl;
     Config::EventLog newError = {Config::StatusCodes::FAILED_READ,
@@ -38,25 +45,25 @@ Config::Config(std::string fileName) : fileName(fileName) {
 }
 
 // Constructor methods
-std::string Config::checkConfig(const std::string& configName) {
-  auto configDir = Glib::get_user_config_dir();
-  if (!configDir) {
+std::string& Config::checkConfig(const std::string& configName) {
+  std::string configDir = Glib::get_user_config_dir();
+  if (configDir.empty()) {
     return "";
   }
   std::string configPath = configDir + configName;
   try {
-    Glib::mkdir_with_parents(configPath);
+    Glib::make_dir_with_parent(configPath);
     return configPath;
   } catch (const Glib::FileError& e) {
     std::cout << "Error creating configuration file for Sketch It, Error: "
-              << e.what() << endl;
+              << Glib::strerror(e.code()) << "\n";
     return "";
   }
   return "";
 }
 
 // Getters
-std::string Config::getConfigData() {
+std::string& Config::getConfigData() {
   std::string userConfigData;
   std::ifstream configFile(confFilePath);
   if (!configFile.is_open()) {
@@ -66,7 +73,7 @@ std::string Config::getConfigData() {
   while (std::getline(configFile, line)) {
     userConfigData += line + "\n";
   }
-  if (configFile.fail() || configFile.eof()) {
+  if (configFile.fail()) {
     return "";
   }
   configFile.close();
@@ -74,22 +81,26 @@ std::string Config::getConfigData() {
 }
 
 Config::EventLog& Config::getLogAt(const int& index) {
-  if (index < 0 || index > confLog.size()) {
+  if (index < 0 || index >= confLog.size()) {
     throw std::out_of_range(
         "Cannot access configuration event log with out of bounds index");
   }
   return confLog[ index ];
 }
 
-std::vector<Config::EventLog> Config::getLog() { return confLog; }
+std::vector<Config::EventLog>& Config::getLog() { return confLog; }
 
 // Setters
-void Config::setEventLogMessage(
-    const int& severity, const std::string& message) {
-  Config::EventLog newMessage = {StatusCodes::severity, message};
+void Config::setEventLogMessage(const int& status, const std::string& message) {
+  Config::EventLog newMessage = EventLog(status, message);
   confLog.push_back(newMessage);
 }
 
 void Config::clearError(const int& index) {
+  if (index < 0 || index >= confLog.size()) {
+    std::cout << "Invalid index for removing Config event log value. "
+                 "Index: "
+              << index << "\n";
+  }
   confLog.erase(confLog.begin() + index);
 }

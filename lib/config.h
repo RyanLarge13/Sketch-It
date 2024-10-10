@@ -2,7 +2,7 @@
 #define CONFIG
 
 #include <fstream>
-#include <iostream>
+#include <vector>
 
 #include "json.hpp"
 
@@ -18,31 +18,33 @@ class Config {
     SUCCESS_WRITE
   };
 
+  struct EventLog {
+    int status;
+    std::string message;
+    EventLog(int& s, std::string& m) : status(s), message(m) {}
+  };
+
   bool errorState;
   std::string fileName;
   std::string userData;
   std::string confFilePath;
-  std::vector<EventLog> confLog = {3};
+  std::string configFileStr;
+  std::vector<EventLog> confLog;
+  nlohmann::json in_UserData;
 
   // Constructor
-  Config(std::string fileName) : fileName(fileName){};
+  Config(std::string fileName);
 
   // Methods
-  EventLog getLogAt(const int& index);
+  EventLog& getLogAt(const int& index);
   void setEventLogMessage(const int& status, const std::string& message);
   void clearError(const int& index);
-  std::string checkConfig(const std::string& configName);
-  std::string getConfigData();
-  std::vector<EventLog> getLog();
+  std::string& checkConfig(const std::string& configName);
+  std::string& getConfigData();
+  std::vector<EventLog>& getLog();
 
  private:
   // Member variables
-  struct EventLog {
-    int status;
-    std::string message;
-    EventLog(int& s, std::string& m) : status(l), err(m) {}
-  };
-  nlohmann::json in_UserData;
   // Methods
 };
 
