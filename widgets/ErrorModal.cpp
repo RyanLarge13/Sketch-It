@@ -3,8 +3,9 @@
 #include <iostream>
 
 // Constructor methods
-ErrorModal::ErrorModal(const std::string& title, const std::string& message,
-    const std::vector<ErrorModal::ErrorModalButtons>& buttons) {
+ErrorModal::ErrorModal(const std::string& t, const std::string& m,
+    const std::vector<ErrorModal::ErrorModalButtons>& b)
+    : title(t), message(m), buttons(b) {
   errorModal = Gtk::Window();
   errorModal.add_css_class("error-modal");
   errorModal.set_title(title);

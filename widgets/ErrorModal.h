@@ -7,8 +7,7 @@
 
 class ErrorModal {
   ErrorModal(const std::string& t, const std::string& m,
-      const std::vector<ErrorModalButtons>& b)
-      : title(t), message(m), buttons(b) {}
+      const std::vector<ErrorModalButtons>& b);
 
  public:
   // Member variables
@@ -16,16 +15,14 @@ class ErrorModal {
     std::string txt;
     int id;
     void (*func)();
-    ErrorModalButtons(std::string txt, int id, void (*func)())
-        : text(txt), id(id), func(func) {}
   };
-
- private:
-  // Member variables
   std::string title;
   std::string message;
   std::vector<ErrorModalButtons> buttons;
   Gtk::Window errorModal;
+
+ private:
+  // Member variables
 
   // Methods
   void addBtns();

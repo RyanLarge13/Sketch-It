@@ -36,12 +36,12 @@ class Config {
   Config(std::string fileName);
 
   // Methods
-  EventLog& getLogAt(const int& index);
+  EventLog getLogAt(const int& index);
   void setEventLogMessage(const int& status, const std::string& message);
   void clearError(const int& index);
-  std::string& checkConfig(const std::string& configName);
-  std::string& getConfigData();
-  std::vector<EventLog>& getLog();
+  std::string checkConfig(const std::string& configName);
+  std::string getConfigData();
+  std::vector<EventLog> getLog();
 
  private:
   // Member variables

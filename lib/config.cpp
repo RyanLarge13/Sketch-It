@@ -14,6 +14,7 @@ Config::Config(std::string fileName)
       userData(""),
       confFilePath(""),
       configFileStr(""),
+      in_UserData(""),
       confLog(std::vector<EventLog>(3)) {
   std::string confFullPath = checkConfig(fileName);
   if (confFullPath.empty()) {
@@ -45,14 +46,14 @@ Config::Config(std::string fileName)
 }
 
 // Constructor methods
-std::string& Config::checkConfig(const std::string& configName) {
+std::string Config::checkConfig(const std::string& configName) {
   std::string configDir = Glib::get_user_config_dir();
   if (configDir.empty()) {
     return "";
   }
   std::string configPath = configDir + configName;
   try {
-    Glib::make_dir_with_parent(configPath);
+    Glib::make_directory_with_parents(configPath);
     return configPath;
   } catch (const Glib::FileError& e) {
     std::cout << "Error creating configuration file for Sketch It, Error: "
@@ -63,7 +64,7 @@ std::string& Config::checkConfig(const std::string& configName) {
 }
 
 // Getters
-std::string& Config::getConfigData() {
+std::string Config::getConfigData() {
   std::string userConfigData;
   std::ifstream configFile(confFilePath);
   if (!configFile.is_open()) {
@@ -80,7 +81,7 @@ std::string& Config::getConfigData() {
   return userConfigData;
 }
 
-Config::EventLog& Config::getLogAt(const int& index) {
+Config::EventLog Config::getLogAt(const int& index) {
   if (index < 0 || index >= confLog.size()) {
     throw std::out_of_range(
         "Cannot access configuration event log with out of bounds index");
@@ -88,11 +89,11 @@ Config::EventLog& Config::getLogAt(const int& index) {
   return confLog[ index ];
 }
 
-std::vector<Config::EventLog>& Config::getLog() { return confLog; }
+std::vector<Config::EventLog> Config::getLog() { return confLog; }
 
 // Setters
 void Config::setEventLogMessage(const int& status, const std::string& message) {
-  Config::EventLog newMessage = EventLog(status, message);
+  Config::EventLog newMessage = Config::EventLog(status, message);
   confLog.push_back(newMessage);
 }
 
