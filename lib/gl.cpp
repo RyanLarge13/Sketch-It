@@ -1,4 +1,4 @@
-#include "../includes/gl.h"
+#include "gl.h"
 
 #include <iostream>
 

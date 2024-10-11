@@ -19,9 +19,9 @@ class Config {
   };
 
   struct EventLog {
-    int status;
+    StatusCodes status;
     std::string message;
-    EventLog(int& s, std::string& m) : status(s), message(m) {}
+    EventLog(StatusCodes s, std::string m) : status(s), message(m) {}
   };
 
   bool errorState;

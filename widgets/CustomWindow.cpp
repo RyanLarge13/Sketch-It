@@ -6,11 +6,13 @@
 
 // Constructor methods
 CustomWindow::CustomWindow(const std::string& title,
-    const std::string& iconName, const Size& defaultSize, const bool& decorated)
+    const std::string& iconName, const CustomWindow::Size& defaultSize,
+    const bool& decorated, const std::vector<Gtk::Widget*>& children)
     : title(title),
       iconName(iconName),
       defaultSize(defaultSize),
-      decorated(decorated) {}
+      decorated(decorated),
+      children(children) {}
 
 // Public methods
 

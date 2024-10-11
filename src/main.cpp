@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "../lib/config.h"
-#include "../widgets/CustomWindow.h"
 
 class MyWindow : public Gtk::Window {
  public:
@@ -17,8 +16,6 @@ class MyWindow : public Gtk::Window {
     Config configManager("/sketch-it/config.json");
     if (configManager.errorState) {
       Config::EventLog error = configManager.getLogAt(0);
-      CustomWindow newWindow("Error", "", CustomWindow::Size(300, 200), true);
-      newWindow.getWindow()->show();
     }
   }
 

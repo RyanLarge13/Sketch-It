@@ -15,31 +15,33 @@ Config::Config(std::string fileName)
       confFilePath(""),
       configFileStr(""),
       in_UserData(""),
-      confLog(std::vector<EventLog>(3)) {
+      confLog() {
+  confLog.reserve(3);
   std::string confFullPath = checkConfig(fileName);
   if (confFullPath.empty()) {
-    Config::EventLog newError = {Config::StatusCodes::FAILED_CREATE,
+    Config::EventLog newLog(Config::StatusCodes::FAILED_CREATE,
         "Configuration file was not found or creation of your configuration "
-        "file failed"};
-    confLog.push_back(newError);
+        "file failed");
+    confLog.push_back(newLog);
     errorState = true;
     return;
   }
   confFilePath = confFullPath;
   configFileStr = getConfigData();
   if (configFileStr.empty()) {
-    Config::EventLog newMessage = {
-        Config::StatusCodes::NEW_USER, "Welcome to Sketch It!"};
-    confLog.push_back(newMessage);
+    Config::EventLog newLog(
+        Config::StatusCodes::NEW_USER, "Welcome to Sketch It!");
+    confLog.push_back(newLog);
     return;
   }
   try {
     std::istringstream(configFileStr) >> in_UserData;
   } catch (const nlohmann::json::parse_error& e) {
     std::cout << "Error parsing json config: " << e.what() << std::endl;
-    Config::EventLog newError = {Config::StatusCodes::FAILED_READ,
+    Config::EventLog newLog(Config::StatusCodes::FAILED_READ,
         "Misconfigured file for Sketch It. You can reset the file in your "
-        "settings"};
+        "settings");
+    confLog.push_back(newLog);
     errorState = true;
     return;
   }
@@ -47,19 +49,19 @@ Config::Config(std::string fileName)
 
 // Constructor methods
 std::string Config::checkConfig(const std::string& configName) {
-  std::string configDir = Glib::get_user_config_dir();
-  if (configDir.empty()) {
-    return "";
-  }
-  std::string configPath = configDir + configName;
-  try {
-    Glib::make_directory_with_parents(configPath);
-    return configPath;
-  } catch (const Glib::FileError& e) {
-    std::cout << "Error creating configuration file for Sketch It, Error: "
-              << Glib::strerror(e.code()) << "\n";
-    return "";
-  }
+  // std::string configDir = Glib::get_user_config_dir();
+  // if (configDir.empty()) {
+  //   return "";
+  // }
+  // std::string configPath = configDir + configName;
+  // try {
+  //   Glib::make_directory_with_parents(configPath);
+  //   return configPath;
+  // } catch (const Glib::FileError& e) {
+  //   std::cout << "Error creating configuration file for Sketch It, Error: "
+  //             << Glib::strerror(e.code()) << "\n";
+  //   return "";
+  // }
   return "";
 }
 
@@ -93,8 +95,13 @@ std::vector<Config::EventLog> Config::getLog() { return confLog; }
 
 // Setters
 void Config::setEventLogMessage(const int& status, const std::string& message) {
-  Config::EventLog newMessage = Config::EventLog(status, message);
-  confLog.push_back(newMessage);
+  if (status < 0 || status > 5) {
+    std::cout << "Please pass a valid Config::StatusCode between 0 and 5"
+              << "\n";
+    return;
+  }
+  Config::EventLog newLog(static_cast<Config::StatusCodes>(status), message);
+  confLog.push_back(newLog);
 }
 
 void Config::clearError(const int& index) {
