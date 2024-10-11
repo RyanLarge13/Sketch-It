@@ -12,7 +12,13 @@ CustomWindow::CustomWindow(const std::string& title,
       iconName(iconName),
       defaultSize(defaultSize),
       decorated(decorated),
-      children(children) {}
+      children(children) {
+  window = Gtk::Window();
+  window.set_default_size(defaultSize.width, defaultSize.height);
+  window.set_title(title);
+  window.set_decorated(decorated);
+  addChildren();
+}
 
 // Public methods
 
@@ -29,3 +35,9 @@ Gtk::Window* CustomWindow::getWindow() { return window; }
 Gtk::Widget* CustomWindow::getChild() { return Gtk::Button("Test return"); }
 
 // Private methods
+
+void CustomWindow::addChildren() {
+  for (const Gtk::Widget*& widget : children) {
+    return;
+  }
+}

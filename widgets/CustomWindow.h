@@ -9,8 +9,8 @@ class CustomWindow : Gtk::Window {
  public:
   // Member variables
   struct Size {
-    int height;
     int width;
+    int height;
     Size(int w, int h) : width(w), height(h) {}
   };
   bool decorated;
@@ -34,6 +34,7 @@ class CustomWindow : Gtk::Window {
 
  private:
   // Constructor methods
+  void addChildren();
   // Member variables
   // Methods
 };

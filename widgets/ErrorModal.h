@@ -14,18 +14,22 @@ class ErrorModal {
   struct ErrorModalButtons {
     std::string txt;
     int id;
-    void (*func)();
+    std::function<void()> func;
+    ErrorModalButtons(std::string txt, int id, void (*func)())
+        : txt(txt), id(id), func(func) {}
   };
   std::string title;
   std::string message;
   std::vector<ErrorModalButtons> buttons;
   Gtk::Window errorModal;
 
+  // Methods
+  void addBtns(const std::vector<ErrorModalButtons>& btns);
+
  private:
   // Member variables
 
   // Methods
-  void addBtns();
   void addLabel();
 };
 

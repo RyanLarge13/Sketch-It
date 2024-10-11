@@ -3,19 +3,14 @@
 #include <iostream>
 
 // Constructor methods
-ErrorModal::ErrorModal(const std::string& t, const std::string& m,
-    const std::vector<ErrorModal::ErrorModalButtons>& b)
-    : title(t), message(m), buttons(b) {
+ErrorModal::ErrorModal(const std::string& t, const std::string& m)
+    : title(t), message(m) {
   errorModal = Gtk::Window();
   errorModal.add_css_class("error-modal");
   errorModal.set_title(title);
+  errorModal.set_decorated(false);
   addLabel();
-  addBtns();
 }
-
-ErrorModal::ErrorModalButtons::ErrorModalButtons(
-    const std::string& txt, int id, void (*func)())
-    : text(txt), id(id), func(func) {}
 
 void ErrorModal::addLabel() {
   Gtk::Label* errorLabel = Gtk::make_managed<Gtk::Label>(message);
@@ -23,7 +18,11 @@ void ErrorModal::addLabel() {
   errorModal.set_child(errorLabel);
 }
 
-void ErrorModal::addBtns() {
+// Public
+
+void ErrorModal::addBtns(
+    const std::vector<ErrorModal::ErrorModalButtons>& btns) {
+  buttons = btns;
   Gtk::Box* btnHolder =
       Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION::HORIZONTAL, 10);
   btnHolder->add_css_class("error-modal-btn-holder");
@@ -35,7 +34,5 @@ void ErrorModal::addBtns() {
   }
   errorModal.set_child(btnHolder);
 }
-
-// Public
 
 // Private

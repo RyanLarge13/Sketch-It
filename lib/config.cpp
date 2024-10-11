@@ -112,3 +112,5 @@ void Config::clearError(const int& index) {
   }
   confLog.erase(confLog.begin() + index);
 }
+
+void Config::clearAllErrors() { confLog = {}; }

@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "../lib/config.h"
+#include "../widgets/CustomWindow.h"
+#include "../widgets/ErrorModal.h"
 
 class MyWindow : public Gtk::Window {
  public:
@@ -16,13 +18,20 @@ class MyWindow : public Gtk::Window {
     Config configManager("/sketch-it/config.json");
     if (configManager.errorState) {
       Config::EventLog error = configManager.getLogAt(0);
+      ErrorModal newError("Configuration Error", error.message);
+      newError.addBtns({{"Okay", 0, [ this ]() { this->close() }},
+          {"Reload App", 1, [ this ]() { this->reloadApp() }}});
+      newError.errorModal.show_all();
+      configManager.clearAllErrors();
+      return;
     }
+    setUpApp();
   }
 
  private:
-  enum APP_STATE { FREE_DRAW, STORY, SETUP, SETTINGS, ABOUT };
   Glib::RefPtr<Gtk::CssProvider> css_provider;
   std::pair<int, int> dems = std::make_pair(1250, 900);
+  std::string sessionName = "Untitled Session";
 
   void setDefaultScreenSize() {
     auto display = Gdk::Display::get_default();
@@ -54,6 +63,23 @@ class MyWindow : public Gtk::Window {
     auto display = Gdk::Display::get_default();
     Gtk::StyleContext::add_provider_for_display(
         display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
+  }
+
+  void setUpApp() {
+    std::vector<Gtk::Widget*> children = {{}};
+    CustomWindow::Size size(600, 600);
+    CustomWindow setUp("Set Up", "./my-setup-icon", size, true, setUpChildren);
+  }
+
+  void reloadApp() {
+    this->close();
+    Glib::signal_timeout().connect_once(
+        []() {
+          auto app = Gtk::Application::create("org.gtkmm.example");
+          MyWindow newWindow;
+          app->run(newWindow);
+        },
+        100);
   }
 };
 
