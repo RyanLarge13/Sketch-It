@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-class CustomWindow : Gtk::Window {
+class CustomWindow {
  public:
   // Member variables
   struct Size {
@@ -15,7 +15,7 @@ class CustomWindow : Gtk::Window {
   };
   bool decorated;
   Size defaultSize;
-  Gtk::Window* window;
+  Gtk::Window window;
   std::vector<Gtk::Widget*> children;
   std::string title;
   std::string iconName;
@@ -23,14 +23,14 @@ class CustomWindow : Gtk::Window {
   // Constructor
   CustomWindow(const std::string& title, const std::string& iconName,
       const Size& defaultSize, const bool& decorated,
-      std::vector<Gtk::Widget*> children);
+      const std::vector<Gtk::Widget*>& children);
 
   // Methods
-  bool setChild();
+  bool setChild(const Gtk::Widget*& child);
   bool setChildren(const std::vector<Gtk::Widget*>& children);
   bool removeChild();
   Gtk::Widget* getChild();
-  Gtk::Window* getWindow();
+  Gtk::Window& getWindow();
 
  private:
   // Constructor methods

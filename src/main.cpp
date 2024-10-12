@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 #include "../lib/config.h"
 #include "../widgets/CustomWindow.h"
@@ -14,14 +15,16 @@ class MyWindow : public Gtk::Window {
     signal_realize().connect(
         sigc::mem_fun(*this, &MyWindow::setDefaultScreenSize));
     applyGlobalCSS();
-    // Defining member objects
     Config configManager("/sketch-it/config.json");
     if (configManager.errorState) {
       Config::EventLog error = configManager.getLogAt(0);
       ErrorModal newError("Configuration Error", error.message);
-      newError.addBtns({{"Okay", 0, [ this ]() { this->close() }},
-          {"Reload App", 1, [ this ]() { this->reloadApp() }}});
-      newError.errorModal.show_all();
+      newError.addBtns(std::vector<ErrorModal::ErrorModalButtons>{
+          ErrorModal::ErrorModalButtons(
+              "Okay", 0, [ this ]() { this->close(); }),
+          ErrorModal::ErrorModalButtons(
+              "Reload App", 1, [ this ]() { this->reloadApp(); })});
+      newError.errorModal.show();
       configManager.clearAllErrors();
       return;
     }
@@ -66,9 +69,10 @@ class MyWindow : public Gtk::Window {
   }
 
   void setUpApp() {
-    std::vector<Gtk::Widget*> children = {{}};
-    CustomWindow::Size size(600, 600);
-    CustomWindow setUp("Set Up", "./my-setup-icon", size, true, setUpChildren);
+    // std::vector<Gtk::Widget*> children = {{}};
+    // CustomWindow::Size size(600, 600);
+    // CustomWindow setUp("Set Up", "./my-setup-icon", size, true,
+    // setUpChildren);
   }
 
   void reloadApp() {
@@ -77,7 +81,7 @@ class MyWindow : public Gtk::Window {
         []() {
           auto app = Gtk::Application::create("org.gtkmm.example");
           MyWindow newWindow;
-          app->run(newWindow);
+          app->make_window_and_run<MyWindow>(0, nullptr);
         },
         100);
   }
@@ -85,6 +89,5 @@ class MyWindow : public Gtk::Window {
 
 int main(int argc, char* argv[]) {
   auto app = Gtk::Application::create("org.gtkmm.example");
-  MyWindow window;
   return app->make_window_and_run<MyWindow>(argc, argv);
 }

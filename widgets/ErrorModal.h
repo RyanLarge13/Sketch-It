@@ -4,18 +4,18 @@
 #include <gtkmm.h>
 
 #include <iostream>
+#include <vector>
 
 class ErrorModal {
-  ErrorModal(const std::string& t, const std::string& m,
-      const std::vector<ErrorModalButtons>& b);
-
  public:
+  // Constructor
+  ErrorModal(const std::string& t, const std::string& m);
   // Member variables
   struct ErrorModalButtons {
     std::string txt;
     int id;
     std::function<void()> func;
-    ErrorModalButtons(std::string txt, int id, void (*func)())
+    ErrorModalButtons(std::string txt, int id, std::function<void()> func)
         : txt(txt), id(id), func(func) {}
   };
   std::string title;

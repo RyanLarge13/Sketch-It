@@ -1,9 +1,8 @@
-#include "./CustomWindow.h"
+#include "CustomWindow.h"
 
 #include <gtkmm.h>
 
-#include <iostream>
-
+#include <vector>
 // Constructor methods
 CustomWindow::CustomWindow(const std::string& title,
     const std::string& iconName, const CustomWindow::Size& defaultSize,
@@ -22,7 +21,7 @@ CustomWindow::CustomWindow(const std::string& title,
 
 // Public methods
 
-bool CustomWindow::setChild(const Gtk::Widget*& child) { return false };
+bool CustomWindow::setChild(const Gtk::Widget*& child) { return false; };
 
 bool CustomWindow::setChildren(const std::vector<Gtk::Widget*>& children) {
   return false;
@@ -30,14 +29,14 @@ bool CustomWindow::setChildren(const std::vector<Gtk::Widget*>& children) {
 
 bool CustomWindow::removeChild() { return false; }
 
-Gtk::Window* CustomWindow::getWindow() { return window; }
+Gtk::Window& CustomWindow::getWindow() { return window; }
 
-Gtk::Widget* CustomWindow::getChild() { return Gtk::Button("Test return"); }
+// Gtk::Widget* CustomWindow::getChild() { return Gtk::Widget(); }
 
 // Private methods
 
 void CustomWindow::addChildren() {
-  for (const Gtk::Widget*& widget : children) {
+  for (const Gtk::Widget* widget : children) {
     return;
   }
 }

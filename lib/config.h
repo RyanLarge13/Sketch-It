@@ -39,6 +39,7 @@ class Config {
   EventLog getLogAt(const int& index);
   void setEventLogMessage(const int& status, const std::string& message);
   void clearError(const int& index);
+  void clearAllErrors();
   std::string checkConfig(const std::string& configName);
   std::string getConfigData();
   std::vector<EventLog> getLog();
