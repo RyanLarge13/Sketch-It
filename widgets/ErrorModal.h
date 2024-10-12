@@ -12,8 +12,8 @@ class ErrorModal {
   ErrorModal(const std::string& t, const std::string& m);
   // Member variables
   struct ErrorModalButtons {
-    std::string txt;
     int id;
+    std::string txt;
     std::function<void()> func;
     ErrorModalButtons(std::string txt, int id, std::function<void()> func)
         : txt(txt), id(id), func(func) {}
@@ -21,7 +21,8 @@ class ErrorModal {
   std::string title;
   std::string message;
   std::vector<ErrorModalButtons> buttons;
-  Gtk::Window errorModal;
+  Gtk::Window* errorModal;
+  Gtk::Box* container;
 
   // Methods
   void addBtns(const std::vector<ErrorModalButtons>& btns);

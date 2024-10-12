@@ -4,20 +4,29 @@
 
 #include <iostream>
 
+#include "C_Button.h"
+
 // Constructor methods
 ErrorModal::ErrorModal(const std::string& t, const std::string& m)
     : title(t), message(m) {
-  errorModal = Gtk::Window();
-  errorModal.add_css_class("error-modal");
-  errorModal.set_title(title);
-  errorModal.set_decorated(false);
+  errorModal = Gtk::make_managed<Gtk::Window>();
+  container = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
+  container->set_valign(Gtk::Align::CENTER);
+  errorModal->set_default_size(600, 400);
+  errorModal->add_css_class("error-modal");
+  errorModal->set_title(title);
   addLabel();
+  errorModal->set_child(*container);
+  errorModal->set_focusable(true);
+  errorModal->show();
+  errorModal->present();
+  errorModal->grab_focus();
 }
 
 void ErrorModal::addLabel() {
-  Gtk::Label* errorLabel = Gtk::make_managed<Gtk::Label>(message);
-  errorLabel->add_css_class("error-modal-label");
-  errorModal.set_child(*errorLabel);
+  Gtk::Label* modalLabel = Gtk::make_managed<Gtk::Label>(message);
+  modalLabel->add_css_class("error-modal-label");
+  container->append(*modalLabel);
 }
 
 // Public
@@ -27,14 +36,17 @@ void ErrorModal::addBtns(
   buttons = btns;
   Gtk::Box* btnHolder =
       Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 10);
+  btnHolder->set_hexpand(true);
+  btnHolder->set_vexpand(true);
+  btnHolder->set_valign(Gtk::Align::CENTER);
   btnHolder->add_css_class("error-modal-btn-holder");
   for (ErrorModal::ErrorModalButtons btn : buttons) {
-    Gtk::Button* newBtn = Gtk::make_managed<Gtk::Button>(btn.txt);
-    newBtn->add_css_class("error-modal-btn");
-    newBtn->signal_clicked().connect([ btn ]() { btn.func(); });
-    btnHolder->append(*newBtn);
+    C_Button::BtnProps props(
+        true, false, Gtk::Align::FILL, Gtk::Align::FILL, "error-modal-btn");
+    C_Button newBtn(btn.txt, props, btn.func);
+    btnHolder->append(*newBtn.button);
   }
-  errorModal.set_child(*btnHolder);
+  container->append(*btnHolder);
 }
 
 // Private

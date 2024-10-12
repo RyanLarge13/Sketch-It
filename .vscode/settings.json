@@ -4,6 +4,7 @@
     "FILEMANAGER",
     "fullscreen",
     "gtkmm",
+    "halign",
     "hexpand",
     "sigc",
     "unfullscreen",

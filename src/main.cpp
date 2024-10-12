@@ -24,7 +24,7 @@ class MyWindow : public Gtk::Window {
               "Okay", 0, [ this ]() { this->close(); }),
           ErrorModal::ErrorModalButtons(
               "Reload App", 1, [ this ]() { this->reloadApp(); })});
-      newError.errorModal.show();
+      newError.errorModal->set_transient_for(*this);
       configManager.clearAllErrors();
       return;
     }
