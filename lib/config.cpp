@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include <glib.h>
 #include <glibmm.h>
 
 #include <iostream>
@@ -49,19 +50,19 @@ Config::Config(std::string fileName)
 
 // Constructor methods
 std::string Config::checkConfig(const std::string& configName) {
-  // std::string configDir = Glib::get_user_config_dir();
-  // if (configDir.empty()) {
-  //   return "";
-  // }
-  // std::string configPath = configDir + configName;
-  // try {
-  //   Glib::make_directory_with_parents(configPath);
-  //   return configPath;
-  // } catch (const Glib::FileError& e) {
-  //   std::cout << "Error creating configuration file for Sketch It, Error: "
-  //             << Glib::strerror(e.code()) << "\n";
-  //   return "";
-  // }
+  std::string configDir = Glib::get_user_config_dir();
+  if (configDir.empty()) {
+    return "";
+  }
+  std::string configPath = configDir + configName;
+  try {
+    gint result = g_mkdir_with_parents(configPath.c_str(), 0755);
+    return configPath;
+  } catch (const Glib::FileError& e) {
+    std::cout << "Error creating configuration file for Sketch It, Error: "
+              << Glib::strerror(e.code()) << "\n";
+    return "";
+  }
   return "";
 }
 

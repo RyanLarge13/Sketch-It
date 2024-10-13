@@ -28,7 +28,11 @@ class MyWindow : public Gtk::Window {
       configManager.clearAllErrors();
       return;
     }
-    setUpApp();
+    Config::EventLog log = configManager.getLogAt(0);
+    if (log.status == Config::StatusCodes::NEW_USER) {
+      setUpNewUser();
+    }
+    setUpSession();
   }
 
  private:
@@ -68,12 +72,9 @@ class MyWindow : public Gtk::Window {
         display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
   }
 
-  void setUpApp() {
-    // std::vector<Gtk::Widget*> children = {{}};
-    // CustomWindow::Size size(600, 600);
-    // CustomWindow setUp("Set Up", "./my-setup-icon", size, true,
-    // setUpChildren);
-  }
+  void setUpNewUser() {}
+
+  void setUpSession() {}
 
   void reloadApp() {
     this->close();
