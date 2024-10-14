@@ -1,9 +1,9 @@
-#ifndef CUSTOM_BOX
-#define CUSTOM_BOX
+#ifndef BOX
+#define BOX
 
 #include "gtkmm.h"
 
-class CustomBox {
+class Box {
  public:
   struct BoxProps {
     std::vector<Gtk::Widget*> children;
@@ -14,7 +14,10 @@ class CustomBox {
     Gtk::Align halign;
     std::string className;
     Gtk::Orientation orientation;
-    BoxProps()
+    BoxProps(const std::vector<Gtk::Widget*>& children, const bool& hexpand,
+        const bool& vexpand, const int& spacing, const Gtk::Align& valign,
+        const Gtk::Align& halign, const std::string& className,
+        const Gtk::Orientation& orientation)
         : children(children),
           hexpand(hexpand),
           vexpand(vexpand),
@@ -24,7 +27,7 @@ class CustomBox {
           orientation(orientation) {}
   };
 
-  CustomBox(const BoxProps& props);
+  Box(const BoxProps& props);
 
   Gtk::Box* box;
 

@@ -1,9 +1,9 @@
-#ifndef C_BUTTON
-#define C_BUTTON
+#ifndef BTN
+#define BTN
 
 #include "gtkmm.h"
 
-class C_Button {
+class Btn {
  public:
   struct BtnProps {
     bool hexpand;
@@ -21,7 +21,7 @@ class C_Button {
           className(className) {}
   };
 
-  C_Button(const std::string& text, const BtnProps& props,
+  Btn(const std::string& text, const BtnProps& props,
       const std::function<void()>& clickFunc);
 
   Gtk::Button* button;

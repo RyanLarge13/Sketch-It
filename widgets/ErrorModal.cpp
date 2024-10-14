@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "C_Button.h"
+#include "Btn.h"
 
 // Constructor methods
 ErrorModal::ErrorModal(const std::string& t, const std::string& m)
@@ -41,9 +41,9 @@ void ErrorModal::addBtns(
   btnHolder->set_valign(Gtk::Align::CENTER);
   btnHolder->add_css_class("error-modal-btn-holder");
   for (ErrorModal::ErrorModalButtons btn : buttons) {
-    C_Button::BtnProps props(
+    Btn::BtnProps props(
         true, false, Gtk::Align::FILL, Gtk::Align::FILL, "error-modal-btn");
-    C_Button newBtn(btn.txt, props, btn.func);
+    Btn newBtn(btn.txt, props, btn.func);
     btnHolder->append(*newBtn.button);
   }
   container->append(*btnHolder);

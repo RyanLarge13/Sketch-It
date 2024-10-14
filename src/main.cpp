@@ -5,8 +5,10 @@
 #include <vector>
 
 #include "../lib/config.h"
-#include "../widgets/CustomWindow.h"
+#include "../widgets/Box.h"
 #include "../widgets/ErrorModal.h"
+#include "../widgets/Text.h"
+#include "../widgets/Win.h"
 
 class MyWindow : public Gtk::Window {
  public:
@@ -72,7 +74,16 @@ class MyWindow : public Gtk::Window {
         display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
   }
 
-  void setUpNewUser() {}
+  void setUpNewUser() {
+    Text title("Let's set up your account!", "title");
+    Box::BoxProps props({title.label}, true, false, 0, Gtk::Align::FILL,
+        Gtk::Align::FILL, "user-set-up-container",
+        Gtk::Orientation::HORIZONTAL);
+    Box container(props);
+    Win setUpWindow(
+        "New User", "", Win::Size(800, 800), false, {container.box});
+    setUpWindow.window->set_transient_for(*this);
+  }
 
   void setUpSession() {}
 

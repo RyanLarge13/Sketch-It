@@ -1,10 +1,9 @@
-#include "C_Button.h"
-
 #include <iostream>
 
+#include "Btn.h"
 #include "gtkmm.h"
 
-C_Button::C_Button(const std::string& text, const C_Button::BtnProps& props,
+Btn::Btn(const std::string& text, const Btn::BtnProps& props,
     const std::function<void()>& clickFunc) {
   button = Gtk::make_managed<Gtk::Button>(text);
   button->set_hexpand(props.hexpand);
