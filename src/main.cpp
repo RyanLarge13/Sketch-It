@@ -1,3 +1,21 @@
+/*
+Sketch It - A learn to draw program
+Copyright (C) 2024 Ryan Large
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include <gtkmm.h>
 
 #include <fstream>
@@ -5,10 +23,7 @@
 #include <vector>
 
 #include "../lib/config.h"
-#include "../widgets/Box.h"
 #include "../widgets/ErrorModal.h"
-#include "../widgets/Text.h"
-#include "../widgets/Win.h"
 
 class MyWindow : public Gtk::Window {
  public:
@@ -74,16 +89,7 @@ class MyWindow : public Gtk::Window {
         display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
   }
 
-  void setUpNewUser() {
-    Text title("Let's set up your account!", "title");
-    Box::BoxProps props({title.label}, true, false, 0, Gtk::Align::FILL,
-        Gtk::Align::FILL, "user-set-up-container",
-        Gtk::Orientation::HORIZONTAL);
-    Box container(props);
-    Win setUpWindow(
-        "New User", "", Win::Size(800, 800), false, {container.box});
-    setUpWindow.window->set_transient_for(*this);
-  }
+  void setUpNewUser() {}
 
   void setUpSession() {}
 
