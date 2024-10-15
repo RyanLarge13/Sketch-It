@@ -31,12 +31,12 @@ class ModalBtn : public Gtk::Button {
     const bool& hexpand;
     const Gtk::Align& valign;
     const Gtk::Align& halign;
-    const std::function<void()>& onClick;
+    std::function<void()> onClick;
 
     ModalBtnProps(const std::string& txt, const std::string& iconName,
         const std::string& className, const bool& vexpand, const bool& hexpand,
         const Gtk::Align& valign, const Gtk::Align& halign,
-        const std::function<void()>& onClick)
+        std::function<void()> onClick)
         : txt(txt),
           iconName(iconName),
           className(className),

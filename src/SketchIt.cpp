@@ -66,7 +66,7 @@ void SketchIt::loadConfig() {
         Gtk::make_managed<ModalBtn>(
             ModalBtn::ModalBtnProps("Reload App", "icons/modal-reload",
                 "error-modal-btn", true, true, Gtk::Align::FILL,
-                Gtk::Align::FILL, [ this ]() { this->reloadApp(); }))};
+                Gtk::Align::FILL, [ this ]() { this->close(); }))};
     ErrorModal newError("Configuration Error", error.message, modalBtns);
     newError.errorModal->set_transient_for(*this);
     configManager.clearAllErrors();
