@@ -30,18 +30,18 @@ void NewUser::initLayout() {
   btnContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
   // Append containers to main
-  mainContainer->append(titleContainer);
-  mainContainer->append(contentContainer);
-  mainContainer->append(btnContainer);
+  mainContainer->append(*titleContainer);
+  mainContainer->append(*contentContainer);
+  mainContainer->append(*btnContainer);
 
   // Set main container as win child
-  win->set_child(mainContainer);
+  win->set_child(*mainContainer);
 }
 
-void NewUser::setTitle(const std::string& title) {
+void NewUser::setTitle(const std::string& newTitle) {
   // Change or initialize title to new user window
-  Gtk::Label* title = Gtk::make_managed<Gtk::Label>(title);
+  Gtk::Label* title = Gtk::make_managed<Gtk::Label>(newTitle);
   titleContainer->append(*title);
 }
 
-void NewUser::setBtns(const std::vector<string>& btns) {}
+void NewUser::setBtns(const std::vector<std::string>& btns) {}

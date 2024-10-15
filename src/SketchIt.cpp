@@ -25,7 +25,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "./lib/config.h"
 #include "./widgets/modals/ErrorModal.h"
 
-SketchIt::SketchIt() : Gtk::Application() {
+SketchIt::SketchIt() : Gtk::Window() {
   // Initialize main window with default values
   set_title("Sketch it");
   signal_realize().connect(
@@ -57,11 +57,17 @@ void SketchIt::loadConfig() {
   // parsing, reading, creating etc..
   if (configManager.errorState) {
     Config::EventLog error = configManager.getLogAt(0);
-    ErrorModal newError("Configuration Error", error.message);
-    newError.addBtns(std::vector<ErrorModal::ErrorModalButtons>{
-        ErrorModal::ErrorModalButtons("Okay", 0, [ this ]() { this->close(); }),
-        ErrorModal::ErrorModalButtons(
-            "Reload App", 1, [ this ]() { this->reloadApp(); })});
+
+    // Create custom modal buttons
+    std::vector<Gtk::Button*> modalBtns = {
+        Gtk::make_managed<ModalBtn>(ModalBtn::ModalBtnProps("Okay",
+            "icons/modal-check", "error-modal-btn", true, true,
+            Gtk::Align::FILL, Gtk::Align::FILL, [ this ]() { this->close(); })),
+        Gtk::make_managed<ModalBtn>(
+            ModalBtn::ModalBtnProps("Reload App", "icons/modal-reload",
+                "error-modal-btn", true, true, Gtk::Align::FILL,
+                Gtk::Align::FILL, [ this ]() { this->reloadApp(); }))};
+    ErrorModal newError("Configuration Error", error.message, modalBtns);
     newError.errorModal->set_transient_for(*this);
     configManager.clearAllErrors();
 

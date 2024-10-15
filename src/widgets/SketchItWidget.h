@@ -28,6 +28,6 @@ class SketchItWidget : Gtk::Widget {
   Gtk::Widget* widget;
 
  private:
-}
+};
 
 #endif

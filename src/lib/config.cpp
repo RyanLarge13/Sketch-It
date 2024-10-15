@@ -18,7 +18,8 @@ Config::Config(std::string fileName)
       in_UserData(""),
       confLog() {
   confLog.reserve(3);
-  std::string confFullPath = checkConfig(fileName);
+  // std::string confFullPath = checkConfig(fileName);
+  std::string confFullPath = "";
   if (confFullPath.empty()) {
     Config::EventLog newLog(Config::StatusCodes::FAILED_CREATE,
         "Configuration file was not found or creation of your configuration "

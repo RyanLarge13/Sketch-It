@@ -18,11 +18,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "ModalBtn.h"
 
-ModalBtn::ModalBtn(const ModalBtn::ModalBtnProps& props) {
-  set_label(props.txt);
+ModalBtn::ModalBtn(const ModalBtn::ModalBtnProps& props)
+    : Gtk::Button(props.txt) {
   set_hexpand(props.hexpand);
   set_vexpand(props.vexpand);
   set_halign(props.halign);
   set_valign(props.valign);
-  signal_clicked().connect([]() { props.onClick() });
+  add_css_class(props.className);
+  signal_clicked().connect([ props ]() { props.onClick(); });
 }

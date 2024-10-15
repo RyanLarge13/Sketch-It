@@ -22,11 +22,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <iostream>
 
-// #include "Btn.h"
-
-// Constructor methods
-ErrorModal::ErrorModal(const std::string& t, const std::string& m)
-    : title(t), message(m) {
+ErrorModal::ErrorModal(const std::string& t, const std::string& m,
+    std::vector<Gtk::Button*>& buttons)
+    : title(t), message(m), buttons(buttons) {
   errorModal = Gtk::make_managed<Gtk::Window>();
   container = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
   container->set_valign(Gtk::Align::CENTER);
@@ -34,6 +32,7 @@ ErrorModal::ErrorModal(const std::string& t, const std::string& m)
   errorModal->add_css_class("error-modal");
   errorModal->set_title(title);
   addLabel();
+  addBtns();
   errorModal->set_child(*container);
   errorModal->set_focusable(true);
   errorModal->show();
@@ -47,24 +46,15 @@ void ErrorModal::addLabel() {
   container->append(*modalLabel);
 }
 
-// Public
-
-void ErrorModal::addBtns(
-    const std::vector<ErrorModal::ErrorModalButtons>& btns) {
-  buttons = btns;
+void ErrorModal::addBtns() {
   Gtk::Box* btnHolder =
       Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 10);
   btnHolder->set_hexpand(true);
   btnHolder->set_vexpand(true);
   btnHolder->set_valign(Gtk::Align::CENTER);
   btnHolder->add_css_class("error-modal-btn-holder");
-  // for (ErrorModal::ErrorModalButtons btn : buttons) {
-  //   Btn::BtnProps props(
-  //       true, false, Gtk::Align::FILL, Gtk::Align::FILL, "error-modal-btn");
-  //   Btn newBtn(btn.txt, props, btn.func);
-  //   btnHolder->append(*newBtn.button);
-  // }
+  for (Gtk::Button* btn : buttons) {
+    btnHolder->append(*btn);
+  }
   container->append(*btnHolder);
 }
-
-// Private

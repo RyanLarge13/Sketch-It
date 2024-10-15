@@ -21,11 +21,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include <vector>
+
 class NewUser {
  public:
   NewUser(Gtk::Window* window);
   void initLayout();
-  void setTitle(const std::string& title);
+  void setTitle(const std::string& newTitle);
+  void setBtns(const std::vector<std::string>& btns);
 
   Gtk::Window* win;
   Gtk::Box* mainContainer;

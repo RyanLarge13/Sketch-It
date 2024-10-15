@@ -21,23 +21,26 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
-class ModalBtn : Gtk::Button {
+class ModalBtn : public Gtk::Button {
  public:
   struct ModalBtnProps {
     const std::string& txt;
     const std::string& iconName;
+    const std::string& className;
     const bool& vexpand;
     const bool& hexpand;
     const Gtk::Align& valign;
     const Gtk::Align& halign;
-    const std::function<void()>& onClick
+    const std::function<void()>& onClick;
 
     ModalBtnProps(const std::string& txt, const std::string& iconName,
-        const bool& vexpand, const bool& hexpand, const Gtk::Align& valign,
-        const Gtk::Align& halign, const std::function<void()>& onClick)
+        const std::string& className, const bool& vexpand, const bool& hexpand,
+        const Gtk::Align& valign, const Gtk::Align& halign,
+        const std::function<void()>& onClick)
         : txt(txt),
           iconName(iconName),
-          vexpand(vector),
+          className(className),
+          vexpand(vexpand),
           hexpand(hexpand),
           valign(valign),
           halign(halign),
@@ -47,6 +50,6 @@ class ModalBtn : Gtk::Button {
   ModalBtn(const ModalBtnProps& props);
 
  private:
-}
+};
 
-#endif  // !MODAL_BTN
+#endif
