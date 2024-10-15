@@ -16,14 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <gtkmm.h>
+#ifndef SKETCH_IT
+#define SKETCH_IT
 
-#include "SketchIt.h"
+#include "gtkmm.h"
 
-// Single load implementation
-// -- Start the app -> main -> SketchIt.cpp
+class SketchIt : public Gtk::Window {
+ public:
+  SketchIt();
 
-int main(int argc, char* argv[]) {
-  auto app = Gtk::Application::create("org.gtkmm.example");
-  return app->make_window_and_run<SketchIt>(argc, argv);
-}
+ private:
+  Glib::RefPtr<Gtk::CssProvider> css_provider;
+
+  void setDefaultScreenSize();
+  void applyGlobalCSS();
+  void setUpNewUser();
+  void setUpSession();
+  void reloadApp();
+  void loadConfig();
+};
+
+#endif

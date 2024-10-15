@@ -18,7 +18,7 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 add_definitions(${GTKMM_CFLAGS_OTHER})
 
-file(GLOB_RECURSE SOURCES "src/*.cpp" "lib/*.cpp" "widgets/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/lib/*.cpp" "src/widgets/*.cpp")
 
 add_executable(sketch_it ${SOURCES})
 
