@@ -24,6 +24,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // -- Start the app -> main -> SketchIt.cpp
 
 int main(int argc, char* argv[]) {
-  auto app = Gtk::Application::create("org.gtkmm.example");
-  return app->make_window_and_run<SketchIt>(argc, argv);
+  auto app = SketchIt::create("org.gtkmm.example");
+  return app->make_window_and_run(argc, argv);
 }

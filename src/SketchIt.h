@@ -21,8 +21,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "gtkmm.h"
 
-class SketchIt : public Gtk::Window {
- public:
+class SketchIt : public Gtk::Application {
+ protected:
   SketchIt();
 
  private:

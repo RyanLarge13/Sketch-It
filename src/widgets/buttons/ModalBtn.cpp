@@ -16,24 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef NEW_USER
-#define NEW_USER
+#include "ModalBtn.h"
 
-#include <gtkmm.h>
-
-class NewUser {
- public:
-  NewUser(Gtk::Window* window);
-  void initLayout();
-  void setTitle(const std::string& title);
-
-  Gtk::Window* win;
-  Gtk::Box* mainContainer;
-  Gtk::Box* titleContainer;
-  Gtk::Box* contentContainer;
-  Gtk::Box* btnContainer;
-
- private:
-};
-
-#endif
+ModalBtn::ModalBtn(const ModalBtn::ModalBtnProps& props) {
+  set_label(props.txt);
+  set_hexpand(props.hexpand);
+  set_vexpand(props.vexpand);
+  set_halign(props.halign);
+  set_valign(props.valign);
+  signal_clicked().connect([]() { props.onClick() });
+}

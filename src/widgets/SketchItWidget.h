@@ -16,24 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef NEW_USER
-#define NEW_USER
+#ifndef SKETCH_IT_WIDGET
+#define SKETCH_IT_WIDGET
 
 #include <gtkmm.h>
 
-class NewUser {
+class SketchItWidget : Gtk::Widget {
  public:
-  NewUser(Gtk::Window* window);
-  void initLayout();
-  void setTitle(const std::string& title);
+  SketchItWidget(Gtk::Widget* widget);
 
-  Gtk::Window* win;
-  Gtk::Box* mainContainer;
-  Gtk::Box* titleContainer;
-  Gtk::Box* contentContainer;
-  Gtk::Box* btnContainer;
+  Gtk::Widget* widget;
 
  private:
-};
+}
 
 #endif

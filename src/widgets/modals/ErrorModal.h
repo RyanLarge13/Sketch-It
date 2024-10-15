@@ -16,24 +16,39 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef NEW_USER
-#define NEW_USER
+#ifndef ERROR_MODAL
+#define ERROR_MODAL
 
 #include <gtkmm.h>
 
-class NewUser {
- public:
-  NewUser(Gtk::Window* window);
-  void initLayout();
-  void setTitle(const std::string& title);
+#include "../buttons/ModalBtn.h"
 
-  Gtk::Window* win;
-  Gtk::Box* mainContainer;
-  Gtk::Box* titleContainer;
-  Gtk::Box* contentContainer;
-  Gtk::Box* btnContainer;
+class ErrorModal {
+ public:
+  // Constructor
+  ErrorModal(const std::string& t, const std::string& m, const std::vector <);
+  // Member variables
+  struct ErrorModalButtons {
+    int id;
+    std::string txt;
+    std::function<void()> func;
+    ErrorModalButtons(std::string txt, int id, std::function<void()> func)
+        : txt(txt), id(id), func(func) {}
+  };
+  std::string title;
+  std::string message;
+  std::vector<ErrorModalButtons> buttons;
+  Gtk::Window* errorModal;
+  Gtk::Box* container;
+
+  // Methods
+  void addBtns(const std::vector<ErrorModalButtons>& btns);
 
  private:
+  // Member variables
+
+  // Methods
+  void addLabel();
 };
 
 #endif

@@ -23,9 +23,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <iostream>
 
 #include "./lib/config.h"
-#include "./widgets/ErrorModal.h"
+#include "./widgets/modals/ErrorModal.h"
 
-SketchIt::SketchIt() : Gtk::Window() {
+SketchIt::SketchIt() : Gtk::Application() {
   // Initialize main window with default values
   set_title("Sketch it");
   signal_realize().connect(
