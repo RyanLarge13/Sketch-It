@@ -20,6 +20,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../../widgets/ModalBtn.h"
+#include "userConf.h"
+
 NewUser::NewUser(Gtk::Window* window) : win(window) {}
 
 void NewUser::initLayout() {
@@ -28,6 +31,9 @@ void NewUser::initLayout() {
   titleContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
   contentContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
   btnContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+
+  // Set current stage UI
+  setStage(1);
 
   // Append containers to main
   mainContainer->append(*titleContainer);
@@ -38,10 +44,21 @@ void NewUser::initLayout() {
   win->set_child(*mainContainer);
 }
 
-void NewUser::setTitle(const std::string& newTitle) {
-  // Change or initialize title to new user window
-  Gtk::Label* title = Gtk::make_managed<Gtk::Label>(newTitle);
-  titleContainer->append(*title);
+void NewUser::setStage(const NewUser::NewUserStage& stage) {
+  currentStage = stage;
+  switch (currentStage) {
+    case NewUser::NewUserStage::USER_CONF:
+      UserConf();
+      break;
+    case NewUser::NewUserStage::SESSION_DEFAULTS:
+      break;
+    case NewUser::NewUserStage::CANVAS_DEFAULTS:
+      break;
+    case NewUser::NewUserStage::IMAGE_PACKS:
+      break;
+    case NewUser::NewUserStage::TOOL_DEFAULTS:
+      break;
+    default:
+      break;
+  }
 }
-
-void NewUser::setBtns(const std::vector<std::string>& btns) {}

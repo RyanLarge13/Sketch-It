@@ -22,8 +22,17 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <iostream>
 
+#include "./layouts/Layouts.h"
+#include "./layouts/newUser/newUser.h"
 #include "./lib/config.h"
 #include "./widgets/modals/ErrorModal.h"
+
+namespace UI {
+class Layout;
+namespace NewUserSession {
+class NewUser;
+}  // namespace NewUserSession
+};  // namespace UI
 
 SketchIt::SketchIt() : Gtk::Window() {
   // Initialize main window with default values
@@ -67,11 +76,14 @@ void SketchIt::loadConfig() {
             ModalBtn::ModalBtnProps("Reload App", "icons/modal-reload",
                 "error-modal-btn", true, true, Gtk::Align::FILL,
                 Gtk::Align::FILL, [ this ]() { this->close(); }))};
-    ErrorModal newError("Configuration Error", error.message, modalBtns);
-    newError.errorModal->set_transient_for(*this);
-    configManager.clearAllErrors();
 
-    // App closes or reloads on user input
+    ErrorModal newError("Configuration Error", error.message, modalBtns);
+
+    newError.errorModal->signal_close_request().connect(
+        [ this ]() { this->close(); });
+    newError.errorModal->set_transient_for(*this);
+
+    configManager.clearAllErrors();
     return;
   }
   Config::EventLog log = configManager.getLogAt(0);
@@ -110,7 +122,7 @@ void SketchIt::setDefaultScreenSize() {
   set_default_size(width, height);
 }
 
-void SketchIt::setUpNewUser() {}
+void SketchIt::setUpNewUser() { UI::Layouts::NewUser(); }
 
 void SketchIt::setUpSession() {}
 
