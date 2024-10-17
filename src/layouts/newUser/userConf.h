@@ -19,24 +19,24 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef USER_CONF
 #define USER_CONF
 
+#include <gtkmm.h>
+
 #include "newUser.h"
 
-class UserConf : NewUser {
+class UserConf : public NewUser {
  protected:
-  UserConf::UserConf();
+  UserConf();
 
  private:
   void addDescription(Gtk::Box* descContainer);
   void addContent(Gtk::Box* contentContainer);
 
-  std::string descriptionText = "
-        Welcome to Sketch It. You are now in the setup wizard. We Will help you go through all the steps
-        necessary to make sure that you gain the most out of using this application. Please follow through the 
-        wizard before entering the application. 
-        \n\n 
-        We will begin be filling out a few fields to give us an idea 
-        of what you are looking for out of this app
-    ";
-}
+  std::string descriptionText =
+      "Welcome to Sketch It. You are now in the setup wizard. We Will help you "
+      "go through all the steps necessary to make sure that you gain the most "
+      "out of using this application. Please follow through the wizard before "
+      "entering the application. We will begin be filling out a few fields to "
+      "give us an idea of what you are looking for out of this app";
+};
 
 #endif

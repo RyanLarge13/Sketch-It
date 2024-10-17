@@ -27,13 +27,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "./lib/config.h"
 #include "./widgets/modals/ErrorModal.h"
 
-namespace UI {
-class Layout;
-namespace NewUserSession {
-class NewUser;
-}  // namespace NewUserSession
-};  // namespace UI
-
 SketchIt::SketchIt() : Gtk::Window() {
   // Initialize main window with default values
   set_title("Sketch it");
@@ -79,17 +72,17 @@ void SketchIt::loadConfig() {
 
     ErrorModal newError("Configuration Error", error.message, modalBtns);
 
-    newError.errorModal->signal_close_request().connect(
-        [ this ]() { this->close(); });
     newError.errorModal->set_transient_for(*this);
 
     configManager.clearAllErrors();
+    this->close();
     return;
   }
+
   Config::EventLog log = configManager.getLogAt(0);
 
   // On success read for config file, set up new user
-  if (log.status == Config::StatusCodes::NEW_USER) {
+  if (log.status == Config::StatusCodes::NEW_USER_CREATE) {
     setUpNewUser();
   }
 
@@ -122,7 +115,7 @@ void SketchIt::setDefaultScreenSize() {
   set_default_size(width, height);
 }
 
-void SketchIt::setUpNewUser() { UI::Layouts::NewUser(); }
+void SketchIt::setUpNewUser() {}
 
 void SketchIt::setUpSession() {}
 

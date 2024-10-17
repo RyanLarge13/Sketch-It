@@ -1,3 +1,22 @@
+
+/*
+Sketch It - A learn to draw program
+Copyright (C) 2024 Ryan Large
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #ifndef CONFIG
 #define CONFIG
 
@@ -8,12 +27,11 @@
 
 class Config {
  public:
-  // Member variables
   enum StatusCodes : int {
     FAILED_CREATE,
     FAILED_READ,
     FAILED_WRITE,
-    NEW_USER,
+    NEW_USER_CREATE,
     SUCCESS_READ,
     SUCCESS_WRITE
   };
@@ -32,10 +50,8 @@ class Config {
   std::vector<EventLog> confLog;
   nlohmann::json in_UserData;
 
-  // Constructor
   Config(std::string fileName);
 
-  // Methods
   EventLog getLogAt(const int& index);
   void setEventLogMessage(const int& status, const std::string& message);
   void clearError(const int& index);
@@ -45,8 +61,6 @@ class Config {
   std::vector<EventLog> getLog();
 
  private:
-  // Member variables
-  // Methods
 };
 
 #endif

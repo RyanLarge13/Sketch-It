@@ -25,10 +25,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 class Layouts : public SketchIt {
  public:
-  namespace NewUserSession {
-  class NewUser;
-  }  // namespace NewUserSession
-
   Layouts();
 
  private:

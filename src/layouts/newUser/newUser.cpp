@@ -20,12 +20,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
-#include "../../widgets/ModalBtn.h"
-#include "userConf.h"
+#include "../../widgets/buttons/ModalBtn.h"
 
-NewUser::NewUser(Gtk::Window* window) : win(window) {}
-
+NewUser::NewUser() {}
 void NewUser::initLayout() {
+  win = Gtk::make_managed<Gtk::Window>();
+  win->set_title("Welcome");
   // Create main containers to nest within NewUser->win->mainContainer;
   mainContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
   titleContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
@@ -33,7 +33,7 @@ void NewUser::initLayout() {
   btnContainer = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
   // Set current stage UI
-  setStage(1);
+  setStage(NewUser::NewUserStage::USER_CONF_DEFAULTS);
 
   // Append containers to main
   mainContainer->append(*titleContainer);
@@ -47,8 +47,7 @@ void NewUser::initLayout() {
 void NewUser::setStage(const NewUser::NewUserStage& stage) {
   currentStage = stage;
   switch (currentStage) {
-    case NewUser::NewUserStage::USER_CONF:
-      UserConf();
+    case NewUser::NewUserStage::USER_CONF_DEFAULTS:
       break;
     case NewUser::NewUserStage::SESSION_DEFAULTS:
       break;

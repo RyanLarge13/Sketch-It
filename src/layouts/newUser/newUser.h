@@ -25,20 +25,20 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "../Layouts.h"
 
-class NewUser : public Layouts, public Gtk::Box {
+class NewUser : public Layouts {
  public:
-  NewUser(Gtk::Window* window);
+  NewUser();
   void initLayout();
 
   enum NewUserStage : int {
-    USER_CONF = 1,
+    USER_CONF_DEFAULTS = 1,
     SESSION_DEFAULTS,
     CANVAS_DEFAULTS,
     IMAGE_PACKS,
     TOOL_DEFAULTS,
   };
 
-  NewUserStage currentStage = 1;
+  int currentStage = 1;
   Gtk::Window* win;
   Gtk::Box* mainContainer;
   Gtk::Box* titleContainer;

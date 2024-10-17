@@ -21,6 +21,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "gtkmm.h"
 
+namespace UI {
+class Modals;
+}  // namespace UI
+
 class SketchIt : public Gtk::Window {
  public:
   SketchIt();
