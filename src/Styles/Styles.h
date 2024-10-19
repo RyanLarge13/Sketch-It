@@ -1,3 +1,4 @@
+
 /*
 Sketch It - A learn to draw program
 Copyright (C) 2024 Ryan Large
@@ -16,28 +17,21 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SKETCH_IT
-#define SKETCH_IT
+#ifndef STYLES
+#define STYLES
 
-#include "gtkmm.h"
+#include <string>
 
+namespace SketchItApplication {
 namespace UI {
-class Modals;
-}  // namespace UI
-
-class SketchIt : public Gtk::Window {
+class Styles {
  public:
-  SketchIt();
+  Styles(const std::string& cssFilePath);
 
+ protected:
  private:
-  Glib::RefPtr<Gtk::CssProvider> css_provider;
-
-  void setDefaultScreenSize();
-  void applyGlobalCSS();
-  void setUpNewUser();
-  void setUpSession();
-  void reloadApp();
-  void loadConfig();
 };
+}  // namespace UI
+}  // namespace SketchItApplication
 
 #endif

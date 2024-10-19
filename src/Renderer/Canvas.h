@@ -16,15 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef GL_H
-#define GL_H
+#ifndef CANVAS
+#define CANVAS
 
 #include <GL/gl.h>
 #include <gtkmm.h>
 
-class MyGLCanvas : public Gtk::GLArea {
+namespace SketchItApplication {
+namespace CanvasManager {
+class Canvas : public Gtk::GLArea {
  public:
-  MyGLCanvas();
+  Canvas();
 
  protected:
   void onRealize();
@@ -54,8 +56,10 @@ class MyGLCanvas : public Gtk::GLArea {
   double tiltY = 0;
   double pressure = 0;
   double rotation = 0;
-  std::vector<MyGLCanvas::StylusPoints> stylusPoints;
-  std::vector<MyGLCanvas::MousePoints> mousePoints;
+  std::vector<Canvas::StylusPoints> stylusPoints;
+  std::vector<Canvas::MousePoints> mousePoints;
 };
+}  // namespace CanvasManager
+}  // namespace SketchItApplication
 
 #endif

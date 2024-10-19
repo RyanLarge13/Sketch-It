@@ -20,13 +20,17 @@ add_definitions(${GTKMM_CFLAGS_OTHER})
 
 file(GLOB_RECURSE SOURCES 
 "src/*.cpp" 
-"src/lib/*.cpp" 
-"src/widgets/*.cpp" 
-"src/widgets/buttons/*.cpp" 
-"src/widgets/modals/*.cpp" 
-"src/layouts/*.cpp"
-"src/layouts/newUser/*.cpp"
-"src/layouts/loadSession/*.cpp"
+"src/Files/*.cpp"
+"src/lib/*.cpp"
+"src/Monitor/*.cpp" 
+"src/Renderer/*.cpp" 
+"src/SketchIt/*.cpp" 
+"src/Styles/*.cpp" 
+"src/UI/*.cpp"
+"src/UI/Widgets/*.cpp"
+"src/UI/Widgets/buttons/*.cpp"
+"src/UI/Widgets/modals/*.cpp"
+"src/utils/*.cpp"
 )
 
 add_executable(sketch_it ${SOURCES})

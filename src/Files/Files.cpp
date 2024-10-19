@@ -16,38 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef NEW_USER
-#define NEW_USER
+#include "Files.h"
 
-#include <gtkmm.h>
-
-#include <vector>
-
-#include "../Layouts.h"
-
-class NewUser : public Layouts {
- public:
-  NewUser();
-  void initLayout();
-
-  enum NewUserStage : int {
-    USER_CONF_DEFAULTS = 1,
-    SESSION_DEFAULTS,
-    CANVAS_DEFAULTS,
-    IMAGE_PACKS,
-    TOOL_DEFAULTS,
-  };
-
-  int currentStage = 1;
-  Gtk::Window* win;
-  Gtk::Box* mainContainer;
-  Gtk::Box* titleContainer;
-  Gtk::Box* contentContainer;
-  Gtk::Box* btnContainer;
-
-  void setStage(const NewUserStage& stage);
-
- private:
-};
-
-#endif
+namespace SketchItApplication {
+namespace Files {
+FileManager::FileManager() {}
+}  // namespace Files
+}  // namespace SketchItApplication

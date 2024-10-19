@@ -1,4 +1,3 @@
-
 /*
 Sketch It - A learn to draw program
 Copyright (C) 2024 Ryan Large
@@ -23,10 +22,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <fstream>
 #include <vector>
 
-#include "json.hpp"
+#include "../lib/json.hpp"
 
-class Config {
+namespace SketchItApplication {
+namespace Files {
+class ConfigManager {
  public:
+  ConfigManager(const std::string& fileName);
   enum StatusCodes : int {
     FAILED_CREATE,
     FAILED_READ,
@@ -50,8 +52,6 @@ class Config {
   std::vector<EventLog> confLog;
   nlohmann::json in_UserData;
 
-  Config(std::string fileName);
-
   EventLog getLogAt(const int& index);
   void setEventLogMessage(const int& status, const std::string& message);
   void clearError(const int& index);
@@ -60,7 +60,10 @@ class Config {
   std::string getConfigData();
   std::vector<EventLog> getLog();
 
+ protected:
  private:
 };
+}  // namespace Files
+}  // namespace SketchItApplication
 
 #endif

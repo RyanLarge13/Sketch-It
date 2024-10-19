@@ -16,17 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <gtkmm.h>
+#ifndef UI_H
+#define UI_H
 
-#include "SketchIt/SketchIt.h"
-#include "SketchIt/SketchItWindow.h"
+namespace SketchItApplication {
+namespace UI {
+class UIManager {
+ public:
+  UIManager();
 
-// Single load implementation
-// -- Start the app. SketchItApplication -> SketchIt class overrides -> window
-// -> app starts
+ protected:
+ private:
+};
+}  // namespace UI
+}  // namespace SketchItApplication
 
-int main(int argc, char* argv[]) {
-  auto app = SketchItApplication::SketchIt::create();
-  return app->make_window_and_run<SketchItApplication::SketchItWindow>(
-      argc, argv);
-}
+#endif

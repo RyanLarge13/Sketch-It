@@ -16,38 +16,40 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "gl.h"
+#include "Canvas.h"
 
 #include <iostream>
 
-MyGLCanvas::MyGLCanvas() {
+namespace SketchItApplication {
+namespace CanvasManager {
+Canvas::Canvas() {
   gesture_stylus = Gtk::GestureStylus::create();
   gesture_mouse = Gtk::EventControllerMotion::create();
   gesture_mouse->signal_enter().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onMouseDown));
+      sigc::mem_fun(*this, &Canvas::onMouseDown));
   gesture_mouse->signal_motion().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onMouseMove));
+      sigc::mem_fun(*this, &Canvas::onMouseMove));
   gesture_mouse->signal_leave().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onMouseUp));
+      sigc::mem_fun(*this, &Canvas::onMouseUp));
   gesture_stylus->signal_down().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onStylusDown));
+      sigc::mem_fun(*this, &Canvas::onStylusDown));
   gesture_stylus->signal_motion().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onStylusMove));
+      sigc::mem_fun(*this, &Canvas::onStylusMove));
   gesture_stylus->signal_up().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onStylusUp));
+      sigc::mem_fun(*this, &Canvas::onStylusUp));
   gesture_stylus->signal_proximity().connect(
-      sigc::mem_fun(*this, &MyGLCanvas::onStylusProximity));
+      sigc::mem_fun(*this, &Canvas::onStylusProximity));
   gesture_stylus->set_stylus_only(true);
   set_has_depth_buffer(true);
   set_auto_render(true);
-  signal_realize().connect(sigc::mem_fun(*this, &MyGLCanvas::onRealize));
-  signal_render().connect(sigc::mem_fun(*this, &MyGLCanvas::onRender), false);
-  signal_resize().connect(sigc::mem_fun(*this, &MyGLCanvas::onResize));
+  signal_realize().connect(sigc::mem_fun(*this, &Canvas::onRealize));
+  signal_render().connect(sigc::mem_fun(*this, &Canvas::onRender), false);
+  signal_resize().connect(sigc::mem_fun(*this, &Canvas::onResize));
   add_controller(gesture_stylus);
   add_controller(gesture_mouse);
 }
 
-void MyGLCanvas::onRealize() {
+void Canvas::onRealize() {
   Gtk::GLArea::on_realize();
   make_current();
   if (glGetError() != GL_NO_ERROR) {
@@ -57,28 +59,28 @@ void MyGLCanvas::onRealize() {
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-bool MyGLCanvas::onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
+bool Canvas::onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnd();
   glFlush();
   return true;
 }
 
-void MyGLCanvas::onResize(int width, int height) {
+void Canvas::onResize(int width, int height) {
   make_current();
   glViewport(0, 0, width, height);
 }
 
 // Mouse events
-void MyGLCanvas::onMouseDown(double x, double y) {}
+void Canvas::onMouseDown(double x, double y) {}
 
-void MyGLCanvas::onMouseMove(double x, double y) {}
+void Canvas::onMouseMove(double x, double y) {}
 
-void MyGLCanvas::onMouseUp() {}
+void Canvas::onMouseUp() {}
 
 // Stylus events
 
-void MyGLCanvas::onStylusDown(double x, double y) {
+void Canvas::onStylusDown(double x, double y) {
   tiltX = gesture_stylus->get_axis(Gdk::AxisUse::XTILT).value_or(0.0);
   tiltY = gesture_stylus->get_axis(Gdk::AxisUse::YTILT).value_or(0.0);
   pressure = gesture_stylus->get_axis(Gdk::AxisUse::PRESSURE).value_or(0.0);
@@ -87,12 +89,11 @@ void MyGLCanvas::onStylusDown(double x, double y) {
   std::cout << "TiltY: " << tiltY << "\n";
   std::cout << "Pressure: " << pressure << "\n";
   std::cout << "Rotation: " << rotation << "\n";
-  MyGLCanvas::StylusPoints newPoint = {
-      {x, y}, {tiltX, tiltY}, pressure, rotation};
+  Canvas::StylusPoints newPoint = {{x, y}, {tiltX, tiltY}, pressure, rotation};
   stylusPoints.push_back(newPoint);
 }
 
-void MyGLCanvas::onStylusMove(double x, double y) {
+void Canvas::onStylusMove(double x, double y) {
   tiltX = gesture_stylus->get_axis(Gdk::AxisUse::XTILT).value_or(0.0);
   tiltY = gesture_stylus->get_axis(Gdk::AxisUse::YTILT).value_or(0.0);
   pressure = gesture_stylus->get_axis(Gdk::AxisUse::PRESSURE).value_or(0.0);
@@ -101,15 +102,17 @@ void MyGLCanvas::onStylusMove(double x, double y) {
   std::cout << "TiltY: " << tiltY << "\n";
   std::cout << "Pressure: " << pressure << "\n";
   std::cout << "Rotation: " << rotation << "\n";
-  MyGLCanvas::StylusPoints newPoint = {
-      {x, y}, {tiltX, tiltY}, pressure, rotation};
+  Canvas::StylusPoints newPoint = {{x, y}, {tiltX, tiltY}, pressure, rotation};
   stylusPoints.push_back(newPoint);
 }
 
-void MyGLCanvas::onStylusUp(double x, double y) {
+void Canvas::onStylusUp(double x, double y) {
   std::cout << "Stylus off grid" << "\n";
 }
 
-void MyGLCanvas::onStylusProximity(double x, double y) {
+void Canvas::onStylusProximity(double x, double y) {
   std::cout << "Hovering" << "\n";
 }
+
+}  // namespace CanvasManager
+}  // namespace SketchItApplication

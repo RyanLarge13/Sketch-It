@@ -15,3 +15,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
+
+#ifndef SKETCH_IT_WINDOW
+#define SKETCH_IT_WINDOW
+
+#include "gtkmm.h"
+
+namespace SketchItApplication {
+class SketchItWindow : public Gtk::Window {
+ public:
+  SketchItWindow();
+
+ protected:
+ private:
+};
+}  // namespace SketchItApplication
+
+#endif

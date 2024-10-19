@@ -1,3 +1,4 @@
+
 /*
 Sketch It - A learn to draw program
 Copyright (C) 2024 Ryan Large
@@ -15,3 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
+
+#include "Styles.h"
+
+namespace SketchItApplication {
+namespace UI {
+Styles::Styles(const std::string& cssFilePath) {}
+}  // namespace UI
+}  // namespace SketchItApplication

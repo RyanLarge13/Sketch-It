@@ -16,18 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef LAYOUTS
-#define LAYOUTS
+#include "SketchItWindow.h"
 
-#include <gtkmm.h>
-
-#include "../SketchIt.h"
-
-class Layouts : public SketchIt {
- public:
-  Layouts();
-
- private:
-};
-
-#endif
+namespace SketchItApplication {
+SketchItWindow::SketchItWindow() {
+  set_default_size(1000, 800);
+  set_title("Sketch It");
+}
+}  // namespace SketchItApplication

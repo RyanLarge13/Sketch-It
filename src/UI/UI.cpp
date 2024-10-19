@@ -16,10 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "Layouts.h"
+#include "UI.h"
 
-#include <gtkmm.h>
-
-#include "./newUser/newUser.h"
-
-Layouts::Layouts() {}
+namespace SketchItApplication {
+namespace UI {
+UIManager::UIManager() {}
+}  // namespace UI
+}  // namespace SketchItApplication

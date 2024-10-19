@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "Config.h"
 
 #include <glib.h>
 #include <glibmm.h>
@@ -24,10 +24,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <iostream>
 #include <vector>
 
-#include "json.hpp"
+#include "../lib/json.hpp"
 
 // Constructor
-Config::Config(std::string fileName)
+namespace SketchItApplication {
+namespace Files {
+ConfigManager::ConfigManager(const std::string& fileName)
     : fileName(fileName),
       errorState(false),
       userData(""),
@@ -36,10 +38,10 @@ Config::Config(std::string fileName)
       in_UserData(""),
       confLog() {
   confLog.reserve(3);
-  // std::string confFullPath = checkConfig(fileName);
-  std::string confFullPath = "";
+  std::string confFullPath = checkConfig(fileName);
+  // std::string confFullPath = "";
   if (confFullPath.empty()) {
-    Config::EventLog newLog(Config::StatusCodes::FAILED_CREATE,
+    ConfigManager::EventLog newLog(ConfigManager::StatusCodes::FAILED_CREATE,
         "Configuration file was not found or creation of your configuration "
         "file failed");
     confLog.push_back(newLog);
@@ -49,8 +51,8 @@ Config::Config(std::string fileName)
   confFilePath = confFullPath;
   configFileStr = getConfigData();
   if (configFileStr.empty()) {
-    Config::EventLog newLog(
-        Config::StatusCodes::NEW_USER_CREATE, "Welcome to Sketch It!");
+    ConfigManager::EventLog newLog(
+        ConfigManager::StatusCodes::NEW_USER_CREATE, "Welcome to Sketch It!");
     confLog.push_back(newLog);
     return;
   }
@@ -58,7 +60,7 @@ Config::Config(std::string fileName)
     std::istringstream(configFileStr) >> in_UserData;
   } catch (const nlohmann::json::parse_error& e) {
     std::cout << "Error parsing json config: " << e.what() << std::endl;
-    Config::EventLog newLog(Config::StatusCodes::FAILED_READ,
+    ConfigManager::EventLog newLog(ConfigManager::StatusCodes::FAILED_READ,
         "Misconfigured file for Sketch It. You can reset the file in your "
         "settings");
     confLog.push_back(newLog);
@@ -68,7 +70,7 @@ Config::Config(std::string fileName)
 }
 
 // Constructor methods
-std::string Config::checkConfig(const std::string& configName) {
+std::string ConfigManager::checkConfig(const std::string& configName) {
   std::string configDir = Glib::get_user_config_dir();
   if (configDir.empty()) {
     return "";
@@ -76,6 +78,9 @@ std::string Config::checkConfig(const std::string& configName) {
   std::string configPath = configDir + configName;
   try {
     gint result = g_mkdir_with_parents(configPath.c_str(), 0755);
+    if (result == -1) {
+      return "";
+    }
     return configPath;
   } catch (const Glib::FileError& e) {
     std::cout << "Error creating configuration file for Sketch It, Error: "
@@ -86,7 +91,7 @@ std::string Config::checkConfig(const std::string& configName) {
 }
 
 // Getters
-std::string Config::getConfigData() {
+std::string ConfigManager::getConfigData() {
   std::string userConfigData;
   std::ifstream configFile(confFilePath);
   if (!configFile.is_open()) {
@@ -103,7 +108,7 @@ std::string Config::getConfigData() {
   return userConfigData;
 }
 
-Config::EventLog Config::getLogAt(const int& index) {
+ConfigManager::EventLog ConfigManager::getLogAt(const int& index) {
   if (index < 0 || index >= confLog.size()) {
     throw std::out_of_range(
         "Cannot access configuration event log with out of bounds index");
@@ -111,20 +116,22 @@ Config::EventLog Config::getLogAt(const int& index) {
   return confLog[ index ];
 }
 
-std::vector<Config::EventLog> Config::getLog() { return confLog; }
+std::vector<ConfigManager::EventLog> ConfigManager::getLog() { return confLog; }
 
 // Setters
-void Config::setEventLogMessage(const int& status, const std::string& message) {
+void ConfigManager::setEventLogMessage(
+    const int& status, const std::string& message) {
   if (status < 0 || status > 5) {
-    std::cout << "Please pass a valid Config::StatusCode between 0 and 5"
+    std::cout << "Please pass a valid ConfigManager::StatusCode between 0 and 5"
               << "\n";
     return;
   }
-  Config::EventLog newLog(static_cast<Config::StatusCodes>(status), message);
+  ConfigManager::EventLog newLog(
+      static_cast<ConfigManager::StatusCodes>(status), message);
   confLog.push_back(newLog);
 }
 
-void Config::clearError(const int& index) {
+void ConfigManager::clearError(const int& index) {
   if (index < 0 || index >= confLog.size()) {
     std::cout << "Invalid index for removing Config event log value. "
                  "Index: "
@@ -133,4 +140,6 @@ void Config::clearError(const int& index) {
   confLog.erase(confLog.begin() + index);
 }
 
-void Config::clearAllErrors() { confLog = {}; }
+void ConfigManager::clearAllErrors() { confLog = {}; }
+}  // namespace Files
+}  // namespace SketchItApplication
