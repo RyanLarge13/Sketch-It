@@ -52,7 +52,7 @@ ConfigManager::ConfigManager(const std::string& fileName)
   configFileStr = getConfigData();
   if (configFileStr.empty()) {
     ConfigManager::EventLog newLog(
-        ConfigManager::StatusCodes::NEW_USER_CREATE, "Welcome to Sketch It!");
+        ConfigManager::StatusCodes::NEW_USER, "Welcome to Sketch It!");
     confLog.push_back(newLog);
     return;
   }
@@ -81,6 +81,7 @@ std::string ConfigManager::checkConfig(const std::string& configName) {
     if (result == -1) {
       return "";
     }
+    // return "";
     return configPath;
   } catch (const Glib::FileError& e) {
     std::cout << "Error creating configuration file for Sketch It, Error: "

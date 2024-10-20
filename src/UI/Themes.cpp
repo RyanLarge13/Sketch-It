@@ -16,27 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef ERROR_MODAL
-#define ERROR_MODAL
+#include "UI.h"
 
-#include <gtkmm.h>
+namespace SketchItApplication {
+namespace UI {
+Themes::Themes() {}
 
-#include "../buttons/ModalBtn.h"
-
-class ErrorModal {
- public:
-  ErrorModal(const std::string& t, const std::string& m,
-      std::vector<Gtk::Button*>& buttons);
-  std::string title;
-  std::string message;
-  std::vector<Gtk::Button*> buttons;
-  Gtk::Window* errorModal;
-  Gtk::Box* container;
-
-  void addBtns();
-
- private:
-  void addLabel();
-};
-
-#endif
+std::string getSystemTheme() { return ""; }
+}  // namespace UI
+}  // namespace SketchItApplication

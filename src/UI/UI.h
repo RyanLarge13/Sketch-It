@@ -19,11 +19,55 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef UI_H
 #define UI_H
 
+#include <gtkmm.h>
+
 namespace SketchItApplication {
 namespace UI {
-class UIManager {
+
+class Widgets {
  public:
-  UIManager();
+  Widgets();
+
+  struct WidgetLayoutProps {
+    Gtk::Orientation orientation;
+    bool hexpand;
+    bool vexpand;
+    Gtk::Align halign;
+    Gtk::Align valign;
+    WidgetLayoutProps(const Gtk::Orientation& orientation, const bool& hexpand,
+        const bool& vexpand, const Gtk::Align& halign, const Gtk::Align& valign)
+        : orientation(orientation),
+          hexpand(hexpand),
+          vexpand(vexpand),
+          halign(halign),
+          valign(valign) {}
+  };
+
+  static WidgetLayoutProps EXPAND_FILL;
+  static WidgetLayoutProps CONTAIN;
+
+  static Gtk::Window* ErrorDialog(
+      const std::string& title, const std::string& message);
+
+  static Gtk::Box* Box(
+      const WidgetLayoutProps& props, const std::string& className);
+
+  static Gtk::Button* Button(const std::string& label,
+      const std::string& className, std::function<void()> func,
+      const WidgetLayoutProps& props);
+
+  static void addBtns(const std::vector<Gtk::Button*>& btns,
+      Gtk::Box* container, Gtk::Box* parent);
+
+ protected:
+ private:
+};
+
+class Themes {
+ public:
+  Themes();
+
+  std::string getSystemTheme();
 
  protected:
  private:

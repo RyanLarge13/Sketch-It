@@ -30,6 +30,7 @@ namespace SketchItApplication {
 class SketchIt : public Gtk::Application {
  public:
   static Glib::RefPtr<SketchIt> create();
+  static Files::ConfigManager config;
   SketchIt();
 
  protected:
@@ -38,20 +39,11 @@ class SketchIt : public Gtk::Application {
 
  private:
   Glib::RefPtr<Gtk::CssProvider> css_provider;
-  void setUpApp();
-  void setDefaultScreenSize();
-  void applyGlobalCSS();
-  void setUpNewUser();
-  void setUpSession();
-  void reloadApp();
-  void loadConfig();
 
   // Load classes using namespaces and use them
   // throughout the app
-  SketchItApplication::Files::ConfigManager config;
-  SketchItApplication::UI::UIManager uiManager;
-  SketchItApplication::UI::Styles styleSheets;
-  SketchItApplication::CanvasManager::Canvas canvas;
+  UI::Styles styleSheets;
+  CanvasManager::Canvas canvas;
 };
 }  // namespace SketchItApplication
 

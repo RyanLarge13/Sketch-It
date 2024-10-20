@@ -33,7 +33,7 @@ class ConfigManager {
     FAILED_CREATE,
     FAILED_READ,
     FAILED_WRITE,
-    NEW_USER_CREATE,
+    NEW_USER,
     SUCCESS_READ,
     SUCCESS_WRITE
   };

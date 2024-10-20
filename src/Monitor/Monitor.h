@@ -27,8 +27,11 @@ class Monitor {
  public:
   Monitor();
 
+  void init(Gtk::Window* win);
+
   Glib::RefPtr<Gdk::Display> display;
   Glib::RefPtr<Gdk::Monitor> monitor;
+  Glib::RefPtr<Gdk::Surface> surface;
   Gdk::Rectangle geometry;
   int width;
   int height;

@@ -18,35 +18,23 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "SketchIt.h"
 
+#include <gtkmm.h>
+
 #include <iostream>
 
-#include "gtkmm.h"
+#include "SketchItWindow.h"
 
 namespace SketchItApplication {
+Files::ConfigManager SketchIt::config("sketchit.config.json");
 Glib::RefPtr<SketchIt> SketchIt::create() {
   return Glib::make_refptr_for_instance<SketchIt>(new SketchIt());
 }
 
-SketchIt::SketchIt() : config("sketchit.config.json"), styleSheets("") {
+SketchIt::SketchIt() : styleSheets("../src/Styles/styleSheets/global.css") {
   // Initialize core application logic and state
 }
 
-void SketchIt::on_startup() {
-  Gtk::Application::on_startup();
-  Glib::RefPtr<Gtk::CssProvider> css_provider = Gtk::CssProvider::create();
-  try {
-    css_provider->load_from_path("../src/Styles/styleSheets/global.css");
-  } catch (const Glib::Error& err) {
-    std::cerr << "Error loading css files: " << err.what() << "\n";
-  }
-  Glib::RefPtr<Gdk::Display> display = Gdk::Display::get_default();
-  Gtk::StyleContext::add_provider_for_display(
-      display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
-  // Set up logic for before window is shown
-  // Customize on start up logic and build the core application
-  // initial state, load config, set ui, set window size and load css add
-  // signals etc...
-}
+void SketchIt::on_startup() { Gtk::Application::on_startup(); }
 
 void SketchIt::on_activate() {
   Gtk::Application::on_activate();

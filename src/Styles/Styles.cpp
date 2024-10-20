@@ -19,8 +19,22 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "Styles.h"
 
+#include <gtkmm.h>
+
+#include <iostream>
+
 namespace SketchItApplication {
 namespace UI {
-Styles::Styles(const std::string& cssFilePath) {}
+Styles::Styles(const std::string& cssFilePath) {
+  Glib::RefPtr<Gtk::CssProvider> css_provider = Gtk::CssProvider::create();
+  try {
+    css_provider->load_from_path(cssFilePath);
+  } catch (const Glib::Error& err) {
+    std::cerr << "Error loading css files: " << err.what() << "\n";
+  }
+  Glib::RefPtr<Gdk::Display> display = Gdk::Display::get_default();
+  Gtk::StyleContext::add_provider_for_display(
+      display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
+}
 }  // namespace UI
 }  // namespace SketchItApplication

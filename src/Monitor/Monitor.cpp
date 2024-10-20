@@ -26,27 +26,21 @@ namespace SketchItApplication {
 namespace MonitorManager {
 
 // Public
-Monitor::Monitor() {
-  display = Gdk::Display::get_default();
-  if (!display) {
-    setDefaultGeometry("In class monitor display failed to be found");
-    return;
-  }
-  if (!SketchItWindow::win) {
+Monitor::Monitor() { display = Gdk::Display::get_default(); };
+
+void Monitor::init(Gtk::Window* win) {
+  surface = win->get_surface();
+  if (!display || !surface) {
     setDefaultGeometry(
-        "There was an error accessing the instance of the main application "
-        "window in monitor");
+        "There was a problem accessing surface or display information in "
+        "Monitor::setSurface");
     return;
   }
-  monitor = display->get_monitor_at_surface(SketchItWindow::win->get_surface());
-  if (!monitor) {
-    setDefaultGeometry("In class monitor, primary monitor failed to be found");
-    return;
-  }
+  monitor = display->get_monitor_at_surface(win->get_surface());
   monitor->get_geometry(geometry);
   width = geometry.get_width();
   height = geometry.get_height();
-};
+}
 
 // Private
 void Monitor::setDefaultGeometry(const std::string& err) {

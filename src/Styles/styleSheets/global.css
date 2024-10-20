@@ -1,3 +1,26 @@
 window {
   background-color: #fff;
 }
+
+.error-modal {
+  background-color: #fff;
+  padding: 50px;
+}
+
+.error-modal-message {
+  color: #000;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 50px 50px 50px;
+}
+
+.error-modal-btn-container {
+  padding: 20px;
+}
+
+.error-modal-btn {
+  color: #f37e7e;
+  border-radius: 0px;
+  margin: 0 25px;
+  font-weight: 600;
+}
