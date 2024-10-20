@@ -25,9 +25,11 @@ namespace SketchItApplication {
 class SketchItWindow : public Gtk::Window {
  public:
   SketchItWindow();
+  static Gtk::Window* win;
 
  protected:
  private:
+  void setUpMonitor();
 };
 }  // namespace SketchItApplication
 

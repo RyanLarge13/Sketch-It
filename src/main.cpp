@@ -25,6 +25,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // -- Start the app. SketchItApplication -> SketchIt class overrides -> window
 // -> app starts
 
+Gtk::Window* SketchItApplication::SketchItWindow::win = nullptr;
+
 int main(int argc, char* argv[]) {
   auto app = SketchItApplication::SketchIt::create();
   return app->make_window_and_run<SketchItApplication::SketchItWindow>(

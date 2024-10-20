@@ -16,21 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "SketchItWindow.h"
+#ifndef MONITOR_H
+#define MONITOR_H
 
-#include "../Monitor/Monitor.h"
+#include <gtkmm.h>
 
 namespace SketchItApplication {
+namespace MonitorManager {
+class Monitor {
+ public:
+  Monitor();
 
-SketchItWindow::SketchItWindow() {
-  win = this;
-  set_title("Sketch It");
-  signal_realize().connect(sigc::mem_fun(*this, &SketchItWindow::setUpMonitor));
-}
+  Glib::RefPtr<Gdk::Display> display;
+  Glib::RefPtr<Gdk::Monitor> monitor;
+  Gdk::Rectangle geometry;
+  int width;
+  int height;
 
-void SketchItWindow::setUpMonitor() {
-  MonitorManager::Monitor monitor;
-  set_default_size(monitor.width, monitor.height);
-}
+ protected:
+  void setDefaultGeometry(const std::string& err);
 
+ private:
+};
+}  // namespace MonitorManager
 }  // namespace SketchItApplication
+
+#endif
