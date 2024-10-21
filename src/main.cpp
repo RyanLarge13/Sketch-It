@@ -22,7 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "SketchIt/SketchItWindow.h"
 
 // Single load implementation
-// -- Start the app. SketchItApplication -> SketchIt class overrides -> window
+// -- Start the app: SketchItApplication -> Application class overrides ->
+// Sketchit window
 // -> app starts
 
 Gtk::Window* SketchItApplication::SketchItWindow::win = nullptr;

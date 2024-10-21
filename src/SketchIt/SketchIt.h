@@ -29,17 +29,19 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 class SketchIt : public Gtk::Application {
  public:
+  // Define global accessible singleton instances
   static Glib::RefPtr<SketchIt> create();
   static Files::ConfigManager config;
+
+  // Constructor
   SketchIt();
 
  protected:
+  // Build custom logic for app load
   void on_startup() override;
   void on_activate() override;
 
  private:
-  Glib::RefPtr<Gtk::CssProvider> css_provider;
-
   // Load classes using namespaces and use them
   // throughout the app
   UI::Styles styleSheets;

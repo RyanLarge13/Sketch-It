@@ -27,12 +27,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 
 SketchItWindow::SketchItWindow() {
+  // Set the global main window to the current instance
   win = this;
+
   set_title("Sketch It");
   signal_realize().connect(sigc::mem_fun(*this, &SketchItWindow::setUp));
 }
 
 void SketchItWindow::setUp() {
+  // Set up window size && load configuration
   MonitorManager::Monitor monitor;
   monitor.init(this);
   set_default_size(monitor.width, monitor.height);
@@ -43,6 +46,7 @@ void SketchItWindow::setUp() {
 void SketchItWindow::checkConfig() {
   using namespace Files;
 
+  // Check logs after config initialization in SketchIt Application
   std::vector<ConfigManager::EventLog> logs = SketchIt::config.getLog();
 
   for (const ConfigManager::EventLog& log : logs) {
@@ -73,6 +77,7 @@ void SketchItWindow::checkConfig() {
       break;
     }
     if (log.status == ConfigManager::StatusCodes::NEW_USER) {
+      // Load setup window for new users
       std::cout << "New user" << "\n";
     }
   }

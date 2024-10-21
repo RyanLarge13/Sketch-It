@@ -21,6 +21,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+// UI namespace defines two classes, theme && widgets
+
 namespace SketchItApplication {
 namespace UI {
 
@@ -62,6 +64,8 @@ class Widgets {
  protected:
  private:
 };
+
+// SEPARATOR BETWEEN CLASSES UNDER NAMESPACE UI (WIDGETS && THEME CLASSES)
 
 class Themes {
  public:

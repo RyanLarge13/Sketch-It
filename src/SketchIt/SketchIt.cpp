@@ -25,7 +25,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "SketchItWindow.h"
 
 namespace SketchItApplication {
+// Initialize global config singleton instance
 Files::ConfigManager SketchIt::config("sketchit.config.json");
+
 Glib::RefPtr<SketchIt> SketchIt::create() {
   return Glib::make_refptr_for_instance<SketchIt>(new SketchIt());
 }

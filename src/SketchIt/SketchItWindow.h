@@ -24,8 +24,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 class SketchItWindow : public Gtk::Window {
  public:
-  SketchItWindow();
+  // Define global main window object for access across application
   static Gtk::Window* win;
+
+  // Constructor
+  SketchItWindow();
 
  protected:
  private:

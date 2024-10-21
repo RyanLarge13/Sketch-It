@@ -38,8 +38,10 @@ ConfigManager::ConfigManager(const std::string& fileName)
       in_UserData(""),
       confLog() {
   confLog.reserve(3);
+  // Check for config file. Create if not there
   std::string confFullPath = checkConfig(fileName);
-  // std::string confFullPath = "";
+
+  // Append error logs to config logs
   if (confFullPath.empty()) {
     ConfigManager::EventLog newLog(ConfigManager::StatusCodes::FAILED_CREATE,
         "Configuration file was not found or creation of your configuration "
@@ -48,14 +50,20 @@ ConfigManager::ConfigManager(const std::string& fileName)
     errorState = true;
     return;
   }
+
+  // Load config data from file
   confFilePath = confFullPath;
   configFileStr = getConfigData();
+
+  // Add more logs to config log
   if (configFileStr.empty()) {
     ConfigManager::EventLog newLog(
         ConfigManager::StatusCodes::NEW_USER, "Welcome to Sketch It!");
     confLog.push_back(newLog);
     return;
   }
+
+  // Parse configuration load it into app memory log if failed
   try {
     std::istringstream(configFileStr) >> in_UserData;
   } catch (const nlohmann::json::parse_error& e) {
@@ -69,13 +77,16 @@ ConfigManager::ConfigManager(const std::string& fileName)
   }
 }
 
-// Constructor methods
 std::string ConfigManager::checkConfig(const std::string& configName) {
+  // Load config file. create if not exists. return "" if fall fails
   std::string configDir = Glib::get_user_config_dir();
+
   if (configDir.empty()) {
     return "";
   }
+
   std::string configPath = configDir + configName;
+
   try {
     gint result = g_mkdir_with_parents(configPath.c_str(), 0755);
     if (result == -1) {
@@ -88,23 +99,29 @@ std::string ConfigManager::checkConfig(const std::string& configName) {
               << Glib::strerror(e.code()) << "\n";
     return "";
   }
+
   return "";
 }
 
-// Getters
 std::string ConfigManager::getConfigData() {
+  // Return config file raw data as string return "" if all fails
   std::string userConfigData;
   std::ifstream configFile(confFilePath);
+
   if (!configFile.is_open()) {
     return "";
   }
+
   std::string line;
+
   while (std::getline(configFile, line)) {
     userConfigData += line + "\n";
   }
+
   if (configFile.fail()) {
     return "";
   }
+
   configFile.close();
   return userConfigData;
 }
@@ -114,19 +131,21 @@ ConfigManager::EventLog ConfigManager::getLogAt(const int& index) {
     throw std::out_of_range(
         "Cannot access configuration event log with out of bounds index");
   }
+
   return confLog[ index ];
 }
 
 std::vector<ConfigManager::EventLog> ConfigManager::getLog() { return confLog; }
 
-// Setters
 void ConfigManager::setEventLogMessage(
     const int& status, const std::string& message) {
   if (status < 0 || status > 5) {
-    std::cout << "Please pass a valid ConfigManager::StatusCode between 0 and 5"
-              << "\n";
+    std::out_of_range(
+        "Please pass a valid ConfigManager::StatusCode between 0 and 5");
     return;
   }
+
+  // Append new log
   ConfigManager::EventLog newLog(
       static_cast<ConfigManager::StatusCodes>(status), message);
   confLog.push_back(newLog);
@@ -138,9 +157,12 @@ void ConfigManager::clearError(const int& index) {
                  "Index: "
               << index << "\n";
   }
+
+  // Remove log by index
   confLog.erase(confLog.begin() + index);
 }
 
 void ConfigManager::clearAllErrors() { confLog = {}; }
+
 }  // namespace Files
 }  // namespace SketchItApplication

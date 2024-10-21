@@ -22,6 +22,9 @@ namespace SketchItApplication {
 namespace UI {
 Themes::Themes() {}
 
-std::string getSystemTheme() { return ""; }
+std::string getSystemTheme() {
+  // Grabs system theme, and returns the appropriate css file path to load
+  return "";
+}
 }  // namespace UI
 }  // namespace SketchItApplication

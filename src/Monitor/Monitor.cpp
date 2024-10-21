@@ -25,25 +25,31 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 namespace MonitorManager {
 
-// Public
-Monitor::Monitor() { display = Gdk::Display::get_default(); };
+Monitor::Monitor() {
+  // Define display here to access later
+  display = Gdk::Display::get_default();
+};
 
 void Monitor::init(Gtk::Window* win) {
+  // Set surface, width, height. Load monitor geometry
   surface = win->get_surface();
+
   if (!display || !surface) {
     setDefaultGeometry(
         "There was a problem accessing surface or display information in "
         "Monitor::setSurface");
     return;
   }
+
   monitor = display->get_monitor_at_surface(win->get_surface());
   monitor->get_geometry(geometry);
+
   width = geometry.get_width();
   height = geometry.get_height();
 }
 
-// Private
 void Monitor::setDefaultGeometry(const std::string& err) {
+  // Set default geometry for SketchItWindow
   std::cout << err << "\n";
   width = 1000;
   height = 800;
