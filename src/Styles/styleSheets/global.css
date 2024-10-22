@@ -2,6 +2,7 @@ window {
   background-color: #fff;
 }
 
+/* Custom error modal classes */
 .error-modal {
   background-color: #fff;
   padding: 50px;
@@ -27,4 +28,33 @@ window {
   border-radius: 0px;
   margin: 0 25px;
   font-weight: 600;
+}
+
+/* Custom setup widget classes */
+.set-up-notebook {
+  padding: 50px;
+}
+
+.set-up-tab-title {
+  font-weight: 600;
+}
+
+.set-up-page {
+  background-color: #eee;
+  border-radius: 10px 10px 0 0;
+  color: #000;
+  padding: 25px;
+}
+
+.set-up-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.set-up-content-container {
+}
+
+.set-up-desc-container {
+  padding: 10px;
+  background-color: #fff;
 }

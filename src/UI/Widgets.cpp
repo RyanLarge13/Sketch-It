@@ -25,15 +25,24 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 namespace UI {
 
+// Constant strings for defining set up notebook tabs
+const std::vector<std::string> Widgets::setupTabs = {"Welcome",
+    "Default Learning", "Default Tools", "Theme", "Installing Drawing Packs",
+    "Finish"};
+// Constant strings for defining set up notebook tabs
+
 // Static constants widget props that can be used from outside of the class in a
 // easy matter for defining simple layouts
-Widgets::WidgetLayoutProps Widgets::EXPAND_FILL =
+Widgets::WidgetLayoutProps Widgets::H_FILL =
     Widgets::WidgetLayoutProps(Gtk::Orientation::HORIZONTAL, true, true,
         Gtk::Align::FILL, Gtk::Align::FILL);
 
+Widgets::WidgetLayoutProps Widgets::V_FILL = Widgets::WidgetLayoutProps(
+    Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL);
+
 Widgets::WidgetLayoutProps Widgets::CONTAIN =
     Widgets::WidgetLayoutProps(Gtk::Orientation::HORIZONTAL, false, false,
-        Gtk::Align::CENTER, Gtk::Align::CENTER);
+        Gtk::Align::START, Gtk::Align::START);
 // Static constants widget props that can be used from outside of the class in a
 // easy matter for defining simple layouts
 
@@ -56,9 +65,79 @@ Gtk::Button* Widgets::Button(const std::string& label,
   return myCustomBtn;
 }
 
+Gtk::Label* Widgets::Label(const std::string& label,
+    const std::string& className, const Widgets::WidgetLayoutProps& props) {
+  // Create a build a custom label
+
+  Gtk::Label* customLabel = Gtk::make_managed<Gtk::Label>(label);
+
+  customLabel->add_css_class(className);
+  customLabel->set_hexpand(props.hexpand);
+  customLabel->set_vexpand(props.vexpand);
+  customLabel->set_halign(props.halign);
+  customLabel->set_valign(props.valign);
+
+  return customLabel;
+}
+
+Gtk::TextView* Widgets::LongText(const std::string& text,
+    const std::string& className, const Widgets::WidgetLayoutProps& props) {
+  Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+
+  buffer->set_text(text);
+
+  Gtk::TextView* textArea = Gtk::make_managed<Gtk::TextView>();
+
+  textArea->set_buffer(buffer);
+  textArea->set_editable(false);
+  textArea->add_css_class(className);
+
+  return textArea;
+}
+
 Gtk::Window* Widgets::SetUp() {
   // Build the window that will be returned and contain the layout
-  Gtk::Widnow* setUpWindow = Gtk::make_managed<Gtk::Widnow>();
+  Gtk::Window* setUpWindow = Gtk::make_managed<Gtk::Window>();
+
+  Gtk::Notebook* notebook = Gtk::make_managed<Gtk::Notebook>();
+
+  for (const std::string title : Widgets::setupTabs) {
+    Gtk::Label* label =
+        Widgets::Label(title, "set-up-tab-title", Widgets::H_FILL);
+
+    Gtk::Box* page = Widgets::Box(Widgets::H_FILL, "set-up-page");
+    Gtk::Box* pageContentContainer =
+        Widgets::Box(Widgets::H_FILL, "set-up-content-container");
+
+    Gtk::Box* descContainer =
+        Widgets::Box(Widgets::V_FILL, "set-up-desc-container");
+
+    Gtk::Label* descTitle =
+        Widgets::Label("Description", "desc-title", Widgets::CONTAIN);
+
+    descContainer->append(*descTitle);
+
+    pageContentContainer->append(*descContainer);
+
+    page->append(*pageContentContainer);
+    page->append(*Widgets::Label(title, "set-up-title", Widgets::CONTAIN));
+
+    Gtk::TextView* desc = Widgets::LongText(
+        "Welcome to Sketch It!!! This is going to be a lot of fun beggining "
+        "your journey to becoming a professional artist. Open up a world you "
+        "never new existed",
+        "set-up-desc-text", Widgets::CONTAIN);
+
+    descContainer->append(*desc);
+
+    notebook->append_page(*page, *label);
+  }
+
+  notebook->add_css_class("set-up-notebook");
+  setUpWindow->set_title("Set Up");
+  setUpWindow->set_child(*notebook);
+
+  return setUpWindow;
 }
 
 Gtk::Window* Widgets::ErrorDialog(
@@ -66,7 +145,7 @@ Gtk::Window* Widgets::ErrorDialog(
   // Custom error modal widget returns transient window of main
   Gtk::Window* errWin = Gtk::make_managed<Gtk::Window>();
   Gtk::Box* container =
-      Widgets::Box(Widgets::EXPAND_FILL, "error-modal-message-container");
+      Widgets::Box(Widgets::H_FILL, "error-modal-message-container");
   Gtk::Label* label = Gtk::make_managed<Gtk::Label>(message);
 
   label->add_css_class("error-modal-message");

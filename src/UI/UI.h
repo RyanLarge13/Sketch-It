@@ -45,14 +45,27 @@ class Widgets {
           valign(valign) {}
   };
 
-  static WidgetLayoutProps EXPAND_FILL;
+  // Constant notebook tabs
+  static const std::vector<std::string> setupTabs;
+
+  // Definitions for constant WidgetLayoutProps
+  static WidgetLayoutProps H_FILL;
+  static WidgetLayoutProps V_FILL;
   static WidgetLayoutProps CONTAIN;
 
   static Gtk::Window* ErrorDialog(
       const std::string& title, const std::string& message);
 
+  static Gtk::Window* SetUp();
+
   static Gtk::Box* Box(
       const WidgetLayoutProps& props, const std::string& className);
+
+  static Gtk::Label* Label(const std::string& label,
+      const std::string& className, const Widgets::WidgetLayoutProps& props);
+
+  static Gtk::TextView* LongText(const std::string& text,
+      const std::string& className, const Widgets::WidgetLayoutProps& props);
 
   static Gtk::Button* Button(const std::string& label,
       const std::string& className, std::function<void()> func,

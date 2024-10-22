@@ -61,13 +61,13 @@ void SketchItWindow::checkConfig() {
       std::vector<Gtk::Button*> btns = {
           UI::Widgets::Button(
               "Okay", "error-modal-btn", [ this ]() { this->close(); },
-              UI::Widgets::EXPAND_FILL),
+              UI::Widgets::H_FILL),
           UI::Widgets::Button(
               "Close", "error-modal-btn", [ this ]() { this->close(); },
-              UI::Widgets::EXPAND_FILL)};
+              UI::Widgets::H_FILL)};
 
-      Gtk::Box* btnContainer = UI::Widgets::Box(
-          UI::Widgets::EXPAND_FILL, "error-modal-btn-container");
+      Gtk::Box* btnContainer =
+          UI::Widgets::Box(UI::Widgets::H_FILL, "error-modal-btn-container");
 
       UI::Widgets::addBtns(
           btns, btnContainer, dynamic_cast<Gtk::Box*>(error->get_child()));
@@ -78,7 +78,10 @@ void SketchItWindow::checkConfig() {
     }
     if (log.status == ConfigManager::StatusCodes::NEW_USER) {
       // Load setup window for new users
-      std::cout << "New user" << "\n";
+      Gtk::Window* setupWin = UI::Widgets::SetUp();
+
+      setupWin->set_transient_for(*this);
+      setupWin->show();
     }
   }
 }
