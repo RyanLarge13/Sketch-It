@@ -30,6 +30,13 @@ class Widgets {
  public:
   Widgets();
 
+  struct WidgetNotebookTabs {
+    Gtk::Box* page;
+    Gtk::Label* tabLabel;
+    WidgetNotebookTabs(Gtk::Box* page, Gtk::Label* tabLabel)
+        : page(page), tabLabel(tabLabel) {}
+  };
+
   struct WidgetLayoutProps {
     Gtk::Orientation orientation;
     bool hexpand;
@@ -53,10 +60,27 @@ class Widgets {
   static WidgetLayoutProps V_FILL;
   static WidgetLayoutProps CONTAIN;
 
+  // Application default windows -------------------------------------------
   static Gtk::Window* ErrorDialog(
       const std::string& title, const std::string& message);
 
   static Gtk::Window* SetUp();
+
+  // Custom widgets ------------------------------------------
+
+  // Setup widget pages
+  static Gtk::Box* WelcomeSetUpPage();
+  static Gtk::Box* DefaultSessionPage();
+  /*
+  TODO:
+  Pick up here ->
+  */
+  static Gtk::Box* StaticSetUpPage();
+  // Setup widget pages
+
+  static Gtk::Notebook* Notebook(const std::string& className,
+      const Widgets::WidgetNotebookTabs& tabs,
+      const Widgets::WidgetLayoutProps& props);
 
   static Gtk::Box* Box(
       const WidgetLayoutProps& props, const std::string& className);
@@ -71,6 +95,7 @@ class Widgets {
       const std::string& className, std::function<void()> func,
       const WidgetLayoutProps& props);
 
+  // Methods --------------------------------------------------------
   static void addBtns(const std::vector<Gtk::Button*>& btns,
       Gtk::Box* container, Gtk::Box* parent);
 

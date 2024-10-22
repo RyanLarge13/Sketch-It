@@ -25,11 +25,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 namespace UI {
 
-// Constant strings for defining set up notebook tabs
+// Constant strings for defining set up window notebook tabs
 const std::vector<std::string> Widgets::setupTabs = {"Welcome",
     "Default Learning", "Default Tools", "Theme", "Installing Drawing Packs",
     "Finish"};
-// Constant strings for defining set up notebook tabs
+// Constant strings for defining set up window notebook tabs
 
 // Static constants widget props that can be used from outside of the class in a
 // easy matter for defining simple layouts
@@ -40,13 +40,34 @@ Widgets::WidgetLayoutProps Widgets::H_FILL =
 Widgets::WidgetLayoutProps Widgets::V_FILL = Widgets::WidgetLayoutProps(
     Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL);
 
-Widgets::WidgetLayoutProps Widgets::CONTAIN =
+Widgets::WidgetLayoutProps Widgets::H_CONTAIN =
     Widgets::WidgetLayoutProps(Gtk::Orientation::HORIZONTAL, false, false,
+        Gtk::Align::START, Gtk::Align::START);
+
+Widgets::WidgetLayoutProps Widgets::V_CONTAIN =
+    Widgets::WidgetLayoutProps(Gtk::Orientation::VERTICAL, false, false,
         Gtk::Align::START, Gtk::Align::START);
 // Static constants widget props that can be used from outside of the class in a
 // easy matter for defining simple layouts
 
 Widgets::Widgets() {}
+
+// Custom Widgets ------------------------------------------------
+
+Gtk::Box* Widgets::Box(
+    const WidgetLayoutProps& props, const std::string& className) {
+  // Build layout for a custom Gtk::Box and return it
+  Gtk::Box* box = Gtk::make_managed<Gtk::Box>(props.orientation);
+
+  box->add_css_class(className);
+
+  box->set_hexpand(props.hexpand);
+  box->set_vexpand(props.vexpand);
+  box->set_halign(props.halign);
+  box->set_valign(props.valign);
+
+  return box;
+}
 
 Gtk::Button* Widgets::Button(const std::string& label,
     const std::string& className, std::function<void()> func,
@@ -95,45 +116,106 @@ Gtk::TextView* Widgets::LongText(const std::string& text,
   return textArea;
 }
 
+Gtk::Notebook* Widgets::Notebook(
+    const std::string& className, const Widgets::WidgetNotebookTabs& tabs) {
+  // Create and return a Gtk Notebook with tabs
+  Gtk::Notebook* notebook = Gtk::make_managed<Gtk::Notebook>();
+
+  for (const Widgets::WidgetNotebookTabs tab : tabs) {
+    notebook->append_page(*tab.page, *tab.tabLabel);
+  }
+
+  notebook->add_css_class(className);
+
+  return notebook;
+}
+
+// Application Default windows && widgets
+// ----------------------------------------------------------------
+
+Gtk::Box* Widgets::WelcomeSetUpPage() {
+  // Define this custom default layout for the set up welcome page
+  // Create all page containers
+  Gtk::Box* page = Widgets::Box(Widgets::H_FILL, "set-up-page");
+  Gtk::Box* pageContainer = Widgets::Box(Widgets::H_FILL, "set-up-container");
+  Gtk::Box* descContainer =
+      Widgets::Box(Widgets::V_CONTAIN, "set-up-desc-container");
+  Gtk::Box* contentContainer = Widgets::Box(V_FILL, "set-up-content-container");
+  Gtk::Box* btnContainer = Widgets::Box(H_FILL, "set-up-btn-container");
+
+  // Create text elements
+  Gtk::Label* title =
+      Widgets::Label("Welcome", "set-up-page-title", Widgets::H_FILL);
+
+  std::string desc =
+      "Welcome to Sketch It set up. You are welcome to exit out of this set up "
+      "page at any time and get right to drawing, but I strongly suggest that "
+      "you take the time to configure your set up and run through some of the "
+      "cool features of this software";
+  Gtk::TextView* descText =
+      Widgets::LongText(desc, "set-up-desc-text", Widgets::V_CONTAIN);
+
+  // Append and return page
+  descContainer->append(*descText);
+
+  pageContainer->append(*descContainer);
+  pageContainer->append(*contentContainer);
+
+  page->append(*title);
+  page->append(*pageContainer);
+  page->append(*btnContainer);
+
+  return page;
+}
+
+Gtk::Box* Widgets::DefaultSessionPage() {
+  Gtk::Box* page = Widgets::Box(Widgets::H_FILL, "set-up-page");
+  Gtk::Box* pageContainer = Widgets::Box(Widgets::H_FILL, "set-up-container");
+  Gtk::Box* descContainer =
+      Widgets::Box(Widgets::V_CONTAIN, "set-up-desc-container");
+  Gtk::Box* contentContainer = Widgets::Box(V_FILL, "set-up-content-container");
+  Gtk::Box* btnContainer = Widgets::Box(H_FILL, "set-up-btn-container");
+
+  // Create text elements
+  Gtk::Label* title =
+      Widgets::Label("Welcome", "set-up-page-title", Widgets::H_FILL);
+
+  std::string desc = "Let's set up how you would like to ";
+  Gtk::TextView* descText =
+      Widgets::LongText(desc, "set-up-desc-text", Widgets::V_CONTAIN);
+
+  // Append and return page
+  descContainer->append(*descText);
+
+  pageContainer->append(*descContainer);
+  pageContainer->append(*contentContainer);
+
+  page->append(*title);
+  page->append(*pageContainer);
+  page->append(*btnContainer);
+
+  return page;
+}
+
+Gtk::Box* Widgets::StaticSetUpPage() {}
+
 Gtk::Window* Widgets::SetUp() {
   // Build the window that will be returned and contain the layout
   Gtk::Window* setUpWindow = Gtk::make_managed<Gtk::Window>();
 
-  Gtk::Notebook* notebook = Gtk::make_managed<Gtk::Notebook>();
+  std::vector<Widgets::WidgetNotebookTabs> tabs = {
+    Widgets::WidgetNotebookTabs(Widgets::WelcomeSetUpPage(),
+        Widgets::Label("Welcome", "tab-label", Widgets::V_CONTAIN)),
+    Widgets::WidgetNotebookTabs(Widgets::DefaultSessionPage(),
+        Widgets::Label("Default Sessions", "tab-label", Widgets::V_CONTAIN;)),
+    Widgets::WidgetNotebookTabs(),
+    Widgets::WidgetNotebookTabs(),
+    Widgets::WidgetNotebookTabs(),
+    Widgets::WidgetNotebookTabs()
+  };
 
-  for (const std::string title : Widgets::setupTabs) {
-    Gtk::Label* label =
-        Widgets::Label(title, "set-up-tab-title", Widgets::H_FILL);
+  Gtk::Notebook* notebook = Widgets::Notebook("set-up-notebook", tabs);
 
-    Gtk::Box* page = Widgets::Box(Widgets::H_FILL, "set-up-page");
-    Gtk::Box* pageContentContainer =
-        Widgets::Box(Widgets::H_FILL, "set-up-content-container");
-
-    Gtk::Box* descContainer =
-        Widgets::Box(Widgets::V_FILL, "set-up-desc-container");
-
-    Gtk::Label* descTitle =
-        Widgets::Label("Description", "desc-title", Widgets::CONTAIN);
-
-    descContainer->append(*descTitle);
-
-    pageContentContainer->append(*descContainer);
-
-    page->append(*pageContentContainer);
-    page->append(*Widgets::Label(title, "set-up-title", Widgets::CONTAIN));
-
-    Gtk::TextView* desc = Widgets::LongText(
-        "Welcome to Sketch It!!! This is going to be a lot of fun beggining "
-        "your journey to becoming a professional artist. Open up a world you "
-        "never new existed",
-        "set-up-desc-text", Widgets::CONTAIN);
-
-    descContainer->append(*desc);
-
-    notebook->append_page(*page, *label);
-  }
-
-  notebook->add_css_class("set-up-notebook");
   setUpWindow->set_title("Set Up");
   setUpWindow->set_child(*notebook);
 
@@ -158,20 +240,7 @@ Gtk::Window* Widgets::ErrorDialog(
   return errWin;
 };
 
-Gtk::Box* Widgets::Box(
-    const Widgets::WidgetLayoutProps& props, const std::string& className) {
-  // Custom box method, returns a container initialized with specified props
-  Gtk::Box* myBox = Gtk::make_managed<Gtk::Box>(props.orientation);
-
-  myBox->set_hexpand(props.hexpand);
-  myBox->set_vexpand(props.vexpand);
-  myBox->set_halign(props.halign);
-  myBox->set_valign(props.valign);
-  myBox->add_css_class(className);
-
-  return myBox;
-}
-
+// Static methods --------------------------------------------------------
 void Widgets::addBtns(const std::vector<Gtk::Button*>& btns,
     Gtk::Box* container, Gtk::Box* parent) {
   // Adding buttons to a container and container to parent
