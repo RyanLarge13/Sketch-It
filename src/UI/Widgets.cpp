@@ -110,18 +110,23 @@ Gtk::TextView* Widgets::LongText(const std::string& text,
   Gtk::TextView* textArea = Gtk::make_managed<Gtk::TextView>();
 
   textArea->set_buffer(buffer);
+  textArea->set_wrap_mode(static_cast<Gtk::WrapMode>(2));
+  textArea->set_size_request(200, 400);
   textArea->set_editable(false);
   textArea->add_css_class(className);
 
   return textArea;
 }
 
-Gtk::Notebook* Widgets::Notebook(
-    const std::string& className, const Widgets::WidgetNotebookTabs& tabs) {
+// Gtk::ScrolledWindow* Widgets::ScrollWindow() {}
+
+Gtk::Notebook* Widgets::Notebook(const std::string& className,
+    const std::vector<Widgets::WidgetNotebookTabs>& tabs,
+    const Widgets::WidgetLayoutProps& props) {
   // Create and return a Gtk Notebook with tabs
   Gtk::Notebook* notebook = Gtk::make_managed<Gtk::Notebook>();
 
-  for (const Widgets::WidgetNotebookTabs tab : tabs) {
+  for (const Widgets::WidgetNotebookTabs& tab : tabs) {
     notebook->append_page(*tab.page, *tab.tabLabel);
   }
 
@@ -133,10 +138,10 @@ Gtk::Notebook* Widgets::Notebook(
 // Application Default windows && widgets
 // ----------------------------------------------------------------
 
-Gtk::Box* Widgets::WelcomeSetUpPage() {
-  // Define this custom default layout for the set up welcome page
-  // Create all page containers
-  Gtk::Box* page = Widgets::Box(Widgets::H_FILL, "set-up-page");
+Gtk::Box* Widgets::StaticSetUpPage(
+    const std::string& titleTxt, const std::string& descTxt) {
+  // Build containers
+  Gtk::Box* page = Widgets::Box(Widgets::V_FILL, "set-up-page");
   Gtk::Box* pageContainer = Widgets::Box(Widgets::H_FILL, "set-up-container");
   Gtk::Box* descContainer =
       Widgets::Box(Widgets::V_CONTAIN, "set-up-desc-container");
@@ -144,19 +149,13 @@ Gtk::Box* Widgets::WelcomeSetUpPage() {
   Gtk::Box* btnContainer = Widgets::Box(H_FILL, "set-up-btn-container");
 
   // Create text elements
-  Gtk::Label* title =
-      Widgets::Label("Welcome", "set-up-page-title", Widgets::H_FILL);
+  Gtk::Label* title = Widgets::Label(titleTxt, "set-up-title", Widgets::H_FILL);
 
-  std::string desc =
-      "Welcome to Sketch It set up. You are welcome to exit out of this set up "
-      "page at any time and get right to drawing, but I strongly suggest that "
-      "you take the time to configure your set up and run through some of the "
-      "cool features of this software";
-  Gtk::TextView* descText =
-      Widgets::LongText(desc, "set-up-desc-text", Widgets::V_CONTAIN);
+  Gtk::TextView* desc =
+      Widgets::LongText(descTxt, "set-up-desc-text", Widgets::V_FILL);
 
   // Append and return page
-  descContainer->append(*descText);
+  descContainer->append(*desc);
 
   pageContainer->append(*descContainer);
   pageContainer->append(*contentContainer);
@@ -167,54 +166,32 @@ Gtk::Box* Widgets::WelcomeSetUpPage() {
 
   return page;
 }
-
-Gtk::Box* Widgets::DefaultSessionPage() {
-  Gtk::Box* page = Widgets::Box(Widgets::H_FILL, "set-up-page");
-  Gtk::Box* pageContainer = Widgets::Box(Widgets::H_FILL, "set-up-container");
-  Gtk::Box* descContainer =
-      Widgets::Box(Widgets::V_CONTAIN, "set-up-desc-container");
-  Gtk::Box* contentContainer = Widgets::Box(V_FILL, "set-up-content-container");
-  Gtk::Box* btnContainer = Widgets::Box(H_FILL, "set-up-btn-container");
-
-  // Create text elements
-  Gtk::Label* title =
-      Widgets::Label("Welcome", "set-up-page-title", Widgets::H_FILL);
-
-  std::string desc = "Let's set up how you would like to ";
-  Gtk::TextView* descText =
-      Widgets::LongText(desc, "set-up-desc-text", Widgets::V_CONTAIN);
-
-  // Append and return page
-  descContainer->append(*descText);
-
-  pageContainer->append(*descContainer);
-  pageContainer->append(*contentContainer);
-
-  page->append(*title);
-  page->append(*pageContainer);
-  page->append(*btnContainer);
-
-  return page;
-}
-
-Gtk::Box* Widgets::StaticSetUpPage() {}
 
 Gtk::Window* Widgets::SetUp() {
   // Build the window that will be returned and contain the layout
   Gtk::Window* setUpWindow = Gtk::make_managed<Gtk::Window>();
 
   std::vector<Widgets::WidgetNotebookTabs> tabs = {
-    Widgets::WidgetNotebookTabs(Widgets::WelcomeSetUpPage(),
-        Widgets::Label("Welcome", "tab-label", Widgets::V_CONTAIN)),
-    Widgets::WidgetNotebookTabs(Widgets::DefaultSessionPage(),
-        Widgets::Label("Default Sessions", "tab-label", Widgets::V_CONTAIN;)),
-    Widgets::WidgetNotebookTabs(),
-    Widgets::WidgetNotebookTabs(),
-    Widgets::WidgetNotebookTabs(),
-    Widgets::WidgetNotebookTabs()
-  };
+      Widgets::WidgetNotebookTabs(Widgets::StaticSetUpPage("Welcome",
+                                      "Welcome to sketch it! Where you will "
+                                      "learn how to draw like a true "
+                                      "artist"),
+          Widgets::Label("Welcome", "set-up-tab-title", Widgets::V_CONTAIN)),
+      Widgets::WidgetNotebookTabs(Widgets::StaticSetUpPage("Default Session",
+                                      "Let us set up your default session when "
+                                      "loading the application"),
+          Widgets::Label(
+              "Default Session", "set-up-tab-title", Widgets::V_CONTAIN)),
+      Widgets::WidgetNotebookTabs(
+          Widgets::StaticSetUpPage("Default Tools",
+              "Configure your drawing and painting tools. These tools will be "
+              "accessible to you via quick toolbox while using the "
+              "application"),
+          Widgets::Label(
+              "Default Tools", "set-up-tab-title", Widgets::V_CONTAIN))};
 
-  Gtk::Notebook* notebook = Widgets::Notebook("set-up-notebook", tabs);
+  Gtk::Notebook* notebook =
+      Widgets::Notebook("set-up-notebook", tabs, Widgets::V_FILL);
 
   setUpWindow->set_title("Set Up");
   setUpWindow->set_child(*notebook);

@@ -58,7 +58,8 @@ class Widgets {
   // Definitions for constant WidgetLayoutProps
   static WidgetLayoutProps H_FILL;
   static WidgetLayoutProps V_FILL;
-  static WidgetLayoutProps CONTAIN;
+  static WidgetLayoutProps H_CONTAIN;
+  static WidgetLayoutProps V_CONTAIN;
 
   // Application default windows -------------------------------------------
   static Gtk::Window* ErrorDialog(
@@ -66,30 +67,23 @@ class Widgets {
 
   static Gtk::Window* SetUp();
 
+  static Gtk::Box* StaticSetUpPage(
+      const std::string& titleTxt, const std::string& descTxt);
+
   // Custom widgets ------------------------------------------
 
-  // Setup widget pages
-  static Gtk::Box* WelcomeSetUpPage();
-  static Gtk::Box* DefaultSessionPage();
-  /*
-  TODO:
-  Pick up here ->
-  */
-  static Gtk::Box* StaticSetUpPage();
-  // Setup widget pages
-
   static Gtk::Notebook* Notebook(const std::string& className,
-      const Widgets::WidgetNotebookTabs& tabs,
-      const Widgets::WidgetLayoutProps& props);
+      const std::vector<WidgetNotebookTabs>& tabs,
+      const WidgetLayoutProps& props);
 
   static Gtk::Box* Box(
       const WidgetLayoutProps& props, const std::string& className);
 
   static Gtk::Label* Label(const std::string& label,
-      const std::string& className, const Widgets::WidgetLayoutProps& props);
+      const std::string& className, const WidgetLayoutProps& props);
 
   static Gtk::TextView* LongText(const std::string& text,
-      const std::string& className, const Widgets::WidgetLayoutProps& props);
+      const std::string& className, const WidgetLayoutProps& props);
 
   static Gtk::Button* Button(const std::string& label,
       const std::string& className, std::function<void()> func,

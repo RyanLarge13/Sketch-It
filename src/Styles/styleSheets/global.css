@@ -58,3 +58,8 @@ window {
   padding: 10px;
   background-color: #fff;
 }
+
+.set-up-desc-text {
+  color: #000;
+  font-weight: 600;
+}
