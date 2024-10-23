@@ -40,8 +40,11 @@ void SketchItWindow::setUp() {
   monitor.init(this);
   set_default_size(monitor.width, monitor.height);
 
+  SketchItWindow::loadMainAppUI();
   SketchItWindow::checkConfig();
 }
+
+void SketchItWindow::loadMainAppUI() {}
 
 void SketchItWindow::checkConfig() {
   using namespace Files;
@@ -58,19 +61,23 @@ void SketchItWindow::checkConfig() {
       Gtk::Window* error =
           UI::Widgets::ErrorDialog("Configuration Error", log.message);
 
-      std::vector<Gtk::Button*> btns = {
+      std::vector<Gtk::Button*> btns = {UI::Widgets::Button(
+                                            "Okay",
+                                            "error-modal-btn",
+                                            [ this ]() { this->close(); },
+                                            UI::Widgets::H_FILL),
           UI::Widgets::Button(
-              "Okay", "error-modal-btn", [ this ]() { this->close(); },
-              UI::Widgets::H_FILL),
-          UI::Widgets::Button(
-              "Close", "error-modal-btn", [ this ]() { this->close(); },
+              "Close",
+              "error-modal-btn",
+              [ this ]() { this->close(); },
               UI::Widgets::H_FILL)};
 
       Gtk::Box* btnContainer =
           UI::Widgets::Box(UI::Widgets::H_FILL, "error-modal-btn-container");
 
-      UI::Widgets::addBtns(
-          btns, btnContainer, dynamic_cast<Gtk::Box*>(error->get_child()));
+      UI::Widgets::addBtns(btns, btnContainer);
+
+      dynamic_cast<Gtk::Box*>(error->get_child())->append(btnContainer);
 
       error->set_transient_for(*this);
       error->show();
@@ -82,7 +89,39 @@ void SketchItWindow::checkConfig() {
 
       setupWin->set_transient_for(*this);
       setupWin->show();
+
+      SketchItWindow::guideSetUp(setUpWin);
     }
+  }
+}
+
+SketchItWindow::guideSetUp(Gtk::Window* setUpInstance) {
+  Gtk::Notebook* notebook = setUpInstance->get_child();
+
+  // Grab number of pages in the static notebook set up from Widgets::Notebook
+  // iterate and add btn logic
+  for (int i = 0; i < notebook->get_n_pages; i++) {
+    Gtk::Box* btnContainer =
+        Widgets::grabChildAtIndex(*notebook->get_nth_page(i), 2);
+
+    // Append buttons with click logic to the current notebook page
+    // clang-format off
+    Widgets::addBtns(
+      { Widgets::Button(
+          "Close",
+          "set-up-btn-close",
+          [ setUpInstance ]() { setUpInstance->close(); },
+          Widgets::H_CONTAIN
+        ),
+        Widgets::Button(
+          "Next",
+          "set-up-btn-next",
+          [ notebook ]() { notebook->next_page() },
+          Widgets::H_CONTAIN
+        )
+      },
+      *btnContainer);
+    // clang-format on
   }
 }
 

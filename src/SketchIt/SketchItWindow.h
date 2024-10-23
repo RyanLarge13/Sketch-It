@@ -33,7 +33,9 @@ class SketchItWindow : public Gtk::Window {
  protected:
  private:
   void setUp();
+  void loadMainAppUI();
   void checkConfig();
+  void guideSetUp(Gtk::Window* setUpInstance);
 };
 }  // namespace SketchItApplication
 

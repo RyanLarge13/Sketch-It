@@ -43,13 +43,16 @@ class Widgets {
     bool vexpand;
     Gtk::Align halign;
     Gtk::Align valign;
-    WidgetLayoutProps(const Gtk::Orientation& orientation, const bool& hexpand,
-        const bool& vexpand, const Gtk::Align& halign, const Gtk::Align& valign)
-        : orientation(orientation),
-          hexpand(hexpand),
-          vexpand(vexpand),
-          halign(halign),
-          valign(valign) {}
+    WidgetLayoutProps(const Gtk::Orientation& orientation,
+        const bool& hexpand,
+        const bool& vexpand,
+        const Gtk::Align& halign,
+        const Gtk::Align& valign)
+        : orientation(orientation)
+        , hexpand(hexpand)
+        , vexpand(vexpand)
+        , halign(halign)
+        , valign(valign) {}
   };
 
   // Constant notebook tabs
@@ -80,18 +83,25 @@ class Widgets {
       const WidgetLayoutProps& props, const std::string& className);
 
   static Gtk::Label* Label(const std::string& label,
-      const std::string& className, const WidgetLayoutProps& props);
+      const std::string& className,
+      const WidgetLayoutProps& props);
 
   static Gtk::TextView* LongText(const std::string& text,
-      const std::string& className, const WidgetLayoutProps& props);
+      const std::string& className,
+      const std::pair<int, int>& size,
+      const Gt::WrapMode&,
+      const WidgetLayoutProps& props);
 
   static Gtk::Button* Button(const std::string& label,
-      const std::string& className, std::function<void()> func,
+      const std::string& className,
+      std::function<void()> func,
       const WidgetLayoutProps& props);
 
   // Methods --------------------------------------------------------
-  static void addBtns(const std::vector<Gtk::Button*>& btns,
-      Gtk::Box* container, Gtk::Box* parent);
+  static void addBtns(
+      const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
+
+  static Gtk::Button* grabChildAtIndex(Gtk::Widget* parent, const int& index);
 
  protected:
  private:
