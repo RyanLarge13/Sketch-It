@@ -33,8 +33,7 @@ class Widgets {
   struct WidgetNotebookTabs {
     Gtk::Box* page;
     Gtk::Label* tabLabel;
-    WidgetNotebookTabs(Gtk::Box* page, Gtk::Label* tabLabel)
-        : page(page), tabLabel(tabLabel) {}
+    WidgetNotebookTabs(Gtk::Box* page, Gtk::Label* tabLabel) : page(page), tabLabel(tabLabel) {}
   };
 
   struct WidgetLayoutProps {
@@ -43,11 +42,13 @@ class Widgets {
     bool vexpand;
     Gtk::Align halign;
     Gtk::Align valign;
-    WidgetLayoutProps(const Gtk::Orientation& orientation,
+    WidgetLayoutProps(
+        const Gtk::Orientation& orientation,
         const bool& hexpand,
         const bool& vexpand,
         const Gtk::Align& halign,
-        const Gtk::Align& valign)
+        const Gtk::Align& valign
+    )
         : orientation(orientation)
         , hexpand(hexpand)
         , vexpand(vexpand)
@@ -65,43 +66,46 @@ class Widgets {
   static WidgetLayoutProps V_CONTAIN;
 
   // Application default windows -------------------------------------------
-  static Gtk::Window* ErrorDialog(
-      const std::string& title, const std::string& message);
+  static Gtk::Window* ErrorDialog(const std::string& title, const std::string& message);
 
   static Gtk::Window* SetUp();
 
-  static Gtk::Box* StaticSetUpPage(
-      const std::string& titleTxt, const std::string& descTxt);
+  static Gtk::Box* StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt);
 
   // Custom widgets ------------------------------------------
 
-  static Gtk::Notebook* Notebook(const std::string& className,
-      const std::vector<WidgetNotebookTabs>& tabs,
-      const WidgetLayoutProps& props);
-
-  static Gtk::Box* Box(
-      const WidgetLayoutProps& props, const std::string& className);
-
-  static Gtk::Label* Label(const std::string& label,
+  static Gtk::Notebook* Notebook(
       const std::string& className,
-      const WidgetLayoutProps& props);
+      const std::vector<WidgetNotebookTabs>& tabs,
+      const WidgetLayoutProps& props
+  );
 
-  static Gtk::TextView* LongText(const std::string& text,
+  static Gtk::Box* Box(const WidgetLayoutProps& props, const std::string& className);
+
+  static Gtk::Label* Label(
+      const std::string& label, const std::string& className, const WidgetLayoutProps& props
+  );
+
+  static Gtk::TextView* LongText(
+      const std::string& text,
       const std::string& className,
       const std::pair<int, int>& size,
-      const Gt::WrapMode&,
-      const WidgetLayoutProps& props);
+      const Gtk::WrapMode& wrapMode,
+      const bool& editable,
+      const WidgetLayoutProps& props
+  );
 
-  static Gtk::Button* Button(const std::string& label,
+  static Gtk::Button* Button(
+      const std::string& label,
       const std::string& className,
       std::function<void()> func,
-      const WidgetLayoutProps& props);
+      const WidgetLayoutProps& props
+  );
 
   // Methods --------------------------------------------------------
-  static void addBtns(
-      const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
+  static void addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
 
-  static Gtk::Button* grabChildAtIndex(Gtk::Widget* parent, const int& index);
+  static Gtk::Box* grabChildAtIndex(Gtk::Widget* parent, const int& index);
 
  protected:
  private:

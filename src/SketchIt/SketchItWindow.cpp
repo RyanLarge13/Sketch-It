@@ -54,30 +54,25 @@ void SketchItWindow::checkConfig() {
 
   for (const ConfigManager::EventLog& log : logs) {
     if (log.status < 3) {
-      std::cout << "Error detected: " << log.status << "\n"
-                << log.message << "\n";
+      std::cout << "Error detected: " << log.status << "\n" << log.message << "\n";
 
       // Show error dialog for failed configuration file read/write/create
-      Gtk::Window* error =
-          UI::Widgets::ErrorDialog("Configuration Error", log.message);
+      Gtk::Window* error = UI::Widgets::ErrorDialog("Configuration Error", log.message);
 
-      std::vector<Gtk::Button*> btns = {UI::Widgets::Button(
-                                            "Okay",
-                                            "error-modal-btn",
-                                            [ this ]() { this->close(); },
-                                            UI::Widgets::H_FILL),
+      std::vector<Gtk::Button*> btns = {
           UI::Widgets::Button(
-              "Close",
-              "error-modal-btn",
-              [ this ]() { this->close(); },
-              UI::Widgets::H_FILL)};
+              "Okay", "error-modal-btn", [ this ]() { this->close(); }, UI::Widgets::H_FILL
+          ),
+          UI::Widgets::Button(
+              "Close", "error-modal-btn", [ this ]() { this->close(); }, UI::Widgets::H_FILL
+          )
+      };
 
-      Gtk::Box* btnContainer =
-          UI::Widgets::Box(UI::Widgets::H_FILL, "error-modal-btn-container");
+      Gtk::Box* btnContainer = UI::Widgets::Box(UI::Widgets::H_FILL, "error-modal-btn-container");
 
       UI::Widgets::addBtns(btns, btnContainer);
 
-      dynamic_cast<Gtk::Box*>(error->get_child())->append(btnContainer);
+      dynamic_cast<Gtk::Box*>(error->get_child())->append(*btnContainer);
 
       error->set_transient_for(*this);
       error->show();
@@ -90,38 +85,38 @@ void SketchItWindow::checkConfig() {
       setupWin->set_transient_for(*this);
       setupWin->show();
 
-      SketchItWindow::guideSetUp(setUpWin);
+      SketchItWindow::guideSetUp(setupWin);
     }
   }
 }
 
-SketchItWindow::guideSetUp(Gtk::Window* setUpInstance) {
-  Gtk::Notebook* notebook = setUpInstance->get_child();
+void SketchItWindow::guideSetUp(Gtk::Window* setUpInstance) {
+  using namespace UI;
+
+  Gtk::Notebook* notebook = dynamic_cast<Gtk::Notebook*>(setUpInstance->get_child());
 
   // Grab number of pages in the static notebook set up from Widgets::Notebook
   // iterate and add btn logic
-  for (int i = 0; i < notebook->get_n_pages; i++) {
+  for (int i = 0; i < notebook->get_n_pages(); i++) {
     Gtk::Box* btnContainer =
-        Widgets::grabChildAtIndex(*notebook->get_nth_page(i), 2);
+        Widgets::grabChildAtIndex(dynamic_cast<Gtk::Widget*>(notebook->get_nth_page(i)), 2);
 
     // Append buttons with click logic to the current notebook page
-    // clang-format off
-    Widgets::addBtns(
-      { Widgets::Button(
-          "Close",
-          "set-up-btn-close",
-          [ setUpInstance ]() { setUpInstance->close(); },
-          Widgets::H_CONTAIN
-        ),
-        Widgets::Button(
-          "Next",
-          "set-up-btn-next",
-          [ notebook ]() { notebook->next_page() },
-          Widgets::H_CONTAIN
-        )
-      },
-      *btnContainer);
-    // clang-format on
+    UI::Widgets::addBtns(
+        {Widgets::Button(
+             "Close",
+             "set-up-btn-close",
+             [ setUpInstance ]() { setUpInstance->close(); },
+             Widgets::H_CONTAIN
+         ),
+         Widgets::Button(
+             "Next",
+             "set-up-btn-next",
+             [ notebook ]() { notebook->next_page(); },
+             Widgets::H_CONTAIN
+         )},
+        btnContainer
+    );
   }
 }
 
