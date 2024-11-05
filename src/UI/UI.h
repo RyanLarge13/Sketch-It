@@ -62,6 +62,8 @@ class Widgets {
   static const std::vector<std::string> setupTabs;
   static const std::vector<std::string> fileMenuButtons;
 
+  static enum menuBarMethods : int;
+
   // File Menu Widget
   static Gtk::Box* FileMenu;
   // Toolbar Widgets

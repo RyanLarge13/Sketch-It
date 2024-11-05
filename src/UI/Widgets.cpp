@@ -32,6 +32,13 @@ this program. If not, see
 namespace SketchItApplication {
 namespace UI {
 
+enum Widgets::menuBarMethods : int {
+  FILE = 1,
+  EDIT,
+  INSERT,
+  VIEW
+}
+
 // Constant strings for defining set up
 // window notebook tabs
 const std::vector<std::string> Widgets::setupTabs = {
@@ -311,19 +318,21 @@ Gtk::Box* Widgets::grabChildAtIndex(Gtk::Widget* parent, const int& index) {
   return dynamic_cast<Gtk::Box*>(child);
 }
 
-void Widgets::popupMenu(const size_t& index) {}
+void Widgets::popupMenu(Gtk::Button* btn, const size_t& index) {
+  Gtk::Popover* popover = Gtk::make_managed<Gtk::Popover>();
+  switch (index) {
+    case menuBarMethods::FILE: {
+      Widgets::FilePopover(popover);
+    } break;
+  }
+  popover->set_default_widget(btn);
+}
 
 void Widgets::buildFileMenu() {
   Gtk::Box* menu = Widgets::Box(Widgets::H_FILL, "file-menu");
   for (int i = 0; i < fileMenuButtons.size(); i++) {
-    Gtk::Button* btn = Widgets::Button(
-        fileMenuButtons[ i ], "file-menu-btn", []() { return; }, Widgets::H_CONTAIN
-    );
-
-    // btn->signal_clicked().connect([ i, this ] { this->popupMenu(i); });
-
-    // Add signals to each of these buttons based on indexing
-    // map the signal to the corrsponding popup that should appear
+    Gtk::Button* btn =
+        Widgets::Btn(fileMenuButtons[ i ], "file-menu-btn", []() { return; }, Widgets::H_CONTAIN);
     menu->append(*btn);
   }
   FileMenu = menu;

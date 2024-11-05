@@ -44,13 +44,43 @@ void SketchItWindow::setUp() {
   SketchItWindow::checkConfig();
 }
 
+void SketchItWindow::buildFileMenu() {
+  // Initialize the file menu ui with buttons
+  UI::Widgets::buildFileMenu();
+
+  // Loop through initialized buttons and add click logic
+  Gtk::Widget* firstChild = dynamic_cast<Gtk::Widget*>(UI::Widgets::FileMenu)->get_first_child();
+
+  size_t index = 1;
+
+  dynamic_cast<Gtk::Button*>(firstChild)->signal_clicked().connect([ index ]() {
+    UI::Widgets::popupMenu(index)
+  });
+
+  Gtk::Widget* nextChild = dynamic_cast<Gtk::Widget*>(firstChild)->get_next_sibling();
+
+  index++;
+
+  while (nextChild != nullptr) {
+    dynamic_cast<Gtk::Button*>(nextChild).signal_clicked().connect([ index ]() {
+      UI::Widgets::popupMenu(index)
+    });
+    nextChild = dynamic_cast<Gtk::Widget*>(nextChild)->get_next_sibling();
+    index++;
+  }
+}
+
 void SketchItWindow::loadMainAppUI() {
+  Gtk::Box* mainWinContainer = UI::Widgets::Box(UI::Widgets::V_FILL, "main-win-container");
+
+  buildFileMenu();
+
+  this->append(*mainWinContainer);
   // Call the separate UI handlers for building out the main application interface
   // buildToolBar();
   // buildControlPanel();
   // buildCanvas();
   // buildSideBar();
-  UI::Widgets::buildFileMenu();
 }
 
 void SketchItWindow::checkConfig() {
