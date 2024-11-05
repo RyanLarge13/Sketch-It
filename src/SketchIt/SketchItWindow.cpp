@@ -44,7 +44,14 @@ void SketchItWindow::setUp() {
   SketchItWindow::checkConfig();
 }
 
-void SketchItWindow::loadMainAppUI() {}
+void SketchItWindow::loadMainAppUI() {
+  // Call the separate UI handlers for building out the main application interface
+  // buildToolBar();
+  // buildControlPanel();
+  // buildCanvas();
+  // buildSideBar();
+  UI::Widgets::buildFileMenu();
+}
 
 void SketchItWindow::checkConfig() {
   using namespace Files;
@@ -59,18 +66,17 @@ void SketchItWindow::checkConfig() {
       // Show error dialog for failed configuration file read/write/create
       Gtk::Window* error = UI::Widgets::ErrorDialog("Configuration Error", log.message);
 
-      std::vector<Gtk::Button*> btns = {
-          UI::Widgets::Button(
-              "Okay", "error-modal-btn", [ this ]() { this->close(); }, UI::Widgets::H_FILL
-          ),
-          UI::Widgets::Button(
-              "Close", "error-modal-btn", [ this ]() { this->close(); }, UI::Widgets::H_FILL
-          )
-      };
-
       Gtk::Box* btnContainer = UI::Widgets::Box(UI::Widgets::H_FILL, "error-modal-btn-container");
 
-      UI::Widgets::addBtns(btns, btnContainer);
+      UI::Widgets::addBtns(
+          {UI::Widgets::Button(
+               "Okay", "error-modal-btn", [ this ]() { this->close(); }, UI::Widgets::H_FILL
+           ),
+           UI::Widgets::Button(
+               "Close", "error-modal-btn", [ this ]() { this->close(); }, UI::Widgets::H_FILL
+           )},
+          btnContainer
+      );
 
       dynamic_cast<Gtk::Box*>(error->get_child())->append(*btnContainer);
 
@@ -90,6 +96,8 @@ void SketchItWindow::checkConfig() {
   }
 }
 
+void SketchItWindow::saveConfig() { return; }
+
 void SketchItWindow::guideSetUp(Gtk::Window* setUpInstance) {
   using namespace UI;
 
@@ -102,21 +110,61 @@ void SketchItWindow::guideSetUp(Gtk::Window* setUpInstance) {
         Widgets::grabChildAtIndex(dynamic_cast<Gtk::Widget*>(notebook->get_nth_page(i)), 2);
 
     // Append buttons with click logic to the current notebook page
-    UI::Widgets::addBtns(
-        {Widgets::Button(
-             "Close",
-             "set-up-btn-close",
-             [ setUpInstance ]() { setUpInstance->close(); },
-             Widgets::H_CONTAIN
-         ),
-         Widgets::Button(
-             "Next",
-             "set-up-btn-next",
-             [ notebook ]() { notebook->next_page(); },
-             Widgets::H_CONTAIN
-         )},
-        btnContainer
-    );
+    if (i == 0) {
+      UI::Widgets::addBtns(
+          {Widgets::Button(
+               "Close",
+               "set-up-btn-close",
+               [ setUpInstance ]() { setUpInstance->close(); },
+               Widgets::H_CONTAIN
+           ),
+           Widgets::Button(
+               "Next",
+               "set-up-btn-next",
+               [ notebook ]() { notebook->next_page(); },
+               Widgets::H_CONTAIN
+           )},
+          btnContainer
+      );
+    }
+
+    if (i < notebook->get_n_pages() - 1 && i > 0) {
+      UI::Widgets::addBtns(
+          {Widgets::Button(
+               "Close",
+               "set-up-btn-close",
+               [ setUpInstance ]() { setUpInstance->close(); },
+               Widgets::H_CONTAIN
+           ),
+           Widgets::Button(
+               "Back",
+               "set-up-btn-next",
+               [ notebook ]() { notebook->prev_page(); },
+               Widgets::H_CONTAIN
+           )},
+          btnContainer
+      );
+      Gtk::Box* rightBox = UI::Widgets::Box(UI::Widgets::H_CONTAIN, "container");
+      UI::Widgets::addBtns(
+          {Widgets::Button(
+              "Next",
+              "set-up-btn-close",
+              [ notebook ]() { notebook->next_page(); },
+              Widgets::H_CONTAIN
+          )},
+          rightBox
+      );
+      btnContainer->append(*rightBox);
+    }
+
+    if (i == notebook->get_n_pages() - 1) {
+      UI::Widgets::addBtns(
+          {Widgets::Button(
+              "Finish", "set-up-btn-next", [ this ]() { this->saveConfig(); }, Widgets::H_CONTAIN
+          )},
+          btnContainer
+      );
+    }
   }
 }
 

@@ -36,6 +36,8 @@ class Widgets {
     WidgetNotebookTabs(Gtk::Box* page, Gtk::Label* tabLabel) : page(page), tabLabel(tabLabel) {}
   };
 
+  // Layout props that can be defined and easily passed into custom Gtk Widgets of all types for
+  // simplicity in styling inside main logic or UI setup
   struct WidgetLayoutProps {
     Gtk::Orientation orientation;
     bool hexpand;
@@ -58,6 +60,14 @@ class Widgets {
 
   // Constant notebook tabs
   static const std::vector<std::string> setupTabs;
+  static const std::vector<std::string> fileMenuButtons;
+
+  // File Menu Widget
+  static Gtk::Box* FileMenu;
+  // Toolbar Widgets
+  static Gtk::Box* ToolBar;
+  // Control Panel Widget
+  static Gtk::Box* ControlPanel;
 
   // Definitions for constant WidgetLayoutProps
   static WidgetLayoutProps H_FILL;
@@ -103,12 +113,17 @@ class Widgets {
   );
 
   // Methods --------------------------------------------------------
+  static void buildFileMenu();
+  static void buildToolBar();
+  static void buildControlPanel();
+
   static void addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
 
   static Gtk::Box* grabChildAtIndex(Gtk::Widget* parent, const int& index);
 
  protected:
  private:
+  void popupMenu(const size_t& index);
 };
 
 // SEPARATOR BETWEEN CLASSES UNDER NAMESPACE UI (WIDGETS && THEME CLASSES)

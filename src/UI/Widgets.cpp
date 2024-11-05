@@ -40,6 +40,10 @@ const std::vector<std::string> Widgets::setupTabs = {
 // Constant strings for defining set up
 // window notebook tabs
 
+// Constant file menu button strings
+const std::vector<std::string> fileMenuButtons = {"File", "Edit", "Insert", "View"};
+// Constant file menu button strings
+
 // Static constants widget props that
 // can be used from outside of the class
 // in a easy matter for defining simple
@@ -165,7 +169,7 @@ Gtk::Notebook* Widgets::Notebook(
   return notebook;
 }
 
-// Application Default windows &&
+// Application default windows &&
 // widgets
 // ----------------------------------------------------------------
 
@@ -256,7 +260,7 @@ Gtk::Window* Widgets::SetUp() {
 
   Gtk::Notebook* notebook = Widgets::Notebook("set-up-notebook", tabs, Widgets::V_FILL);
 
-  setUpWindow->set_title("Set Up");
+  setUpWindow->set_title("Set Up Sketch It");
   setUpWindow->set_child(*notebook);
 
   return setUpWindow;
@@ -306,6 +310,28 @@ Gtk::Box* Widgets::grabChildAtIndex(Gtk::Widget* parent, const int& index) {
   }
   return dynamic_cast<Gtk::Box*>(child);
 }
+
+void Widgets::popupMenu(const size_t& index) {}
+
+void Widgets::buildFileMenu() {
+  Gtk::Box* menu = Widgets::Box(Widgets::H_FILL, "file-menu");
+  for (int i = 0; i < fileMenuButtons.size(); i++) {
+    Gtk::Button* btn = Widgets::Button(
+        fileMenuButtons[ i ], "file-menu-btn", []() { return; }, Widgets::H_CONTAIN
+    );
+
+    // btn->signal_clicked().connect([ i, this ] { this->popupMenu(i); });
+
+    // Add signals to each of these buttons based on indexing
+    // map the signal to the corrsponding popup that should appear
+    menu->append(*btn);
+  }
+  FileMenu = menu;
+};
+
+void Widgets::buildToolBar() {};
+
+void Widgets::buildControlPanel() {};
 
 }  // namespace UI
 }  // namespace SketchItApplication

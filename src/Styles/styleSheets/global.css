@@ -37,6 +37,7 @@ window {
 
 .set-up-tab-title {
   font-weight: 600;
+  margin-top: 25px;
 }
 
 .set-up-page {
@@ -52,6 +53,7 @@ window {
 }
 
 .set-up-content-container {
+  background: #eee;
 }
 
 .set-up-desc-container {
@@ -61,5 +63,6 @@ window {
 
 .set-up-desc-text {
   color: #000;
+  background-color: #fff;
   font-weight: 600;
 }
