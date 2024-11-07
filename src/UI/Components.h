@@ -16,29 +16,25 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SKETCH_IT_WINDOW
-#define SKETCH_IT_WINDOW
+#ifndef COMPONENTS
+#define COMPONENTS
 
 #include "gtkmm.h"
 
 namespace SketchItApplication {
-class SketchItWindow : public Gtk::Window {
+namespace UI {
+class Components {
  public:
-  // Define global main window object for access across application
-  static Gtk::Window* win;
+  Components();
 
-  // Constructor
-  SketchItWindow();
+  static Gtk::Window* ErrorDialog(const std::string& title, const std::string& message);
+  static Gtk::Window* SetUp();
+  static Gtk::Box* StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt);
 
  protected:
  private:
-  void setUp();
-  void loadMainAppUI();
-  void checkConfig();
-  void saveConfig();
-  void buildFileMenu();
-  void guideSetUp(Gtk::Window* setUpInstance);
-};
+}
+}  // namespace UI
 }  // namespace SketchItApplication
 
 #endif

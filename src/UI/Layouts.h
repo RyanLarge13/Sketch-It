@@ -16,15 +16,40 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "UI.h"
+#ifndef LAYOUTS
+#define LAYOUTS
 
 namespace SketchItApplication {
 namespace UI {
-Themes::Themes() {}
+class Layouts {
+  Layouts();
 
-std::string getSystemTheme() {
-  // Grabs system theme, and returns the appropriate css file path to load
-  return "";
+  struct LayoutProps {
+    Gtk::Orientation orientation;
+    bool hexpand;
+    bool vexpand;
+    Gtk::Align halign;
+    Gtk::Align valign;
+    LayoutProps(
+        const Gtk::Orientation& orientation,
+        const bool& hexpand,
+        const bool& vexpand,
+        const Gtk::Align& halign,
+        const Gtk::Align& valign
+    )
+        : orientation(orientation)
+        , hexpand(hexpand)
+        , vexpand(vexpand)
+        , halign(halign)
+        , valign(valign) {}
+  };
+
+  static LayoutProps H_FILL;
+  static LayoutProps V_FILL;
+  static LayoutProps H_CONTAIN;
+  static LayoutProps V_CONTAIN;
 }
 }  // namespace UI
 }  // namespace SketchItApplication
+
+#endif
