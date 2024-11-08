@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace SketchItApplication {
 namespace UI {
+
 class Components {
  public:
   Components();
@@ -33,7 +34,8 @@ class Components {
 
  protected:
  private:
-}
+};
+
 }  // namespace UI
 }  // namespace SketchItApplication
 

@@ -22,6 +22,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "../Files/Config.h"
 #include "../Monitor/Monitor.h"
+#include "../UI/Components.h"
+#include "../UI/Layouts.h"
+#include "../UI/UIUtils.h"
+#include "../UI/Widgets.h"
 #include "SketchIt.h"
 
 namespace SketchItApplication {
@@ -63,9 +67,9 @@ void SketchItWindow::checkConfig() {
       // Show error dialog for failed configuration file read/write/create
       Gtk::Window* error = UI::Components::ErrorDialog("Configuration Error", log.message);
 
-      Gtk::Box* btnContainer = UI::Widgets::Box(UI::Widgets::H_FILL, "error-modal-btn-container");
+      Gtk::Box* btnContainer = UI::Widgets::Box(UI::Layouts::H_FILL, "error-modal-btn-container");
 
-      UI::Widgets::addBtns(
+      UI::UIUtils::addBtns(
           {UI::Widgets::Button(
                "Okay", "error-modal-btn", [ this ]() { this->close(); }, UI::Layouts::H_FILL
            ),
@@ -87,80 +91,10 @@ void SketchItWindow::checkConfig() {
 
       setupWin->set_transient_for(*this);
       setupWin->show();
-
-      SketchItWindow::guideSetUp(setupWin);
     }
   }
 }
 
 void SketchItWindow::saveConfig() { return; }
-
-void SketchItWindow::guideSetUp(Gtk::Window* setUpInstance) {
-  Gtk::Notebook* notebook = dynamic_cast<Gtk::Notebook*>(setUpInstance->get_child());
-
-  // Grab number of pages in the static notebook set up from Widgets::Notebook
-  // iterate and add btn logic
-  for (int i = 0; i < notebook->get_n_pages(); i++) {
-    Gtk::Box* btnContainer =
-        UI::Widgets::grabChildAtIndex(dynamic_cast<Gtk::Widget*>(notebook->get_nth_page(i)), 2);
-
-    // Append buttons with click logic to the current notebook page
-    if (i == 0) {
-      UI::Widgets::addBtns(
-          {UI::Widgets::Button(
-               "Close",
-               "set-up-btn-close",
-               [ setUpInstance ]() { setUpInstance->close(); },
-               UI::Layouts::H_CONTAIN
-           ),
-           UI::Widgets::Button(
-               "Next",
-               "set-up-btn-next",
-               [ notebook ]() { notebook->next_page(); },
-               UI::Layouts::H_CONTAIN
-           )},
-          btnContainer
-      );
-    }
-
-    if (i < notebook->get_n_pages() - 1 && i > 0) {
-      UI::Widgets::addBtns(
-          {UI::Widgets::Button(
-               "Close",
-               "set-up-btn-close",
-               [ setUpInstance ]() { setUpInstance->close(); },
-               UI::Layouts::H_CONTAIN
-           ),
-           Widgets::Button(
-               "Back",
-               "set-up-btn-next",
-               [ notebook ]() { notebook->prev_page(); },
-               UI::Layouts::H_CONTAIN
-           )},
-          btnContainer
-      );
-      Gtk::Box* rightBox = UI::Widgets::Box(UI::Widgets::H_CONTAIN, "container");
-      UI::Widgets::addBtns(
-          {UI::Widgets::Button(
-              "Next",
-              "set-up-btn-close",
-              [ notebook ]() { notebook->next_page(); },
-              UI::Layouts::H_CONTAIN
-          )},
-          rightBox
-      );
-      btnContainer->append(*rightBox);
-    }
-
-    if (i == notebook->get_n_pages() - 1) {
-      UI::Widgets::addBtns(
-          {UI::Widgets::Button(
-              "Finish", "set-up-btn-next", [ this ]() { this->saveConfig(); }, Widgets::H_CONTAIN
-          )},
-          btnContainer
-      );
-    }
-  }
-}
 
 }  // namespace SketchItApplication

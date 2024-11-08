@@ -27,9 +27,6 @@ file(GLOB_RECURSE SOURCES
 "src/SketchIt/*.cpp" 
 "src/Styles/*.cpp" 
 "src/UI/*.cpp"
-"src/UI/Widgets/*.cpp"
-"src/UI/Widgets/buttons/*.cpp"
-"src/UI/Widgets/modals/*.cpp"
 "src/utils/*.cpp"
 )
 

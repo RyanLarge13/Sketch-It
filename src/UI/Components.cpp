@@ -20,12 +20,17 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../SketchIt/SketchItWindow.h"
 #include "Layouts.h"
+#include "UIUtils.h"
 #include "Widgets.h"
 
 namespace SketchItApplication {
 namespace UI {
-static Gtk::Window* Components::ErrorDialog(const std::string& title, const std::string& message) {
+
+Components::Components() {}
+
+Gtk::Window* Components::ErrorDialog(const std::string& title, const std::string& message) {
   // Custom error modal widget returns
   // transient window of main
   Gtk::Window* errWin = Gtk::make_managed<Gtk::Window>();
@@ -42,7 +47,7 @@ static Gtk::Window* Components::ErrorDialog(const std::string& title, const std:
   return errWin;
 };
 
-static Gtk::Window* Components::SetUp() {
+Gtk::Window* Components::SetUp() {
   // Build the window that will be
   // returned and contain the layout
   Gtk::Window* setUpWindow = Gtk::make_managed<Gtk::Window>();
@@ -53,7 +58,7 @@ static Gtk::Window* Components::SetUp() {
   // clang-format off
   std::vector<Widgets::WidgetNotebookTabs> tabs = {
       Widgets::WidgetNotebookTabs(
-        Widgets::StaticSetUpPage(
+        Components::StaticSetUpPage(
           "Welcome",
           "Welcome to sketch it! Where you will "
           "learn how to draw like a true "
@@ -65,7 +70,7 @@ static Gtk::Window* Components::SetUp() {
         Widgets::Label("Welcome", "set-up-tab-title", Layouts::V_CONTAIN)
       ),
       Widgets::WidgetNotebookTabs(
-        Widgets::StaticSetUpPage(
+        Components::StaticSetUpPage(
           "Default Session",
           "Let us set up your default session when "
           "loading the application. Here you can choose from two different options when you "
@@ -78,7 +83,7 @@ static Gtk::Window* Components::SetUp() {
         Widgets::Label("Default Session", "set-up-tab-title", Layouts::V_CONTAIN)
       ),
       Widgets::WidgetNotebookTabs(
-          Widgets::StaticSetUpPage(
+          Components::StaticSetUpPage(
             "Default Tools",
             "Configure your drawing and painting tools. These tools will be "
             "accessible to you via quick toolbox while using the "
@@ -89,7 +94,7 @@ static Gtk::Window* Components::SetUp() {
           Widgets::Label("Default Tools", "set-up-tab-title", Layouts::V_CONTAIN)
       ),
       Widgets::WidgetNotebookTabs(
-          Widgets::StaticSetUpPage(
+          Components::StaticSetUpPage(
             "Finish",
             "Your setup is complete!!! Take some time getting comfortable with the application "
             "and if at any time you would like to update these settings, go to preferences -> settings"
@@ -99,7 +104,49 @@ static Gtk::Window* Components::SetUp() {
   };
   // clang-format on
 
-  Gtk::Notebook* notebook = Widgets::Notebook("set-up-notebook", tabs, Layouts::V_FILL);
+  // Build notebook with defined static page content above
+  Gtk::Notebook* notebook = Widgets::Notebook("set-up-notebook", {}, Layouts::V_FILL);
+
+  // Add navigation buttons to notebook tabs
+  for (int i = 0; i < tabs.size(); i++) {
+    Gtk::Box* btnHolder = UIUtils::grabChildAtIndex(tabs[ i ].page, 2);
+
+    std::vector<Gtk::Button*> btnsToAdd = {Widgets::Button(
+        "Close",
+        "set-up-btn-cancel",
+        [ setUpWindow ]() { setUpWindow->close(); },
+        Layouts::H_CONTAIN
+    )};
+
+    if (i > 0) {
+      btnsToAdd.push_back(Widgets::Button(
+          "Back", "set-up-btn-back", [ notebook ]() { notebook->prev_page(); }, Layouts::H_CONTAIN
+      ));
+    }
+
+    if (i < tabs.size() - 1) {
+      btnsToAdd.push_back(Widgets::Button(
+          "Next", "set-up-btn-next", [ notebook ]() { notebook->next_page(); }, Layouts::H_CONTAIN
+      ));
+    }
+
+    if (i == tabs.size() - 1) {
+      btnsToAdd.push_back(Widgets::Button(
+          "Finish",
+          "set-up-btn-finish",
+          [ setUpWindow ]() {
+            SketchItApplication::SketchItWindow::saveConfig();
+            setUpWindow->close();
+          },
+          Layouts::H_CONTAIN
+      ));
+    }
+  }
+
+  // Add to the notebook the latest update to tabs after appending buttons
+  for (int i = 0; i < tabs.size(); i++) {
+    notebook->append_page(*tabs[ i ].page, *tabs[ i ].tabLabel);
+  }
 
   setUpWindow->set_title("Set Up Sketch It");
   setUpWindow->set_child(*notebook);
@@ -107,9 +154,7 @@ static Gtk::Window* Components::SetUp() {
   return setUpWindow;
 };
 
-static Gtk::Box* Components::StaticSetUpPage(
-    const std::string& titleTxt, const std::string& descTxt
-) {
+Gtk::Box* Components::StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt) {
   // Build containers
   Gtk::Box* page = Widgets::Box(Layouts::V_FILL, "set-up-page");
   Gtk::Box* pageContainer = Widgets::Box(Layouts::H_FILL, "set-up-container");

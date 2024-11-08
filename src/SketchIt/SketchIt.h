@@ -23,7 +23,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "../Files/Files.h"
 #include "../Renderer/Canvas.h"
 #include "../Styles/Styles.h"
-#include "../UI/UI.h"
 #include "gtkmm.h"
 
 namespace SketchItApplication {

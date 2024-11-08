@@ -19,8 +19,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef WIDGETS
 #define WIDGETS
 
+#include "Layouts.h"
+
 namespace SketchItApplication {
 namespace UI {
+
 class Widgets {
  public:
   Widgets();
@@ -32,19 +35,17 @@ class Widgets {
   };
 
   static const std::vector<std::string> setupTabs;
-  static void addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
-  static Gtk::Box* grabChildAtIndex(Gtk::Widget* parent, const int& index);
 
   static Gtk::Notebook* Notebook(
       const std::string& className,
       const std::vector<WidgetNotebookTabs>& tabs,
-      const LayoutProps& props
+      const Layouts::LayoutProps& props
   );
 
-  static Gtk::Box* Box(const LayoutProps& props, const std::string& className);
+  static Gtk::Box* Box(const Layouts::LayoutProps& props, const std::string& className);
 
   static Gtk::Label* Label(
-      const std::string& label, const std::string& className, const LayoutProps& props
+      const std::string& label, const std::string& className, const Layouts::LayoutProps& props
   );
 
   static Gtk::TextView* LongText(
@@ -53,19 +54,20 @@ class Widgets {
       const std::pair<int, int>& size,
       const Gtk::WrapMode& wrapMode,
       const bool& editable,
-      const LayoutProps& props
+      const Layouts::LayoutProps& props
   );
 
   static Gtk::Button* Button(
       const std::string& label,
       const std::string& className,
       std::function<void()> func,
-      const LayoutProps& props
+      const Layouts::LayoutProps& props
   );
 
  protected:
  private:
-}
+};
+
 }  // namespace UI
 }  // namespace SketchItApplication
 

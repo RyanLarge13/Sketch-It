@@ -19,9 +19,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef LAYOUTS
 #define LAYOUTS
 
+#include <gtkmm.h>
+
 namespace SketchItApplication {
 namespace UI {
+
 class Layouts {
+ public:
   Layouts();
 
   struct LayoutProps {
@@ -48,7 +52,11 @@ class Layouts {
   static LayoutProps V_FILL;
   static LayoutProps H_CONTAIN;
   static LayoutProps V_CONTAIN;
-}
+
+ protected:
+ private:
+};
+
 }  // namespace UI
 }  // namespace SketchItApplication
 

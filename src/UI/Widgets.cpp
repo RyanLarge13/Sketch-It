@@ -132,7 +132,7 @@ Gtk::TextView* Widgets::LongText(
 Gtk::Notebook* Widgets::Notebook(
     const std::string& className,
     const std::vector<Widgets::WidgetNotebookTabs>& tabs,
-    const Widgets::LayoutProps& props
+    const Layouts::LayoutProps& props
 ) {
   // Create and return a Gtk Notebook
   // with tabs
@@ -146,58 +146,6 @@ Gtk::Notebook* Widgets::Notebook(
 
   return notebook;
 }
-
-// Static methods
-// --------------------------------------------------------
-void Widgets::addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container) {
-  // Adding buttons to a container and
-  // container to parent
-  for (Gtk::Button* btn : btns) {
-    if (!btn) {
-      std::cout << "Error, your button can "
-                   "not be appended to the "
-                   "parent in "
-                   "Widgets::addBtn method. "
-                   "Btn "
-                   "is nullptr"
-                << "\n";
-      continue;
-    }
-    container->append(*btn);
-  }
-}
-
-Gtk::Box* Widgets::grabChildAtIndex(Gtk::Widget* parent, const int& index) {
-  auto* child = parent->get_first_child();
-  for (int i = 1; i <= index; i++) {
-    child = child->get_next_sibling();
-  }
-  return dynamic_cast<Gtk::Box*>(child);
-}
-
-void Widgets::popupMenu(Gtk::Button* btn, const size_t& index) {
-  Gtk::Popover* popover = Gtk::make_managed<Gtk::Popover>();
-  switch (index) {
-    case MenuBarMethods::FILE: {
-      Widgets::FilePopover(popover);
-    } break;
-  }
-  popover->set_default_widget(btn);
-}
-
-void Widgets::buildFileMenu() {
-  Gtk::Box* menu = Widgets::Box(Widgets::H_FILL, "file-menu");
-  for (int i = 0; i < fileMenuButtons.size(); i++) {
-    Gtk::Button* btn =
-        Widgets::Btn(fileMenuButtons[ i ], "file-menu-btn", []() { return; }, Widgets::H_CONTAIN);
-    menu->append(*btn);
-  }
-  FileMenu = menu;
-};
-
-void Widgets::buildToolBar() {};
-
-void Widgets::buildControlPanel() {};
 
 }  // namespace UI
 }  // namespace SketchItApplication
