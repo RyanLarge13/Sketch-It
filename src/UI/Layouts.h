@@ -48,11 +48,6 @@ class Layouts {
         , valign(valign) {}
   };
 
-  static LayoutProps H_FILL;
-  static LayoutProps V_FILL;
-  static LayoutProps H_CONTAIN;
-  static LayoutProps V_CONTAIN;
-
  protected:
  private:
 };

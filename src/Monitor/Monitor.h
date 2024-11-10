@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace SketchItApplication {
 namespace MonitorManager {
+
 class Monitor {
  public:
   Monitor();
@@ -33,14 +34,15 @@ class Monitor {
   Glib::RefPtr<Gdk::Monitor> monitor;
   Glib::RefPtr<Gdk::Surface> surface;
   Gdk::Rectangle geometry;
-  int width;
-  int height;
+  static int width;
+  static int height;
 
  protected:
   void setDefaultGeometry(const std::string& err);
 
  private:
 };
+
 }  // namespace MonitorManager
 }  // namespace SketchItApplication
 

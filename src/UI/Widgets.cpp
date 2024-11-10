@@ -119,7 +119,7 @@ Gtk::TextView* Widgets::LongText(
 
   textArea->set_buffer(buffer);
   textArea->set_wrap_mode(Gtk::WrapMode::WORD);
-  textArea->set_size_request(200, 400);
+  textArea->set_size_request(300, 20);
   textArea->set_editable(false);
   textArea->add_css_class(className);
 
@@ -145,6 +145,19 @@ Gtk::Notebook* Widgets::Notebook(
   notebook->add_css_class(className);
 
   return notebook;
+}
+
+Gtk::ScrolledWindow* Widgets::ScrollWin(
+    const std::pair<int, int>& size,
+    const std::string& className,
+    const Layouts::LayoutProps& props,
+    const bool& horizontal
+) {
+  Gtk::ScrolledWindow* win = Gtk::make_managed<Gtk::ScrolledWindow>();
+  win->add_css_class(className);
+  win->set_size_request(size.first, size.second);
+
+  return win;
 }
 
 }  // namespace UI

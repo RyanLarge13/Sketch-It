@@ -27,6 +27,7 @@ class UIUtils {
 
   static void addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
   static Gtk::Box* grabChildAtIndex(Gtk::Widget* parent, const int& index);
+  static void addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index);
 
  protected:
  private:

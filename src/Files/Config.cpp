@@ -30,22 +30,24 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 namespace Files {
 ConfigManager::ConfigManager(const std::string& fileName)
-    : fileName(fileName),
-      errorState(false),
-      userData(""),
-      confFilePath(""),
-      configFileStr(""),
-      in_UserData(""),
-      confLog() {
+    : fileName(fileName)
+    , errorState(false)
+    , userData("")
+    , confFilePath("")
+    , configFileStr("")
+    , in_UserData("")
+    , confLog() {
   confLog.reserve(3);
   // Check for config file. Create if not there
   std::string confFullPath = checkConfig(fileName);
 
   // Append error logs to config logs
   if (confFullPath.empty()) {
-    ConfigManager::EventLog newLog(ConfigManager::StatusCodes::FAILED_CREATE,
+    ConfigManager::EventLog newLog(
+        ConfigManager::StatusCodes::FAILED_CREATE,
         "Configuration file was not found or creation of your configuration "
-        "file failed");
+        "file failed"
+    );
     confLog.push_back(newLog);
     errorState = true;
     return;
@@ -57,8 +59,7 @@ ConfigManager::ConfigManager(const std::string& fileName)
 
   // Add more logs to config log
   if (configFileStr.empty()) {
-    ConfigManager::EventLog newLog(
-        ConfigManager::StatusCodes::NEW_USER, "Welcome to Sketch It!");
+    ConfigManager::EventLog newLog(ConfigManager::StatusCodes::NEW_USER, "Welcome to Sketch It!");
     confLog.push_back(newLog);
     return;
   }
@@ -68,9 +69,11 @@ ConfigManager::ConfigManager(const std::string& fileName)
     std::istringstream(configFileStr) >> in_UserData;
   } catch (const nlohmann::json::parse_error& e) {
     std::cout << "Error parsing json config: " << e.what() << std::endl;
-    ConfigManager::EventLog newLog(ConfigManager::StatusCodes::FAILED_READ,
+    ConfigManager::EventLog newLog(
+        ConfigManager::StatusCodes::FAILED_READ,
         "Misconfigured file for Sketch It. You can reset the file in your "
-        "settings");
+        "settings"
+    );
     confLog.push_back(newLog);
     errorState = true;
     return;
@@ -128,8 +131,7 @@ std::string ConfigManager::getConfigData() {
 
 ConfigManager::EventLog ConfigManager::getLogAt(const int& index) {
   if (index < 0 || index >= confLog.size()) {
-    throw std::out_of_range(
-        "Cannot access configuration event log with out of bounds index");
+    throw std::out_of_range("Cannot access configuration event log with out of bounds index");
   }
 
   return confLog[ index ];
@@ -137,17 +139,14 @@ ConfigManager::EventLog ConfigManager::getLogAt(const int& index) {
 
 std::vector<ConfigManager::EventLog> ConfigManager::getLog() { return confLog; }
 
-void ConfigManager::setEventLogMessage(
-    const int& status, const std::string& message) {
+void ConfigManager::setEventLogMessage(const int& status, const std::string& message) {
   if (status < 0 || status > 5) {
-    std::out_of_range(
-        "Please pass a valid ConfigManager::StatusCode between 0 and 5");
+    std::out_of_range("Please pass a valid ConfigManager::StatusCode between 0 and 5");
     return;
   }
 
   // Append new log
-  ConfigManager::EventLog newLog(
-      static_cast<ConfigManager::StatusCodes>(status), message);
+  ConfigManager::EventLog newLog(static_cast<ConfigManager::StatusCodes>(status), message);
   confLog.push_back(newLog);
 }
 

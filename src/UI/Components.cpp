@@ -20,6 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../Monitor/Monitor.h"
 #include "../SketchIt/SketchItWindow.h"
 #include "Layouts.h"
 #include "UIUtils.h"
@@ -34,8 +35,19 @@ Gtk::Window* Components::ErrorDialog(const std::string& title, const std::string
   // Custom error modal widget returns
   // transient window of main
   Gtk::Window* errWin = Gtk::make_managed<Gtk::Window>();
-  Gtk::Box* container = Widgets::Box(Layouts::H_FILL, "error-modal-message-container");
-  Gtk::Label* label = Gtk::make_managed<Gtk::Label>(message);
+  Gtk::Box* container = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "error-modal-message-container"
+  );
+  Gtk::Label* label = Widgets::Label(
+      message,
+      "error-modal-label",
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
+      )
+  );
 
   label->add_css_class("error-modal-message");
   container->add_css_class("error-modal");
@@ -67,7 +79,7 @@ Gtk::Window* Components::SetUp() {
           "that you take a minute or to to configure your setup "
           "and gain the most out of this application"
         ),
-        Widgets::Label("Welcome", "set-up-tab-title", Layouts::V_CONTAIN)
+        Widgets::Label("Welcome", "set-up-tab-title", Layouts::LayoutProps(Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START))
       ),
       Widgets::WidgetNotebookTabs(
         Components::StaticSetUpPage(
@@ -80,7 +92,7 @@ Gtk::Window* Components::SetUp() {
           "On the other hand, if you choose training, the app will default to opening on your last "
           "training session where you left off."
         ),
-        Widgets::Label("Default Session", "set-up-tab-title", Layouts::V_CONTAIN)
+        Widgets::Label("Default Session", "set-up-tab-title", Layouts::LayoutProps(Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START))
       ),
       Widgets::WidgetNotebookTabs(
           Components::StaticSetUpPage(
@@ -91,7 +103,7 @@ Gtk::Window* Components::SetUp() {
             "to you durring each kind of session (free draw or lessons). "
             "You can also build your own tools at the bottom."
           ),
-          Widgets::Label("Default Tools", "set-up-tab-title", Layouts::V_CONTAIN)
+          Widgets::Label("Default Tools", "set-up-tab-title", Layouts::LayoutProps(Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START))
       ),
       Widgets::WidgetNotebookTabs(
           Components::StaticSetUpPage(
@@ -99,13 +111,19 @@ Gtk::Window* Components::SetUp() {
             "Your setup is complete!!! Take some time getting comfortable with the application "
             "and if at any time you would like to update these settings, go to preferences -> settings"
           ),
-          Widgets::Label("Finish", "set-up-tab-title", Layouts::V_CONTAIN)
+          Widgets::Label("Finish", "set-up-tab-title", Layouts::LayoutProps(Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START))
       )
   };
   // clang-format on
 
   // Build notebook with defined static page content above
-  Gtk::Notebook* notebook = Widgets::Notebook("set-up-notebook", {}, Layouts::V_FILL);
+  Gtk::Notebook* notebook = Widgets::Notebook(
+      "set-up-notebook",
+      {},
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, false, false, Gtk::Align::FILL, Gtk::Align::FILL
+      )
+  );
 
   // Add navigation buttons to notebook tabs
   for (int i = 0; i < tabs.size(); i++) {
@@ -115,18 +133,30 @@ Gtk::Window* Components::SetUp() {
         "Close",
         "set-up-btn-cancel",
         [ setUpWindow ]() { setUpWindow->close(); },
-        Layouts::H_CONTAIN
+        Layouts::LayoutProps(
+            Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::END
+        )
     )};
 
     if (i > 0) {
       btnsToAdd.push_back(Widgets::Button(
-          "Back", "set-up-btn-back", [ notebook ]() { notebook->prev_page(); }, Layouts::H_CONTAIN
+          "Back",
+          "set-up-btn-back",
+          [ notebook ]() { notebook->prev_page(); },
+          Layouts::LayoutProps(
+              Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::END
+          )
       ));
     }
 
     if (i < tabs.size() - 1) {
       btnsToAdd.push_back(Widgets::Button(
-          "Next", "set-up-btn-next", [ notebook ]() { notebook->next_page(); }, Layouts::H_CONTAIN
+          "Next",
+          "set-up-btn-next",
+          [ notebook ]() { notebook->next_page(); },
+          Layouts::LayoutProps(
+              Gtk::Orientation::VERTICAL, false, false, Gtk::Align::END, Gtk::Align::END
+          )
       ));
     }
 
@@ -138,9 +168,22 @@ Gtk::Window* Components::SetUp() {
             SketchItApplication::SketchItWindow::saveConfig();
             setUpWindow->close();
           },
-          Layouts::H_CONTAIN
+          Layouts::LayoutProps(
+              Gtk::Orientation::VERTICAL, false, false, Gtk::Align::END, Gtk::Align::END
+          )
       ));
     }
+
+    UIUtils::addBtns(btnsToAdd, btnHolder);
+
+    Gtk::Box* spacer = Widgets::Box(
+        Layouts::LayoutProps(
+            Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+        ),
+        "null"
+    );
+
+    UIUtils::addWidget(btnHolder, spacer, 0);
   }
 
   // Add to the notebook the latest update to tabs after appending buttons
@@ -148,29 +191,72 @@ Gtk::Window* Components::SetUp() {
     notebook->append_page(*tabs[ i ].page, *tabs[ i ].tabLabel);
   }
 
+  setUpWindow->set_default_size(
+      MonitorManager::Monitor::width * 0.75, MonitorManager::Monitor::height * 0.75
+  );
   setUpWindow->set_title("Set Up Sketch It");
   setUpWindow->set_child(*notebook);
-
+  setUpWindow->set_focus(*notebook);
   return setUpWindow;
 };
 
 Gtk::Box* Components::StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt) {
   // Build containers
-  Gtk::Box* page = Widgets::Box(Layouts::V_FILL, "set-up-page");
-  Gtk::Box* pageContainer = Widgets::Box(Layouts::H_FILL, "set-up-container");
-  Gtk::Box* descContainer = Widgets::Box(Layouts::V_CONTAIN, "set-up-desc-container");
-  Gtk::Box* contentContainer = Widgets::Box(Layouts::V_FILL, "set-up-content-container");
-  Gtk::Box* btnContainer = Widgets::Box(Layouts::H_FILL, "set-up-btn-container");
+  Gtk::Box* page = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "set-up-page"
+  );
+  Gtk::Box* pageContainer = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "set-up-container"
+  );
+  Gtk::ScrolledWindow* descContainer = Widgets::ScrollWin(
+      {300, 200},
+      "set-up-desc-container",
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START
+      ),
+      false
+  );
+  Gtk::Box* contentContainer = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::END
+      ),
+      "set-up-content-container"
+  );
+  Gtk::Box* btnContainer = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "set-up-btn-container"
+  );
 
   // Create text elements
-  Gtk::Label* title = Widgets::Label(titleTxt, "set-up-title", Layouts::H_FILL);
+  Gtk::Label* title = Widgets::Label(
+      titleTxt,
+      "set-up-title",
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, false, Gtk::Align::CENTER, Gtk::Align::CENTER
+      )
+  );
 
   Gtk::TextView* desc = Widgets::LongText(
-      descTxt, "set-up-desc-text", {200, 400}, Gtk::WrapMode::WORD, false, Layouts::V_FILL
+      descTxt,
+      "set-up-desc-text",
+      {200, 400},
+      Gtk::WrapMode::WORD,
+      false,
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START
+      )
   );
 
   // Append and return page
-  descContainer->append(*desc);
+  descContainer->set_child(*desc);
 
   pageContainer->append(*descContainer);
   pageContainer->append(*contentContainer);

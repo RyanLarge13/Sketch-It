@@ -22,29 +22,5 @@ namespace SketchItApplication {
 namespace UI {
 Layouts::Layouts() {}
 
-// Static constants widget props that
-// can be used from outside of the class
-// in a easy matter for defining simple
-// layouts
-Layouts::LayoutProps Layouts::H_FILL = Layouts::LayoutProps(
-    Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
-);
-
-Layouts::LayoutProps Layouts::V_FILL = Layouts::LayoutProps(
-    Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
-);
-
-Layouts::LayoutProps Layouts::H_CONTAIN = Layouts::LayoutProps(
-    Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
-);
-
-Layouts::LayoutProps Layouts::V_CONTAIN = Layouts::LayoutProps(
-    Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START
-);
-// Static constants widget props that
-// can be used from outside of the class
-// in a easy matter for defining simple
-// layouts
-
 }  // namespace UI
 }  // namespace SketchItApplication

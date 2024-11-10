@@ -49,7 +49,12 @@ void SketchItWindow::setUp() {
 }
 
 void SketchItWindow::loadMainAppUI() {
-  Gtk::Box* mainWinContainer = UI::Widgets::Box(UI::Layouts::V_FILL, "main-win-container");
+  Gtk::Box* mainWinContainer = UI::Widgets::Box(
+      UI::Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "main-win-container"
+  );
 
   this->set_child(*mainWinContainer);
 }
@@ -67,14 +72,29 @@ void SketchItWindow::checkConfig() {
       // Show error dialog for failed configuration file read/write/create
       Gtk::Window* error = UI::Components::ErrorDialog("Configuration Error", log.message);
 
-      Gtk::Box* btnContainer = UI::Widgets::Box(UI::Layouts::H_FILL, "error-modal-btn-container");
+      Gtk::Box* btnContainer = UI::Widgets::Box(
+          UI::Layouts::LayoutProps(
+              Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::END
+          ),
+          "error-modal-btn-container"
+      );
 
       UI::UIUtils::addBtns(
           {UI::Widgets::Button(
-               "Okay", "error-modal-btn", [ this ]() { this->close(); }, UI::Layouts::H_FILL
+               "Okay",
+               "error-modal-btn",
+               [ this ]() { this->close(); },
+               UI::Layouts::LayoutProps(
+                   Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::CENTER
+               )
            ),
            UI::Widgets::Button(
-               "Close", "error-modal-btn", [ this ]() { this->close(); }, UI::Layouts::H_FILL
+               "Close",
+               "error-modal-btn",
+               [ this ]() { this->close(); },
+               UI::Layouts::LayoutProps(
+                   Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::CENTER
+               )
            )},
           btnContainer
       );

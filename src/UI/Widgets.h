@@ -64,6 +64,13 @@ class Widgets {
       const Layouts::LayoutProps& props
   );
 
+  static Gtk::ScrolledWindow* ScrollWin(
+      const std::pair<int, int>& size,
+      const std::string& className,
+      const Layouts::LayoutProps& props,
+      const bool& horizontal
+  );
+
  protected:
  private:
 };

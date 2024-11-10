@@ -25,6 +25,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace SketchItApplication {
 namespace MonitorManager {
 
+int Monitor::width = 0;
+int Monitor::height = 0;
+
 Monitor::Monitor() {
   // Define display here to access later
   display = Gdk::Display::get_default();
@@ -37,7 +40,8 @@ void Monitor::init(Gtk::Window* win) {
   if (!display || !surface) {
     setDefaultGeometry(
         "There was a problem accessing surface or display information in "
-        "Monitor::setSurface");
+        "Monitor::setSurface"
+    );
     return;
   }
 
