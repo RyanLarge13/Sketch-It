@@ -19,7 +19,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COMPONENTS
 #define COMPONENTS
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 
 namespace SketchItApplication {
 namespace UI {
@@ -34,6 +34,7 @@ class Components {
 
  protected:
  private:
+  static void addMainContent(Gtk::Notebook* notebook);
 };
 
 }  // namespace UI

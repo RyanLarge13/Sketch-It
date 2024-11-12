@@ -20,7 +20,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define SKETCH_IT
 
 #include "../Files/Config.h"
-#include "../Files/Files.h"
 #include "../Renderer/Canvas.h"
 #include "../Styles/Styles.h"
 #include "gtkmm.h"

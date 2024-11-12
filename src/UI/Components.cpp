@@ -127,7 +127,7 @@ Gtk::Window* Components::SetUp() {
 
   // Add navigation buttons to notebook tabs
   for (int i = 0; i < tabs.size(); i++) {
-    Gtk::Box* btnHolder = UIUtils::grabChildAtIndex(tabs[ i ].page, 2);
+    Gtk::Box* btnHolder = UIUtils::grabChildAtIndex<Gtk::Box>(tabs[ i ].page, 2);
 
     std::vector<Gtk::Button*> btnsToAdd = {Widgets::Button(
         "Close",
@@ -197,8 +197,68 @@ Gtk::Window* Components::SetUp() {
   setUpWindow->set_title("Set Up Sketch It");
   setUpWindow->set_child(*notebook);
   setUpWindow->set_focus(*notebook);
+
+  addMainContent(notebook);
+
   return setUpWindow;
 };
+
+void Components::addMainContent(Gtk::Notebook* notebook) {
+  for (int i = 0; i < notebook->get_n_pages() - 1; i++) {
+    // Traverse three layers of children to reach the
+    // container meant for carrying the page content
+    std::cout << "Index in notebook " << i << "\n";
+    Gtk::Widget* container = notebook->get_nth_page(i);
+    if (container == nullptr) {
+      std::cout << "Notebook container does not exist" << "\n";
+      continue;
+    }
+    Gtk::Box* mainContentContainer = UIUtils::grabChildAtIndex<Gtk::Box>(container, 1);
+    if (mainContentContainer == nullptr) {
+      std::cout << "Main content container does not exist in notebook" << "\n";
+      continue;
+    }
+    Gtk::Box* contentContainer = UIUtils::grabChildAtIndex<Gtk::Box>(mainContentContainer, 1);
+    if (contentContainer == nullptr) {
+      std::cout << "Content container does not exist in notebook" << "\n";
+      continue;
+    }
+
+    switch (i) {
+      case 0: {
+        std::cout << "creating image" << "\n";
+        Gtk::Image* img = Gtk::make_managed<Gtk::Image>("assets/images/test1.png");
+        std::cout << "inserting image" << "\n";
+        Gtk::Box* imgContainer = Widgets::Box(
+            Layouts::LayoutProps(
+                Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::CENTER, Gtk::Align::CENTER
+            ),
+            "img-container"
+        );
+        if (contentContainer == nullptr) {
+          std::cout << "NULL content container" << "\n";
+        }
+        img->set_halign(Gtk::Align::CENTER);
+        img->set_valign(Gtk::Align::CENTER);
+        img->set_pixel_size(500);
+        contentContainer->set_hexpand(true);
+        contentContainer->set_vexpand(true);
+        imgContainer->append(*img);
+        contentContainer->append(*imgContainer);
+      } break;
+      case 1:
+        std::cout << "Case 1" << "\n";
+        break;
+      case 2:
+        std::cout << "Case 2" << "\n";
+        break;
+      case 3:
+        std::cout << "Case 3" << "\n";
+        break;
+    }
+  }
+  return;
+}
 
 Gtk::Box* Components::StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt) {
   // Build containers

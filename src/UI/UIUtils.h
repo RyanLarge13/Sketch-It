@@ -18,6 +18,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include <iostream>
+
 namespace SketchItApplication {
 namespace UI {
 
@@ -26,7 +28,25 @@ class UIUtils {
   UIUtils();
 
   static void addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container);
-  static Gtk::Box* grabChildAtIndex(Gtk::Widget* parent, const int& index);
+
+  template <typename T, typename U>
+  static T* grabChildAtIndex(U* parent, const int& index) {
+    auto* child = parent->get_first_child();
+
+    if (index == 0) {
+      std::cout << "Index = 0" << "\n";
+      if (child == nullptr) {
+        std::cout << "null child " << "\n";
+      }
+      return dynamic_cast<T*>(child);
+    }
+
+    for (int i = 1; i <= index; i++) {
+      child = child->get_next_sibling();
+    }
+    return dynamic_cast<T*>(child);
+  };
+
   static void addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index);
 
  protected:

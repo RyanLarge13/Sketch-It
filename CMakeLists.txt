@@ -20,7 +20,6 @@ add_definitions(${GTKMM_CFLAGS_OTHER})
 
 file(GLOB_RECURSE SOURCES 
 "src/*.cpp" 
-"src/Files/*.cpp"
 "src/lib/*.cpp"
 "src/Monitor/*.cpp" 
 "src/Renderer/*.cpp" 

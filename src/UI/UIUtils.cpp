@@ -46,35 +46,19 @@ void UIUtils::addBtns(const std::vector<Gtk::Button*>& btns, Gtk::Box* container
 }
 
 void UIUtils::addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index) {
-  Gtk::Box* containerChild = grabChildAtIndex(parent, index);
-
-  std::cout << "insering widget now" << "\n";
+  Gtk::Button* containerChild = grabChildAtIndex<Gtk::Button>(parent, index);
 
   if (child == nullptr) {
     std::cout << "nullptr child being passed" << "\n";
+    return;
   }
   if (containerChild == nullptr) {
     std::cout << "nullptr container child being passed" << "\n";
+    return;
   }
+
   parent->insert_child_after(*child, *containerChild);
   std::cout << "Widget inserted" << "\n";
-}
-
-Gtk::Box* UIUtils::grabChildAtIndex(Gtk::Widget* parent, const int& index) {
-  auto* child = parent->get_first_child();
-
-  if (index == 0) {
-    std::cout << "Index = 0" << "\n";
-    if (child == nullptr) {
-      std::cout << "null child " << "\n";
-    }
-    return dynamic_cast<Gtk::Box*>(child);
-  }
-
-  for (int i = 1; i <= index; i++) {
-    child = child->get_next_sibling();
-  }
-  return dynamic_cast<Gtk::Box*>(child);
 }
 
 }  // namespace UI

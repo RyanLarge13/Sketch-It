@@ -16,19 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef FILES
-#define FILES
+#ifndef USER_DATA
+#define USER_DATA
 
 namespace SketchItApplication {
-namespace Files {
-class FileManager {
+namespace Config {
+
+class UserData {
  public:
-  FileManager();
+  UserData();
 
  protected:
  private:
 };
-}  // namespace Files
+
+}  // namespace Config
 }  // namespace SketchItApplication
 
 #endif
