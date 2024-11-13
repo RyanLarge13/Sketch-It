@@ -35,6 +35,7 @@ class Components {
  protected:
  private:
   static void addMainContent(Gtk::Notebook* notebook);
+  static void defaultSession(Gtk::Box* contentContainer);
 };
 
 }  // namespace UI

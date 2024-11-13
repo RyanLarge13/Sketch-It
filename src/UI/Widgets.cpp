@@ -118,16 +118,13 @@ Gtk::TextView* Widgets::LongText(
   Gtk::TextView* textArea = Gtk::make_managed<Gtk::TextView>();
 
   textArea->set_buffer(buffer);
-  textArea->set_wrap_mode(Gtk::WrapMode::WORD);
-  textArea->set_size_request(300, 20);
+  textArea->set_wrap_mode(wrapMode);
+  textArea->set_size_request(size.first, size.second);
   textArea->set_editable(false);
   textArea->add_css_class(className);
 
   return textArea;
 }
-
-// Gtk::ScrolledWindow*
-// Widgets::ScrollWindow() {}
 
 Gtk::Notebook* Widgets::Notebook(
     const std::string& className,

@@ -90,7 +90,7 @@ Gtk::Window* Components::SetUp() {
           "If you choose drawing mode, your canvas will load up as a blank slate, a larger selection of tools "
           "will be available, and other free hand drawing utilities. "
           "On the other hand, if you choose training, the app will default to opening on your last "
-          "training session where you left off."
+          "training session where you left off.\n\n You can change or switch between different kinds of sessions at any time when using the application, so Do not worry about picking the wrong choice"
         ),
         Widgets::Label("Default Session", "set-up-tab-title", Layouts::LayoutProps(Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START))
       ),
@@ -231,7 +231,7 @@ void Components::addMainContent(Gtk::Notebook* notebook) {
         std::cout << "inserting image" << "\n";
         Gtk::Box* imgContainer = Widgets::Box(
             Layouts::LayoutProps(
-                Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::CENTER, Gtk::Align::CENTER
+                Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
             ),
             "img-container"
         );
@@ -246,9 +246,9 @@ void Components::addMainContent(Gtk::Notebook* notebook) {
         imgContainer->append(*img);
         contentContainer->append(*imgContainer);
       } break;
-      case 1:
-        std::cout << "Case 1" << "\n";
-        break;
+      case 1: {
+        defaultSession(contentContainer);
+      } break;
       case 2:
         std::cout << "Case 2" << "\n";
         break;
@@ -258,6 +258,89 @@ void Components::addMainContent(Gtk::Notebook* notebook) {
     }
   }
   return;
+}
+
+void Components::defaultSession(Gtk::Box* contentContainer) {
+  Gtk::Box* lessons = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
+      ),
+      "default-session-lesson-container"
+  );
+
+  Gtk::Box* freeDraw = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
+      ),
+      "default-session-free-draw-container"
+  );
+
+  Gtk::ScrolledWindow* lessonTxtContainer = Widgets::ScrollWin(
+      {300, 200},
+      "default-session-desc-text-container",
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+      ),
+      false
+  );
+
+  Gtk::ScrolledWindow* freehandTxtContainer = Widgets::ScrollWin(
+      {300, 200},
+      "default-session-desc-text-container",
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+      ),
+      false
+  );
+
+  Gtk::Image* lessonImg = Gtk::make_managed<Gtk::Image>("assets/images/lesson-learn.png");
+
+  Gtk::TextView* lessonDesc = Widgets::LongText(
+      "Choose this option if you are looking to seriously learn the in's and out's of creating "
+      "beautiful drawings. Refine your eyes and hands to bring your imagination to life on a piece "
+      "of paper, on the computer or anywhere!",
+      "default-session-desc-text",
+      {200, 400},
+      Gtk::WrapMode::WORD,
+      false,
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+      )
+  );
+
+  Gtk::Image* freeHandImg = Gtk::make_managed<Gtk::Image>("assets/images/free-hand.png");
+
+  // Size, classname props horizontal
+
+  Gtk::TextView* freeHandDesc = Widgets::LongText(
+      "Learn how to draw using the computer and a mouse, or if you're really lucky, maybe "
+      "you have "
+      "a drawing pad to make this experience even more fun. By selecting this option the "
+      "application will automatically open up in a blank canvas with your custom tooling "
+      "in hand",
+      "default-session-desc-text",
+      {200, 400},
+      Gtk::WrapMode::WORD,
+      false,
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+      )
+  );
+
+  lessonImg->set_pixel_size(200);
+  freeHandImg->set_pixel_size(200);
+
+  lessonTxtContainer->set_child(*lessonDesc);
+  freehandTxtContainer->set_child(*freeHandDesc);
+
+  lessons->append(*lessonImg);
+  lessons->append(*lessonTxtContainer);
+
+  freeDraw->append(*freeHandImg);
+  freeDraw->append(*freehandTxtContainer);
+
+  contentContainer->append(*lessons);
+  contentContainer->append(*freeDraw);
 }
 
 Gtk::Box* Components::StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt) {
@@ -284,7 +367,7 @@ Gtk::Box* Components::StaticSetUpPage(const std::string& titleTxt, const std::st
   );
   Gtk::Box* contentContainer = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::END
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
       "set-up-content-container"
   );

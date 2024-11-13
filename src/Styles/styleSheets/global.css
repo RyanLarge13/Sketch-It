@@ -1,5 +1,5 @@
 window {
-  background-color: #fff;
+  font-family: "Mandali", monospace, sans-serif;
 }
 
 /* Custom error modal classes */
@@ -42,10 +42,19 @@ window {
   padding: 25px;
 }
 
+.set-up-desc-container {
+  padding-right: 25px;
+}
+
 .set-up-title {
   font-size: 2em;
   padding: 25px 0;
+  margin-left: 200px;
 }
 
 .set-up-btn-container {
 }
+
+/* .img-container {
+  background-color: #f00;
+} */
