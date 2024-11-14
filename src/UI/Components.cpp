@@ -275,11 +275,60 @@ void Components::defaultSession(Gtk::Box* contentContainer) {
       "default-session-free-draw-container"
   );
 
+  Glib::RefPtr<Gtk::GestureClick> gesture_click_lessons = Gtk::GestureClick::create();
+  Glib::RefPtr<Gtk::GestureClick> gesture_click_freehand = Gtk::GestureClick::create();
+  Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover_lessons =
+      Gtk::EventControllerMotion::create();
+  Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover_free_draw =
+      Gtk::EventControllerMotion::create();
+
+  gesture_click_lessons->signal_released().connect(
+      [ lessons, freeDraw ](const int& z, const double& x, const double& y) {
+        lessons->add_css_class("selected");
+        freeDraw->remove_css_class("selected");
+      }
+  );
+
+  gesture_click_freehand->signal_released().connect(
+      [ lessons, freeDraw ](const int& z, const double& x, const double& y) {
+        freeDraw->add_css_class("selected");
+        lessons->remove_css_class("selected");
+      }
+  );
+
+  // auto display = SketchItApplication::MonitorManager::Monitor::display;
+
+  gesture_hover_lessons->signal_enter().connect([ lessons ](const double& x, const double& y) {
+    lessons->set_cursor("pointer");
+  });
+  gesture_hover_free_draw->signal_enter().connect([ freeDraw ](const double& x, const double& y) {}
+  );
+
+  lessons->add_controller(gesture_click_lessons);
+  lessons->add_controller(gesture_hover_lessons);
+  freeDraw->add_controller(gesture_click_freehand);
+  freeDraw->add_controller(gesture_hover_free_draw);
+
+  Gtk::Label* lessonHeading = Widgets::Label(
+      "Lessons",
+      "default-session-heading",
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
+      )
+  );
+  Gtk::Label* freeDrawHeading = Widgets::Label(
+      "FreeHand",
+      "default-session-heading",
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
+      )
+  );
+
   Gtk::ScrolledWindow* lessonTxtContainer = Widgets::ScrollWin(
       {300, 200},
       "default-session-desc-text-container",
       Layouts::LayoutProps(
-          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::END
       ),
       false
   );
@@ -288,12 +337,19 @@ void Components::defaultSession(Gtk::Box* contentContainer) {
       {300, 200},
       "default-session-desc-text-container",
       Layouts::LayoutProps(
-          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::END
       ),
       false
   );
 
-  Gtk::Image* lessonImg = Gtk::make_managed<Gtk::Image>("assets/images/lesson-learn.png");
+  Gtk::Image* lessonImg = Widgets::Img(
+      "assets/images/lesson-learn.png",
+      "lesson-desc-img",
+      200,
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
+      )
+  );
 
   Gtk::TextView* lessonDesc = Widgets::LongText(
       "Choose this option if you are looking to seriously learn the in's and out's of creating "
@@ -304,11 +360,18 @@ void Components::defaultSession(Gtk::Box* contentContainer) {
       Gtk::WrapMode::WORD,
       false,
       Layouts::LayoutProps(
-          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::END
       )
   );
 
-  Gtk::Image* freeHandImg = Gtk::make_managed<Gtk::Image>("assets/images/free-hand.png");
+  Gtk::Image* freeHandImg = Widgets::Img(
+      "assets/images/free-hand.png",
+      "free-hand-desc-img",
+      200,
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
+      )
+  );
 
   // Size, classname props horizontal
 
@@ -323,20 +386,19 @@ void Components::defaultSession(Gtk::Box* contentContainer) {
       Gtk::WrapMode::WORD,
       false,
       Layouts::LayoutProps(
-          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::START
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::START, Gtk::Align::END
       )
   );
-
-  lessonImg->set_pixel_size(200);
-  freeHandImg->set_pixel_size(200);
 
   lessonTxtContainer->set_child(*lessonDesc);
   freehandTxtContainer->set_child(*freeHandDesc);
 
   lessons->append(*lessonImg);
+  lessons->append(*lessonHeading);
   lessons->append(*lessonTxtContainer);
 
   freeDraw->append(*freeHandImg);
+  freeDraw->append(*freeDrawHeading);
   freeDraw->append(*freehandTxtContainer);
 
   contentContainer->append(*lessons);

@@ -53,8 +53,44 @@ window {
 }
 
 .set-up-btn-container {
+  padding-top: 50px;
 }
 
+.selected {
+  outline: 2px solid #7ef384;
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.75);
+  transform: scale(1.01);
+}
+
+.default-session-lesson-container {
+  border-radius: 15px;
+  transition: 250ms ease-in-out;
+  padding: 20px;
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.1);
+}
+
+.default-session-lesson-container:hover {
+  transform: scale(1.01);
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.75);
+}
+
+.default-session-free-draw-container:hover {
+  transform: scale(1.01);
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.75);
+}
+
+.default-session-free-draw-container {
+  border-radius: 15px;
+  transition: 250ms ease-in-out;
+  padding: 20px;
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.1);
+}
+
+.default-session-heading {
+  font-size: 20px;
+  margin: 20px 0 10px 0;
+  font-weight: 600;
+}
 /* .img-container {
   background-color: #f00;
 } */

@@ -157,5 +157,26 @@ Gtk::ScrolledWindow* Widgets::ScrollWin(
   return win;
 }
 
+Gtk::Image* Widgets::Img(
+    const std::string& imagePath,
+    const std::string& className,
+    const int& pixelSize,
+    const Layouts::LayoutProps& props
+) {
+  Gtk::Image* img = Gtk::make_managed<Gtk::Image>(imagePath);
+
+  img->add_css_class(className);
+
+  img->set_hexpand(props.hexpand);
+  img->set_vexpand(props.vexpand);
+
+  img->set_halign(props.halign);
+  img->set_valign(props.valign);
+
+  img->set_pixel_size(pixelSize);
+
+  return img;
+}
+
 }  // namespace UI
 }  // namespace SketchItApplication

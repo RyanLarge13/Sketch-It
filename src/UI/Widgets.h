@@ -71,6 +71,13 @@ class Widgets {
       const bool& horizontal
   );
 
+  static Gtk::Image* Img(
+      const std::string& imgPath,
+      const std::string& className,
+      const int& pixelSize,
+      const Layouts::LayoutProps& props
+  );
+
  protected:
  private:
 };
