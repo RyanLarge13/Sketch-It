@@ -16,28 +16,35 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COMPONENTS
-#define COMPONENTS
+#ifndef SET_UP
+#define SET_UP
 
 #include <gtkmm.h>
 
+#include "../../Widgets.h"
+
 namespace SketchItApplication {
 namespace UI {
+namespace Components {
 
-class Components {
+class SetUp {
  public:
-  Components();
+  SetUp();
 
-  static Gtk::Window* ErrorDialog(const std::string& title, const std::string& message);
-  static Gtk::Window* SetUp();
-  static Gtk::Box* StaticSetUpPage(const std::string& titleTxt, const std::string& descTxt);
+  static Gtk::Window* setUpWindow;
 
  protected:
+  void initSetUpWindow();
+  std::vector<Widgets::WidgetNotebookTabs> getSetUpTabs();
+  void buildNavigation(
+      Gtk::Notebook* notebook, const std::vector<Widgets::WidgetNotebookTabs>& tabs
+  );
+  void addMainContent(Gtk::Notebook* notebook);
+
  private:
-  static void addMainContent(Gtk::Notebook* notebook);
-  static void defaultSession(Gtk::Box* contentContainer);
 };
 
+}  // namespace Components
 }  // namespace UI
 }  // namespace SketchItApplication
 

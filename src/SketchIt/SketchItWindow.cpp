@@ -22,7 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "../Files/Config.h"
 #include "../Monitor/Monitor.h"
-#include "../UI/Components.h"
+#include "../UI/Components/ErrorModal.h"
+#include "../UI/Components/SetUp/SetUp.h"
 #include "../UI/Layouts.h"
 #include "../UI/UIUtils.h"
 #include "../UI/Widgets.h"
@@ -70,7 +71,7 @@ void SketchItWindow::checkConfig() {
       std::cout << "Error detected: " << log.status << "\n" << log.message << "\n";
 
       // Show error dialog for failed configuration file read/write/create
-      Gtk::Window* error = UI::Components::ErrorDialog("Configuration Error", log.message);
+      Gtk::Window* error = UI::Components::ErrorModal::create("Configuration Error", log.message);
 
       Gtk::Box* btnContainer = UI::Widgets::Box(
           UI::Layouts::LayoutProps(
@@ -107,10 +108,10 @@ void SketchItWindow::checkConfig() {
     }
     if (log.status == ConfigManager::StatusCodes::NEW_USER) {
       // Load setup window for new users
-      Gtk::Window* setupWin = UI::Components::SetUp();
+      UI::Components::SetUp();
 
-      setupWin->set_transient_for(*this);
-      setupWin->show();
+      UI::Components::SetUp::setUpWindow->set_transient_for(*this);
+      UI::Components::SetUp::setUpWindow->show();
     }
   }
 }

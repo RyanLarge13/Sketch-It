@@ -178,5 +178,34 @@ Gtk::Image* Widgets::Img(
   return img;
 }
 
+Gtk::Grid* Widgets::Grid(const size_t& rowSpacing, const size_t& columnSpacing) {
+  Gtk::Grid* grid = Gtk::make_managed<Gtk::Grid>();
+
+  grid->set_row_spacing(rowSpacing);
+  grid->set_column_spacing(columnSpacing);
+
+  return grid;
+}
+
+Gtk::Box* Widgets::GestureBtn(const std::string& className, const Layouts::LayoutProps& props) {
+  Gtk::Box* box = Box(props, className);
+
+  Glib::RefPtr<Gtk::GestureClick> gesture_click = Gtk::GestureClick::create();
+  Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover = Gtk::EventControllerMotion::create();
+
+  gesture_click->signal_released().connect([ box ](const int& z, const double& x, const double& y) {
+    box->add_css_class("selected");
+  });
+
+  gesture_hover->signal_enter().connect([ box ](const double& x, const double& y) {
+    box->set_cursor("pointer");
+  });
+
+  box->add_controller(gesture_click);
+  box->add_controller(gesture_hover);
+
+  return box;
+}
+
 }  // namespace UI
 }  // namespace SketchItApplication

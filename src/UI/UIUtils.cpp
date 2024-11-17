@@ -58,7 +58,6 @@ void UIUtils::addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index) 
   }
 
   parent->insert_child_after(*child, *containerChild);
-  std::cout << "Widget inserted" << "\n";
 }
 
 }  // namespace UI

@@ -38,6 +38,10 @@ window {
   background-color: #fff;
 }
 
+.set-up-tab-title {
+  margin: 5px 0;
+}
+
 .set-up-page {
   padding: 25px;
 }
