@@ -34,7 +34,6 @@ class UIUtils {
     auto* child = parent->get_first_child();
 
     if (index == 0) {
-      std::cout << "Index = 0" << "\n";
       if (child == nullptr) {
         std::cout << "null child " << "\n";
       }

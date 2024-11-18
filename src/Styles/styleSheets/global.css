@@ -4,7 +4,6 @@ window {
 
 /* Custom error modal classes */
 .error-modal {
-  background-color: #fff;
   padding: 50px;
 }
 
@@ -98,3 +97,20 @@ window {
 /* .img-container {
   background-color: #f00;
 } */
+
+/* Canvas Default page in setup window */
+
+.canvas-default-grid {
+  padding: 25px 10px;
+}
+
+.canvas-default-select-btn {
+  transition: 250ms ease-in-out;
+  border-radius: 15px;
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.1);
+}
+
+.canvas-default-select-btn:hover {
+  transform: scale(1.01);
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.75);
+}

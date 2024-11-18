@@ -78,9 +78,18 @@ class Widgets {
       const Layouts::LayoutProps& props
   );
 
-  static Gtk::Grid* Grid(const size_t& rowSpacing, const size_t& columnSpacing);
+  static Gtk::Grid* Grid(
+      const size_t& rowSpacing, const size_t& columnSpacing, const std::string& className
+  );
 
   static Gtk::Box* GestureBtn(const std::string& className, const Layouts::LayoutProps& props);
+
+  static Gtk::SpinButton* SpinButton(
+      Glib::RefPtr<Gtk::Adjustment> adjustment,
+      const double& digits,
+      const double& value,
+      const std::string& className
+  );
 
  protected:
  private:

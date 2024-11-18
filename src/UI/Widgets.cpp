@@ -178,8 +178,12 @@ Gtk::Image* Widgets::Img(
   return img;
 }
 
-Gtk::Grid* Widgets::Grid(const size_t& rowSpacing, const size_t& columnSpacing) {
+Gtk::Grid* Widgets::Grid(
+    const size_t& rowSpacing, const size_t& columnSpacing, const std::string& className
+) {
   Gtk::Grid* grid = Gtk::make_managed<Gtk::Grid>();
+
+  grid->add_css_class(className);
 
   grid->set_row_spacing(rowSpacing);
   grid->set_column_spacing(columnSpacing);
@@ -205,6 +209,23 @@ Gtk::Box* Widgets::GestureBtn(const std::string& className, const Layouts::Layou
   box->add_controller(gesture_hover);
 
   return box;
+}
+
+Gtk::SpinButton* Widgets::SpinButton(
+    Glib::RefPtr<Gtk::Adjustment> adjustment,
+    const double& digits,
+    const double& value,
+    const std::string& className
+) {
+  Gtk::SpinButton* button = Gtk::make_managed<Gtk::SpinButton>();
+
+  button->set_adjustment(adjustment);
+  button->set_digits(digits);
+  button->set_value(value);
+
+  button->add_css_class(className);
+
+  return button;
 }
 
 }  // namespace UI

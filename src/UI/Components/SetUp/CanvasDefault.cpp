@@ -52,22 +52,36 @@ void CanvasDefault::create(Gtk::Box* contentContainer) {
       true
   );
 
-  Gtk::Grid* gridContainer = Widgets::Grid(10, 10);
+  Gtk::Grid* gridContainer = Widgets::Grid(20, 20, "canvas-default-grid");
 
   addButtons(gridContainer);
 
   scrollHWin->set_child(*gridContainer);
 
+  Gtk::Box* inputContainer = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "canvas-default-size-input-container"
+  );
+
+  addInputsAndSelect(inputContainer);
+
+  contentContainer->set_orientation(Gtk::Orientation::VERTICAL);
+
   contentContainer->append(*scrollHWin);
+  contentContainer->append(*inputContainer);
 }
 
 void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
+  std::vector<Gtk::Box*> btns;
+
   for (int i = 0; i < iconsAndSizes.size(); i++) {
-    Gtk::Box* customBtn = Widgets::GestureBtn(
-        "canvas-default-select-button",
+    Gtk::Box* customBtn = Widgets::Box(
         Layouts::LayoutProps(
             Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
-        )
+        ),
+        "canvas-default-select-btn"
     );
 
     Gtk::Label* sizeTxt = Widgets::Label(
@@ -91,8 +105,67 @@ void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
     customBtn->append(*canvasImage);
     customBtn->append(*sizeTxt);
 
-    gridContainer->attach(*customBtn, i, 0, 1, 1);
+    btns.push_back(customBtn);
   }
+
+  addGestures(btns);
+
+  for (int i = 0; i < btns.size(); i++) {
+    gridContainer->attach(*btns[ i ], i, 0, 1, 1);
+  }
+}
+
+void CanvasDefault::addGestures(const std::vector<Gtk::Box*>& btns) {
+  for (int i = 0; i < btns.size(); i++) {
+    Glib::RefPtr<Gtk::GestureClick> gesture_click = Gtk::GestureClick::create();
+    Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover = Gtk::EventControllerMotion::create();
+
+    auto click = [ btns, i ](const int& z, const double& x, const double& y) {
+      for (int j = 0; j < btns.size(); j++) {
+        if (j == i) {
+          btns[ j ]->add_css_class("selected");
+          // TODO:
+          // Update user data to include selected btn
+        } else {
+          btns[ j ]->remove_css_class("selected");
+        }
+      }
+    };
+
+    auto hover = [ btns ](const double& x, const double& y) {
+      for (int j = 0; j < btns.size(); j++) {
+        btns[ j ]->set_cursor("pointer");
+      }
+    };
+
+    gesture_click->signal_released().connect(click);
+
+    gesture_hover->signal_enter().connect(hover);
+
+    btns[ i ]->add_controller(gesture_click);
+    btns[ i ]->add_controller(gesture_hover);
+  }
+}
+
+void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
+  Gtk::Label* title = Widgets::Label(
+      "Custom Size",
+      "canvas-default-input-container-title",
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START
+      )
+  );
+
+  Gtk::SpinButton* width = Widgets::SpinButton(
+      Gtk::Adjustment::create(5.0, 5.0, 30.0, 0.5), 1.0, 5.0, "canvas-default-input"
+  );
+  Gtk::SpinButton* height = Widgets::SpinButton(
+      Gtk::Adjustment::create(5.0, 5.0, 30.0, 0.5), 1.0, 5.0, "canvas-default-input"
+  );
+
+  inputContainer->append(*title);
+  inputContainer->append(*width);
+  inputContainer->append(*height);
 }
 
 }  // namespace Components

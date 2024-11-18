@@ -42,6 +42,8 @@ class CanvasDefault {
 
  protected:
   static void addButtons(Gtk::Grid* gridContainer);
+  static void addGestures(const std::vector<Gtk::Box*>& btns);
+  static void addInputsAndSelect(Gtk::Box* inputContainer);
 
  private:
 };
