@@ -44,7 +44,7 @@ CanvasDefault::CanvasDefault() {}
 
 void CanvasDefault::create(Gtk::Box* contentContainer) {
   Gtk::ScrolledWindow* scrollHWin = Widgets::ScrollWin(
-      {0, 0},
+      {0, 300},
       "canvas-default-select",
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -60,7 +60,7 @@ void CanvasDefault::create(Gtk::Box* contentContainer) {
 
   Gtk::Box* inputContainer = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
       "canvas-default-size-input-container"
   );
@@ -156,6 +156,35 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
       )
   );
 
+  Gtk::Box* wBox = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
+      ),
+      "null"
+  );
+  Gtk::Box* hBox = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
+      ),
+      "null"
+  );
+
+  Gtk::Label* wLabel = Widgets::Label(
+      "Width: ",
+      "null",
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::CENTER
+      )
+  );
+
+  Gtk::Label* hLabel = Widgets::Label(
+      "Height: ",
+      "null",
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::CENTER
+      )
+  );
+
   Gtk::SpinButton* width = Widgets::SpinButton(
       Gtk::Adjustment::create(5.0, 5.0, 30.0, 0.5), 1.0, 5.0, "canvas-default-input"
   );
@@ -163,9 +192,24 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
       Gtk::Adjustment::create(5.0, 5.0, 30.0, 0.5), 1.0, 5.0, "canvas-default-input"
   );
 
+  width->set_halign(Gtk::Align::START);
+  height->set_halign(Gtk::Align::START);
+
+  wBox->append(*wLabel);
+  wBox->append(*width);
+
+  hBox->append(*hLabel);
+  hBox->append(*height);
+
   inputContainer->append(*title);
-  inputContainer->append(*width);
-  inputContainer->append(*height);
+  inputContainer->append(*wBox);
+  inputContainer->append(*hBox);
+
+  // TODO:
+  //  Make sure if the user goes to input any values it clears the
+  //  button selection, and updates the input if one of the buttons
+  //  are
+  //  selected.------------------------------------------------------------------------------------------------------------------------------------------
 }
 
 }  // namespace Components

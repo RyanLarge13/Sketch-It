@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "../../Layouts.h"
 #include "../../UIUtils.h"
 #include "../../Widgets.h"
+#include "../ErrorModal.h"
 #include "./CanvasDefault.h"
 #include "./DefaultSession.h"
 #include "./SetUpNotebookTab.h"
@@ -232,7 +233,48 @@ void SetUp::buildNavigation(
     std::vector<Gtk::Button*> btnsToAdd = {Widgets::Button(
         "Close",
         "set-up-btn-cancel",
-        []() { setUpWindow->close(); },
+        []() {
+          // TODO
+          //  Make sure this also happens when the user exits the window by native x button
+
+          // Check which parts of the configuration have not been finished
+          Gtk::Window* confirmQuitSetUpModal = Components::ErrorModal::create(
+              "Quit Set Up?",
+              "You have not finished setting up your enviornment. Are you sure you want to stop "
+              "now? It will only take a few seconds"
+          );
+
+          std::vector<Gtk::Button*> modalBtns = {
+              Widgets::Button(
+                  "Confirm",
+                  "error-modal-accept",
+                  [ confirmQuitSetUpModal ]() {
+                    // TODO:
+                    //  Save configuration that has been done at least
+                    confirmQuitSetUpModal->close();
+                    setUpWindow->close();
+                  },
+                  Layouts::LayoutProps(
+                      Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+                  )
+              ),
+              Widgets::Button(
+                  "Cancel",
+                  "error-modal-decline",
+                  [ confirmQuitSetUpModal ]() { confirmQuitSetUpModal->close(); },
+                  Layouts::LayoutProps(
+                      Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+                  )
+              )
+          };
+
+          UIUtils::addBtns(
+              modalBtns, UIUtils::grabChildAtIndex<Gtk::Box>(confirmQuitSetUpModal, 0)
+          );
+
+          confirmQuitSetUpModal->set_transient_for(*setUpWindow);
+          confirmQuitSetUpModal->show();
+        },
         Layouts::LayoutProps(
             Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::END
         )

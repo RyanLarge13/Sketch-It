@@ -30,6 +30,6 @@ Gtk::Window* SketchItApplication::SketchItWindow::win = nullptr;
 
 int main(int argc, char* argv[]) {
   auto app = SketchItApplication::SketchIt::create();
-  return app->make_window_and_run<SketchItApplication::SketchItWindow>(
-      argc, argv);
+
+  return app->make_window_and_run<SketchItApplication::SketchItWindow>(argc, argv);
 }
