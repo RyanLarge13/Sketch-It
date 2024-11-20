@@ -31,19 +31,29 @@ class CanvasDefault {
 
   struct ImageAndSizes {
     std::string imgPath;
-    std::string size;
+    std::pair<double, double> size;
     int index;
 
-    ImageAndSizes(const std::string& imgPath, const std::string& size, const int& index)
+    ImageAndSizes(
+        const std::string& imgPath, const std::pair<double, double>& size, const int& index
+    )
         : imgPath(imgPath), size(size), index(index) {}
   };
+
+  static std::vector<Gtk::Box*> canvasBtns;
+  static Gtk::SpinButton* widthInput;
+  static Gtk::SpinButton* heightInput;
+  static std::pair<double, double> prevSelection;
 
   static void create(Gtk::Box* contentContainer);
 
  protected:
   static void addButtons(Gtk::Grid* gridContainer);
-  static void addGestures(const std::vector<Gtk::Box*>& btns);
+  static void addGestures();
   static void addInputsAndSelect(Gtk::Box* inputContainer);
+
+  static void updateBtns(const double& width, const double& height);
+  static void updateInput(const double& width, const double& height);
 
  private:
 };

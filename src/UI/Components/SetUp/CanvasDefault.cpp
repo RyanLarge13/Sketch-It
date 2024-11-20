@@ -20,6 +20,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include <iostream>
+
 #include "../../Layouts.h"
 #include "../../Widgets.h"
 
@@ -27,22 +29,29 @@ namespace SketchItApplication {
 namespace UI {
 namespace Components {
 
+std::vector<Gtk::Box*> CanvasDefault::canvasBtns;
+Gtk::SpinButton* CanvasDefault::widthInput;
+Gtk::SpinButton* CanvasDefault::heightInput;
+std::pair<double, double> prevSelection = {8.0, 11.0};
+
 std::vector<CanvasDefault::ImageAndSizes> iconsAndSizes = {
-    CanvasDefault::ImageAndSizes("null", "5in x 5in", 0),
-    CanvasDefault::ImageAndSizes("null", "5in x 7in", 1),
-    CanvasDefault::ImageAndSizes("null", "7in x 7in", 2),
-    CanvasDefault::ImageAndSizes("null", "7in x 10in", 3),
-    CanvasDefault::ImageAndSizes("null", "10in x 10in", 4),
-    CanvasDefault::ImageAndSizes("null", "8in x 11in", 5),
-    CanvasDefault::ImageAndSizes("null", "11in x 8in", 6),
-    CanvasDefault::ImageAndSizes("null", "10in x 7in", 7),
-    CanvasDefault::ImageAndSizes("null", "10in x 5in", 8),
-    CanvasDefault::ImageAndSizes("null", "7in x 4in", 9),
+    CanvasDefault::ImageAndSizes("null", {5.0, 5.0}, 0),
+    CanvasDefault::ImageAndSizes("null", {5.0, 7.0}, 1),
+    CanvasDefault::ImageAndSizes("null", {7.0, 7.0}, 2),
+    CanvasDefault::ImageAndSizes("null", {7.0, 10.0}, 3),
+    CanvasDefault::ImageAndSizes("null", {10.0, 10.0}, 4),
+    CanvasDefault::ImageAndSizes("null", {8.0, 11.0}, 5),
+    CanvasDefault::ImageAndSizes("null", {11.0, 8.0}, 6),
+    CanvasDefault::ImageAndSizes("null", {10.0, 7.0}, 7),
+    CanvasDefault::ImageAndSizes("null", {10.0, 5.0}, 8),
+    CanvasDefault::ImageAndSizes("null", {7.0, 4.0}, 9),
 };
 
 CanvasDefault::CanvasDefault() {}
 
 void CanvasDefault::create(Gtk::Box* contentContainer) {
+  canvasBtns.reserve(10);
+
   Gtk::ScrolledWindow* scrollHWin = Widgets::ScrollWin(
       {0, 300},
       "canvas-default-select",
@@ -74,8 +83,6 @@ void CanvasDefault::create(Gtk::Box* contentContainer) {
 }
 
 void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
-  std::vector<Gtk::Box*> btns;
-
   for (int i = 0; i < iconsAndSizes.size(); i++) {
     Gtk::Box* customBtn = Widgets::Box(
         Layouts::LayoutProps(
@@ -84,8 +91,13 @@ void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
         "canvas-default-select-btn"
     );
 
+    std::ostringstream ss;
+    ss << iconsAndSizes[ i ].size.first << "in X " << iconsAndSizes[ i ].size.second << "in";
+
+    std::string sizeStr = ss.str();
+
     Gtk::Label* sizeTxt = Widgets::Label(
-        iconsAndSizes[ i ].size,
+        sizeStr,
         "canvas-default-size-text",
         Layouts::LayoutProps(
             Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -105,36 +117,41 @@ void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
     customBtn->append(*canvasImage);
     customBtn->append(*sizeTxt);
 
-    btns.push_back(customBtn);
+    if (i == 5) {
+      customBtn->add_css_class("selected");
+    }
+
+    canvasBtns.push_back(customBtn);
   }
 
-  addGestures(btns);
+  addGestures();
 
-  for (int i = 0; i < btns.size(); i++) {
-    gridContainer->attach(*btns[ i ], i, 0, 1, 1);
+  for (int i = 0; i < canvasBtns.size(); i++) {
+    gridContainer->attach(*canvasBtns[ i ], i, 0, 1, 1);
   }
 }
 
-void CanvasDefault::addGestures(const std::vector<Gtk::Box*>& btns) {
-  for (int i = 0; i < btns.size(); i++) {
+void CanvasDefault::addGestures() {
+  for (int i = 0; i < canvasBtns.size(); i++) {
     Glib::RefPtr<Gtk::GestureClick> gesture_click = Gtk::GestureClick::create();
     Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover = Gtk::EventControllerMotion::create();
 
-    auto click = [ btns, i ](const int& z, const double& x, const double& y) {
-      for (int j = 0; j < btns.size(); j++) {
+    auto click = [ i ](const int& z, const double& x, const double& y) {
+      for (int j = 0; j < canvasBtns.size(); j++) {
         if (j == i) {
-          btns[ j ]->add_css_class("selected");
+          canvasBtns[ j ]->add_css_class("selected");
+          updateInput(iconsAndSizes[ j ].size.first, iconsAndSizes[ j ].size.second);
           // TODO:
           // Update user data to include selected btn
         } else {
-          btns[ j ]->remove_css_class("selected");
+          canvasBtns[ j ]->remove_css_class("selected");
         }
       }
     };
 
-    auto hover = [ btns ](const double& x, const double& y) {
-      for (int j = 0; j < btns.size(); j++) {
-        btns[ j ]->set_cursor("pointer");
+    auto hover = [](const double& x, const double& y) {
+      for (int j = 0; j < canvasBtns.size(); j++) {
+        canvasBtns[ j ]->set_cursor("pointer");
       }
     };
 
@@ -142,8 +159,8 @@ void CanvasDefault::addGestures(const std::vector<Gtk::Box*>& btns) {
 
     gesture_hover->signal_enter().connect(hover);
 
-    btns[ i ]->add_controller(gesture_click);
-    btns[ i ]->add_controller(gesture_hover);
+    canvasBtns[ i ]->add_controller(gesture_click);
+    canvasBtns[ i ]->add_controller(gesture_hover);
   }
 }
 
@@ -185,21 +202,43 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
       )
   );
 
-  Gtk::SpinButton* width = Widgets::SpinButton(
-      Gtk::Adjustment::create(5.0, 5.0, 30.0, 0.5), 1.0, 5.0, "canvas-default-input"
+  widthInput = Widgets::SpinButton(
+      Gtk::Adjustment::create(8.0, 5.0, 30.0, 0.5), 1.0, 8.0, "canvas-default-input"
   );
-  Gtk::SpinButton* height = Widgets::SpinButton(
-      Gtk::Adjustment::create(5.0, 5.0, 30.0, 0.5), 1.0, 5.0, "canvas-default-input"
+  heightInput = Widgets::SpinButton(
+      Gtk::Adjustment::create(11.0, 5.0, 30.0, 0.5), 1.0, 11.0, "canvas-default-input"
   );
 
-  width->set_halign(Gtk::Align::START);
-  height->set_halign(Gtk::Align::START);
+  widthInput->signal_input().connect(
+      [](const double& input) {
+        for (int i = 0; i < canvasBtns.size(); i++) {
+          canvasBtns[ i ]->remove_css_class("selected");
+        }
+        updateBtns(input, heightInput->get_value());
+        return false;
+      },
+      false
+  );
+
+  heightInput->signal_input().connect(
+      [](const double& input) {
+        for (int i = 0; i < canvasBtns.size(); i++) {
+          canvasBtns[ i ]->remove_css_class("selected");
+        }
+        updateBtns(widthInput->get_value(), input);
+        return false;
+      },
+      false
+  );
+
+  widthInput->set_halign(Gtk::Align::START);
+  heightInput->set_halign(Gtk::Align::START);
 
   wBox->append(*wLabel);
-  wBox->append(*width);
+  wBox->append(*widthInput);
 
   hBox->append(*hLabel);
-  hBox->append(*height);
+  hBox->append(*heightInput);
 
   inputContainer->append(*title);
   inputContainer->append(*wBox);
@@ -210,6 +249,30 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
   //  button selection, and updates the input if one of the buttons
   //  are
   //  selected.------------------------------------------------------------------------------------------------------------------------------------------
+}
+
+// Updating methods for input and custom buttons that can be attached to elements via signals for
+// easy updates
+
+void CanvasDefault::updateBtns(const double& width, const double& height) {
+  // Search formatching dimension being input with an existing custom button dimension
+  const double epsilon = 1e-6;
+  for (int i = 0; i < canvasBtns.size(); i++) {
+    if (std::abs(iconsAndSizes[ i ].size.first - width) < epsilon &&
+        std::abs(iconsAndSizes[ i ].size.second - height) < epsilon) {
+      std::cout << "Exact" << std::endl;
+      canvasBtns[ i ]->add_css_class("selected");
+    }
+    // if (iconsAndSizes[ i ].size.first == width && iconsAndSizes[ i ].size.second == height) {
+    //   std::cout << "Exact" << std::endl;
+    //   canvasBtns[ i ]->add_css_class("selected");
+    // }
+  }
+}
+
+void CanvasDefault::updateInput(const double& width, const double& height) {
+  widthInput->set_value(width);
+  heightInput->set_value(height);
 }
 
 }  // namespace Components
