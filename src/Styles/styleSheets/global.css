@@ -132,3 +132,9 @@ window {
 .canvas-default-input {
   margin: 10px 0 0 15px;
 }
+
+/*  Default tools styling under setup */
+
+.default-tools-grid {
+  padding: 25px;
+}

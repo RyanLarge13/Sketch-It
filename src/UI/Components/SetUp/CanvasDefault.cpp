@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+// TODO
+// Why store index information on the iconsAndSizes vector if I am not going to use them?
+// Use it and clean up your code, or get rid of it
+
 #include "./CanvasDefault.h"
 
 #include <gtkmm.h>
@@ -209,27 +213,19 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
       Gtk::Adjustment::create(11.0, 5.0, 30.0, 0.5), 1.0, 11.0, "canvas-default-input"
   );
 
-  widthInput->signal_input().connect(
-      [](const double& input) {
-        for (int i = 0; i < canvasBtns.size(); i++) {
-          canvasBtns[ i ]->remove_css_class("selected");
-        }
-        updateBtns(input, heightInput->get_value());
-        return false;
-      },
-      false
-  );
+  widthInput->signal_value_changed().connect([]() {
+    for (int i = 0; i < canvasBtns.size(); i++) {
+      canvasBtns[ i ]->remove_css_class("selected");
+    }
+    updateBtns(widthInput->get_value(), heightInput->get_value());
+  });
 
-  heightInput->signal_input().connect(
-      [](const double& input) {
-        for (int i = 0; i < canvasBtns.size(); i++) {
-          canvasBtns[ i ]->remove_css_class("selected");
-        }
-        updateBtns(widthInput->get_value(), input);
-        return false;
-      },
-      false
-  );
+  heightInput->signal_value_changed().connect([]() {
+    for (int i = 0; i < canvasBtns.size(); i++) {
+      canvasBtns[ i ]->remove_css_class("selected");
+    }
+    updateBtns(widthInput->get_value(), heightInput->get_value());
+  });
 
   widthInput->set_halign(Gtk::Align::START);
   heightInput->set_halign(Gtk::Align::START);
@@ -243,12 +239,6 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
   inputContainer->append(*title);
   inputContainer->append(*wBox);
   inputContainer->append(*hBox);
-
-  // TODO:
-  //  Make sure if the user goes to input any values it clears the
-  //  button selection, and updates the input if one of the buttons
-  //  are
-  //  selected.------------------------------------------------------------------------------------------------------------------------------------------
 }
 
 // Updating methods for input and custom buttons that can be attached to elements via signals for
@@ -256,17 +246,10 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
 
 void CanvasDefault::updateBtns(const double& width, const double& height) {
   // Search formatching dimension being input with an existing custom button dimension
-  const double epsilon = 1e-6;
   for (int i = 0; i < canvasBtns.size(); i++) {
-    if (std::abs(iconsAndSizes[ i ].size.first - width) < epsilon &&
-        std::abs(iconsAndSizes[ i ].size.second - height) < epsilon) {
-      std::cout << "Exact" << std::endl;
+    if (iconsAndSizes[ i ].size.first == width && iconsAndSizes[ i ].size.second == height) {
       canvasBtns[ i ]->add_css_class("selected");
     }
-    // if (iconsAndSizes[ i ].size.first == width && iconsAndSizes[ i ].size.second == height) {
-    //   std::cout << "Exact" << std::endl;
-    //   canvasBtns[ i ]->add_css_class("selected");
-    // }
   }
 }
 
