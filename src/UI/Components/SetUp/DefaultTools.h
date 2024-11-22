@@ -34,14 +34,6 @@ class DefaultTools {
  public:
   DefaultTools();
 
-  struct defaultTools() {
-    std::string icon;
-    std::string name;
-    std::pair<double, double>
-
-    defaultTools() : {}
-  };
-
   static void create(Gtk::Box* contentContainer);
 
  protected:

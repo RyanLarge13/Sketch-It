@@ -27,6 +27,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "../ErrorModal.h"
 #include "./CanvasDefault.h"
 #include "./DefaultSession.h"
+#include "./DefaultTools.h"
 #include "./SetUpNotebookTab.h"
 
 namespace SketchItApplication {
@@ -376,6 +377,9 @@ void SetUp::addMainContent(Gtk::Notebook* notebook) {
       case 2: {
         Components::CanvasDefault::create(contentContainer);
       } break;
+      case 3: {
+        Components::DefaultTools::create(contentContainer);
+      }
     }
   }
 }

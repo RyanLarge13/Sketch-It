@@ -16,15 +16,36 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "./DefaultTools.h"
+
 #include <gtkmm.h>
 
-#include "../Widgets.h"
-#include "./DefaultTools,h"
+#include "../../../lib/Tools.h"
+#include "../../Widgets.h"
+
+namespace SketchItApplication {
+namespace UI {
+namespace Components {
 
 DefaultTools::DefaultTools() {}
 
 void DefaultTools::create(Gtk::Box* contentContainer) {
+  // Build a grid for tool categories that a user will be able to select easily tools to their tool
+  // belt
   Gtk::Grid* sections = Widgets::Grid(20, 20, "default-tools-grid");
+
+  std::vector<Tools::ToolDef> tools = Tools::defaultTools;
+
+  std::vector<std::string> categories = {};
+  for (int i = 0; i < tools.size(); i++) {
+    if (std::find(categories.begin(), categories.end(), tools[ i ].category) != categories.end()) {
+      // Push new category to the list to sort tools
+      categories.push_back(tools[ i ].category);
+    }
+  }
 
   // sections->attach(*child, column, row, width, height);
 }
+}  // namespace Components
+}  // namespace UI
+}  // namespace SketchItApplication
