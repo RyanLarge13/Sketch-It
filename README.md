@@ -60,6 +60,17 @@ $ ./sketch-it
 4. Push to the branch (`git push origin feature/my-feature`).
 5. Open a Pull Request.
 
+Please make sure to install clang-format on your machine if you are contributing
+to help keep your pull requests and this code base consistent and maintainable
+
+```
+bash
+
+$ sudo apt update
+$ sudo apt upgrade
+$ sudo apt install clang-format
+```
+
 ## Licensing
 
 This projects is licensed under the GNU 4.0 license. See the licensing here [GNU 4.0](LICENSE)

@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <gtkmm.h>
 
 #include "../../../lib/Tools.h"
+#include "../../Layouts.h"
 #include "../../Widgets.h"
 
 namespace SketchItApplication {
@@ -30,22 +31,36 @@ namespace Components {
 DefaultTools::DefaultTools() {}
 
 void DefaultTools::create(Gtk::Box* contentContainer) {
-  // Build a grid for tool categories that a user will be able to select easily tools to their tool
-  // belt
-  Gtk::Grid* sections = Widgets::Grid(20, 20, "default-tools-grid");
-
   std::vector<Tools::ToolDef> tools = Tools::defaultTools;
 
-  std::vector<std::string> categories = {};
+  std::unordered_map<std::string, std::vector<Tools::ToolDef>>
+      categorizedTools;  // Don't forget to parse the users config for custom built tools
+
+  // Fill in the categorized map with tools from each category sorted
   for (int i = 0; i < tools.size(); i++) {
-    if (std::find(categories.begin(), categories.end(), tools[ i ].category) != categories.end()) {
-      // Push new category to the list to sort tools
-      categories.push_back(tools[ i ].category);
-    }
+    categorizedTools[ tools[ i ].category ].push_back(tools[ i ]);
   }
+
+  buildCategoryGUI(categorizedTools);
 
   // sections->attach(*child, column, row, width, height);
 }
+
+void DefaultTools::buildCategoryGUI(
+    std::unordered_map<std::string, std::vector<Tools::ToolDef>>& categorizedTools
+) {
+  Gtk::Grid* sections = Widgets::Grid(20, 20, "default-tools-grid");
+
+  for (int i = 0; i < categorizedTools.size(); i++) {
+    Gtk::Box* container = Widgets::Box(
+        Layouts::LayoutProps(
+            Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+        ),
+        "default-tools-grid-child"
+    );
+  }
+}
+
 }  // namespace Components
 }  // namespace UI
 }  // namespace SketchItApplication

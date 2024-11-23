@@ -39,7 +39,7 @@ class Tools {
     std::string texture;     // Give each tool a texture. imperfect pencil strokes, smooth marker
                              // strokes, etc..
     std::string desc;        // Tool description
-    std::string category;    // For sorting tools
+    std::string category;    // pencil, marker, paint brush etc..
     std::string strokeType;  // Solid, dotted, hashed
     std::string drawType;    // vector, stroke, point
     int opacity;             // General purpose opacity
@@ -64,6 +64,7 @@ class Tools {
   };
 
   static std::vector<ToolDef> defaultTools;
+  static std::vector<std::string> toolCategories;
   static void toolsNew();
 
  protected:

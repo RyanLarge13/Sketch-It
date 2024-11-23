@@ -21,6 +21,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../../../lib/Tools.h"
+
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
@@ -37,6 +39,10 @@ class DefaultTools {
   static void create(Gtk::Box* contentContainer);
 
  protected:
+  static void buildCategoryGUI(
+      std::unordered_map<std::string, std::vector<Tools::ToolDef>>& categorizedTools
+  );
+
  private:
 };
 

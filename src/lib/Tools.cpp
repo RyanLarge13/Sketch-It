@@ -20,6 +20,21 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace SketchItApplication {
 
+std::vector<std::string> Tools::toolCategories = {
+    "Pencil",
+    "Paint",
+    "Pastel",
+    "Water Colors",
+    "Shaders",
+    "Erasers",
+    "Oil Paints",
+    "Modifiers",
+    "Charcol",
+    "Markers",
+    "Pen",
+    "Colored Pencils"
+};
+
 // Create the list of default drawing tools for the application
 Tools::ToolDef number2Pencil = Tools::ToolDef(
     "/assets/2-pencil",
@@ -29,9 +44,8 @@ Tools::ToolDef number2Pencil = Tools::ToolDef(
     "0,0,0,1",
     "255,255,255",
     "#000",
-    "pencil",
-    "A basic number 2 pencil for basic drawing and sketching effects, simulates real life most "
-    "closest",
+    "Pencil",
+    "A basic number 2 pencil for drawing and sketching effects, simulates real life most closely",
     "pencil",
     "solid",
     "stroke",
@@ -49,7 +63,8 @@ Tools::ToolDef number2Pencil = Tools::ToolDef(
     false
 );
 
-std::vector<Tools::ToolDef> defaultTools = {number2Pencil};
+std::vector<Tools::ToolDef> Tools::defaultTools = {number2Pencil};
+
 // Create the list of default drawing tools for the application
 
 Tools::Tools() {}
