@@ -20,6 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace SketchItApplication {
 
+// List available default categories all default tools should have
 std::vector<std::string> Tools::toolCategories = {
     "Pencil",
     "Paint",
@@ -37,33 +38,65 @@ std::vector<std::string> Tools::toolCategories = {
 
 // Create the list of default drawing tools for the application
 Tools::ToolDef number2Pencil = Tools::ToolDef(
-    "/assets/2-pencil",
-    "Basic Pencil",
-    "Standard number 2 pencil",
-    "circle",
-    "0,0,0,1",
-    "255,255,255",
-    "#000",
-    "Pencil",
-    "A basic number 2 pencil for drawing and sketching effects, simulates real life most closely",
-    "pencil",
-    "solid",
-    "stroke",
-    1,
-    0,
-    5000,
-    1,
-    50,
-    2,
-    0.5,
-    0.25,
-    true,
-    false,
-    false,
-    false
+    "/assets/2-pencil",          // Icon path
+    "Basic Pencil",              // Tool name
+    "Standard number 2 pencil",  // Short description
+    "circle",                    // Tool tip shape
+    "pointed",                   // Tool profile shape to ip from holder
+    "0,0,0,1",                   // RGBA
+    "255,255,255",               // HSL
+    "#000",                      // HEX
+    "pencil",                    // Texture
+    "A basic number 2 pencil for drawing and sketching effects, simulates real life most "
+    "closely",  // Long description
+    "Pencil",   // Category
+    "solid",    // Stroke type
+    "stroke",   // Drawing type eg: drawing, vector, point
+    1,          // Opacity
+    0,          // Min pressure
+    5000,       // Max pressure
+    1,          // Min width
+    50,         // max width
+    2,          // Tip diameter
+    0.5,        // Edge sharpness
+    0.25,       // Smoothing
+    true,       // Additive
+    false,      // Transformative
+    false,      // Subtractive
+    false       // Custom
 );
 
-std::vector<Tools::ToolDef> Tools::defaultTools = {number2Pencil};
+Tools::ToolDef paintBrush = Tools::ToolDef(
+    "/assets/2-pencil",     // Icon path
+    "Paintbrush",           // Tool name
+    "Standard paintbrush",  // Short description
+    "circle",               // Tool tip shape
+    "pointed",              // Tool profile shape to ip from holder
+    "0,0,0,1",              // RGBA
+    "255,255,255",          // HSL
+    "#000",                 // HEX
+    "paint",                // Texture
+    "A basic number 2 pencil for drawing and sketching effects, simulates real life most "
+    "closely",  // Long description
+    "Paint",    // Category
+    "solid",    // Stroke type
+    "stroke",   // Drawing type eg: drawing, vector, point
+    1,          // Opacity
+    0,          // Min pressure
+    5000,       // Max pressure
+    1,          // Min width
+    50,         // max width
+    2,          // Tip diameter
+    0.5,        // Edge sharpness
+    0.25,       // Smoothing
+    true,       // Additive
+    false,      // Transformative
+    false,      // Subtractive
+    false       // Custom
+);
+// Create the list of default drawing tools for the application
+
+std::vector<Tools::ToolDef> Tools::defaultTools = {number2Pencil, paintBrush};
 
 // Create the list of default drawing tools for the application
 

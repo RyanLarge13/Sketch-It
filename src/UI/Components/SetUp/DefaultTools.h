@@ -39,9 +39,11 @@ class DefaultTools {
   static void create(Gtk::Box* contentContainer);
 
  protected:
-  static void buildCategoryGUI(
+  static Gtk::ScrolledWindow* buildCategoryGUI(
       std::unordered_map<std::string, std::vector<Tools::ToolDef>>& categorizedTools
   );
+
+  static Gtk::Box* buildToolBtn(const Tools::ToolDef& tool);
 
  private:
 };

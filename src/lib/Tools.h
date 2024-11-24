@@ -29,20 +29,22 @@ class Tools {
   Tools();
 
   struct ToolDef {
-    std::string icon;        // Path to tool icon
-    std::string name;        // Tool name
-    std::string toolTip;     // Short description
-    std::string toolShape;   // circle, fixed, custom, square, triangle, etc....
-    std::string rgba;        // color in rgba
-    std::string hsl;         // color in hsl
-    std::string hex;         // Color in hex
-    std::string texture;     // Give each tool a texture. imperfect pencil strokes, smooth marker
-                             // strokes, etc..
-    std::string desc;        // Tool description
-    std::string category;    // pencil, marker, paint brush etc..
-    std::string strokeType;  // Solid, dotted, hashed
-    std::string drawType;    // vector, stroke, point
-    int opacity;             // General purpose opacity
+    std::string icon;         // Path to tool icon
+    std::string name;         // Tool name
+    std::string toolTip;      // Short description
+    std::string toolShape;    // circle, fixed, custom, square, triangle, etc....
+    std::string toolProfile;  // Defines the shape of the tool tip from the holder, canonical,
+                              // pointed, rounded etc...
+    std::string rgba;         // color in rgba
+    std::string hsl;          // color in hsl
+    std::string hex;          // Color in hex
+    std::string texture;      // Give each tool a texture. imperfect pencil strokes, smooth marker
+                              // strokes, etc..
+    std::string desc;         // Tool description
+    std::string category;     // pencil, marker, paint brush etc..
+    std::string strokeType;   // Solid, dotted, hashed
+    std::string drawType;     // vector, stroke, point
+    int opacity;              // General purpose opacity
     double minPressure;  // Give each tool a min pressure, regulate different tool material, metal,
                          // led, etc..
     double maxPressure;  // Give each tool a max pressure, regulate different tool material, metal,
