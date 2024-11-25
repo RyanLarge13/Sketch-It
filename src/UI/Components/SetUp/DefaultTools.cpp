@@ -44,36 +44,36 @@ void DefaultTools::create(Gtk::Box* contentContainer) {
   Gtk::ScrolledWindow* child = buildCategoryGUI(categorizedTools);
 
   contentContainer->append(*child);
-
-  // sections->attach(*child, column, row, width, height);
 }
 
 Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
     std::unordered_map<std::string, std::vector<Tools::ToolDef>>& categorizedTools
 ) {
   Gtk::ScrolledWindow* scrollContainer = Widgets::ScrollWin(
-      {500, 500},
+      {1050, 500},
       "default-tools-scroll-container",
       Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      true
+      false
   );
+
   Gtk::Grid* sections = Widgets::Grid(20, 20, "default-tools-grid");
 
   // Build the selectable icons for each category grid item
-  int index = 0;
+  int colIndex = 0;
+  int rowIndex = 0;
   for (const auto& [ catName, catTools ] : categorizedTools) {
     Gtk::Box* catContainer = Widgets::Box(
         Layouts::LayoutProps(
-            Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START
+            Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
         ),
         "default-tools-grid-child"
     );
 
     Gtk::Box* toolContainer = Widgets::Box(
         Layouts::LayoutProps(
-            Gtk::Orientation::VERTICAL, false, false, Gtk::Align::START, Gtk::Align::START
+            Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
         ),
         "default-tools-tool-container"
     );
@@ -88,15 +88,23 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
         catName,
         "default-tools-cat-title",
         Layouts::LayoutProps(
-            Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
+            Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
         )
     );
 
     catContainer->append(*catTitle);
     catContainer->append(*toolContainer);
 
-    sections->attach(*catContainer, index % 4, index % 4, 50, 50);
-    index++;
+    // sections->attach(*child, column, row, width, height);
+    sections->attach(*catContainer, colIndex, rowIndex, 1, 1);
+
+    if (colIndex == 1) {
+      colIndex = 0;
+      rowIndex++;
+      continue;
+    }
+
+    colIndex++;
   }
 
   scrollContainer->set_child(*sections);
@@ -107,7 +115,7 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
 Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
   Gtk::Box* toolBtn = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::CENTER
       ),
       "default-tools-tool"
   );
@@ -117,7 +125,7 @@ Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
       "default-tools-tool",
       25,
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+          Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
       )
   );
 
@@ -125,15 +133,80 @@ Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
       tool.name,
       "default-tools-tool-name",
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::FILL
       )
   );
+
+  createSignals(toolBtn, tool);
 
   toolBtn->append(*toolIcon);
   toolBtn->append(*toolName);
 
   return toolBtn;
 }
+
+void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) {
+  toolBtn->set_has_tooltip(true);
+
+  toolBtn->signal_query_tooltip().connect(
+      [ tool ](
+          int x, int y, bool keyboard_mode, const Glib::RefPtr<Gtk::Tooltip>& tooltip
+      ) -> bool {
+        Gtk::Box* toolTipContainer = Widgets::Box(
+            Layouts::LayoutProps(
+                Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+            ),
+            "tooltip"
+        );
+
+        Gtk::Box* toolDescContainer = Widgets::Box(
+            Layouts::LayoutProps(
+                Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+            ),
+            "tooltip-desc-container"
+        );
+
+        Gtk::Label* toolName = Widgets::Label(
+            tool.name,
+            "tooltip-name",
+            Layouts::LayoutProps(
+                Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
+            )
+        );
+
+        Gtk::Label* tooltipDesc = Widgets::Label(
+            tool.desc,
+            "tooltip-desc",
+            Layouts::LayoutProps(
+                Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
+            )
+        );
+
+        Gtk::Image* toolIcon = Widgets::Img(
+            tool.icon,
+            "tooltip-img",
+            100,
+            Layouts::LayoutProps(
+                Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+            )
+        );
+
+        toolDescContainer->append(*toolName);
+        toolDescContainer->append(*tooltipDesc);
+
+        Gtk::Grid* toolProperties = buildToolTipProperties(tool);
+
+        toolTipContainer->append(*toolIcon);
+        toolTipContainer->append(*toolDescContainer);
+
+        tooltip->set_custom(*toolTipContainer);
+        return true;
+      },
+      false
+  );
+}
+
+Gtk::Grid* DefaultTools::buildToolTipProperties(const Tools::ToolDef& tool) {}
 
 }  // namespace Components
 }  // namespace UI

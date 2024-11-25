@@ -138,3 +138,58 @@ window {
 .default-tools-grid {
   padding: 25px;
 }
+
+.default-tools-grid-child {
+  padding: 25px;
+  background-color: #333;
+  border-radius: 15px;
+  transition: 250ms ease-in-out;
+}
+
+.default-tools-grid-child:hover {
+  background-color: #444;
+}
+
+.default-tools-cat-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.default-tools-tool {
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.1);
+  background-color: #444;
+  transition: 250ms ease-in-out;
+}
+
+.default-tools-tool:hover {
+  background-color: #555;
+  transform: scale(1.05);
+}
+
+.default-tools-tool-name {
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+/* Tool tip styles */
+
+.tooltip {
+  padding: 25px;
+  background-color: #444;
+}
+
+.tooltip-desc-container {
+  margin-left: 15px;
+}
+
+.tooltip-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tooltip-desc {
+}
+.tooltip-img {
+}

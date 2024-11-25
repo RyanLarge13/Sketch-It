@@ -44,6 +44,8 @@ class DefaultTools {
   );
 
   static Gtk::Box* buildToolBtn(const Tools::ToolDef& tool);
+  static void createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool);
+  static Gtk::Grid* buildToolTipProperties(const Tools::ToolDef& tool);
 
  private:
 };

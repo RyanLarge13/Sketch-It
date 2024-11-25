@@ -22,17 +22,17 @@ namespace SketchItApplication {
 
 // List available default categories all default tools should have
 std::vector<std::string> Tools::toolCategories = {
-    "Pencil",
-    "Paint",
-    "Pastel",
+    "Pencils",
+    "Paints",
+    "Pastels",
     "Water Colors",
     "Shaders",
     "Erasers",
     "Oil Paints",
     "Modifiers",
-    "Charcol",
+    "Charcols",
     "Markers",
-    "Pen",
+    "Pens",
     "Colored Pencils"
 };
 
@@ -49,7 +49,36 @@ Tools::ToolDef number2Pencil = Tools::ToolDef(
     "pencil",                    // Texture
     "A basic number 2 pencil for drawing and sketching effects, simulates real life most "
     "closely",  // Long description
-    "Pencil",   // Category
+    "Pencils",  // Category
+    "solid",    // Stroke type
+    "stroke",   // Drawing type eg: drawing, vector, point
+    1,          // Opacity
+    0,          // Min pressure
+    5000,       // Max pressure
+    1,          // Min width
+    50,         // max width
+    2,          // Tip diameter
+    0.5,        // Edge sharpness
+    0.25,       // Smoothing
+    true,       // Additive
+    false,      // Transformative
+    false,      // Subtractive
+    false       // Custom
+);
+
+Tools::ToolDef charcolPencil = Tools::ToolDef(
+    "/assets/charcol-pencil",                               // Icon path
+    "Charcol Pencil",                                       // Tool name
+    "Charcol pencil that simulates smearing and textures",  // Short description
+    "circle",                                               // Tool tip shape
+    "pointed",                                              // Tool profile shape to ip from holder
+    "0,0,0,1",                                              // RGBA
+    "255,255,255",                                          // HSL
+    "#000",                                                 // HEX
+    "charcol",                                              // Texture
+    "Allows artists to simulate closely the charcol smearing and wiping effects in a pencil "
+    "shape",    // Long description
+    "Pencils",  // Category
     "solid",    // Stroke type
     "stroke",   // Drawing type eg: drawing, vector, point
     1,          // Opacity
@@ -78,7 +107,7 @@ Tools::ToolDef paintBrush = Tools::ToolDef(
     "paint",                // Texture
     "A basic number 2 pencil for drawing and sketching effects, simulates real life most "
     "closely",  // Long description
-    "Paint",    // Category
+    "Paints",   // Category
     "solid",    // Stroke type
     "stroke",   // Drawing type eg: drawing, vector, point
     1,          // Opacity
@@ -94,9 +123,124 @@ Tools::ToolDef paintBrush = Tools::ToolDef(
     false,      // Subtractive
     false       // Custom
 );
+
+Tools::ToolDef pastel = Tools::ToolDef(
+    "/assets/2-pencil",   // Icon path
+    "Pastel",             // Tool name
+    "Standard pastel",    // Short description
+    "circle",             // Tool tip shape
+    "cylindrical",        // Tool profile shape to ip from holder
+    "0,0,0,1",            // RGBA
+    "255,255,255",        // HSL
+    "#000",               // HEX
+    "pastel",             // Texture
+    "Oil based pastel ",  // Long description
+    "Pastels",            // Category
+    "solid",              // Stroke type
+    "stroke",             // Drawing type eg: drawing, vector, point
+    1,                    // Opacity
+    0,                    // Min pressure
+    5000,                 // Max pressure
+    1,                    // Min width
+    50,                   // max width
+    2,                    // Tip diameter
+    0.25,                 // Edge sharpness
+    0.1,                  // Smoothing
+    true,                 // Additive
+    false,                // Transformative
+    false,                // Subtractive
+    false                 // Custom
+);
+
+Tools::ToolDef eraser = Tools::ToolDef(
+    "/assets/eraser",         // Icon path
+    "Eraser",                 // Tool name
+    "Standard Round Eraser",  // Short description
+    "circle",                 // Tool tip shape
+    "cylindrical",            // Tool profile shape to ip from holder
+    "0,0,0,1",                // RGBA
+    "255,255,255",            // HSL
+    "#000",                   // HEX
+    "null",                   // Texture
+    "Standard eraser removes all types of additive material",  // Long description
+    "Erasers",                                                 // Category
+    "solid",                                                   // Stroke type
+    "stroke",  // Drawing type eg: drawing, vector, point
+    1,         // Opacity
+    0,         // Min pressure
+    5000,      // Max pressure
+    1,         // Min width
+    500,       // max width
+    20,        // Tip diameter
+    1,         // Edge sharpness
+    1,         // Smoothing
+    false,     // Additive
+    false,     // Transformative
+    true,      // Subtractive
+    false      // Custom
+);
+
+Tools::ToolDef eraserRect = Tools::ToolDef(
+    "/assets/eraser",               // Icon path
+    "Rectangular Eraser",           // Tool name
+    "Standard Rectangular Eraser",  // Short description
+    "rect",                         // Tool tip shape
+    "canonical",                    // Tool profile shape to ip from holder
+    "0,0,0,1",                      // RGBA
+    "255,255,255",                  // HSL
+    "#000",                         // HEX
+    "null",                         // Texture
+    "Standard eraser removes all types of additive material with straight edges",  // Long
+                                                                                   // description
+    "Erasers",                                                                     // Category
+    "solid",                                                                       // Stroke type
+    "stroke",  // Drawing type eg: drawing, vector, point
+    1,         // Opacity
+    0,         // Min pressure
+    5000,      // Max pressure
+    1,         // Min width
+    500,       // max width
+    20,        // Tip diameter
+    1,         // Edge sharpness
+    1,         // Smoothing
+    false,     // Additive
+    false,     // Transformative
+    true,      // Subtractive
+    false      // Custom
+);
+
+Tools::ToolDef shader = Tools::ToolDef(
+    "/assets/Shader",                                        // Icon path
+    "Shading Tool",                                          // Tool name
+    "Standard shading tool",                                 // Short description
+    "circle",                                                // Tool tip shape
+    "pointed",                                               // Tool profile shape to ip from holder
+    "0,0,0,1",                                               // RGBA
+    "255,255,255",                                           // HSL
+    "#000",                                                  // HEX
+    "shader",                                                // Texture
+    "Shading tool for creating realistic shading textures",  // Long description
+    "Pencils",                                               // Category
+    "solid",                                                 // Stroke type
+    "stroke",  // Drawing type eg: drawing, vector, point
+    1,         // Opacity
+    0,         // Min pressure
+    5000,      // Max pressure
+    1,         // Min width
+    50,        // max width
+    2,         // Tip diameter
+    0.5,       // Edge sharpness
+    0.25,      // Smoothing
+    true,      // Additive
+    false,     // Transformative
+    false,     // Subtractive
+    false      // Custom
+);
 // Create the list of default drawing tools for the application
 
-std::vector<Tools::ToolDef> Tools::defaultTools = {number2Pencil, paintBrush};
+std::vector<Tools::ToolDef> Tools::defaultTools = {
+    number2Pencil, paintBrush, pastel, eraser, shader, charcolPencil, eraserRect
+};
 
 // Create the list of default drawing tools for the application
 
