@@ -30,7 +30,7 @@ std::vector<std::string> Tools::toolCategories = {
     "Erasers",
     "Oil Paints",
     "Modifiers",
-    "Charcols",
+    "Charcoals",
     "Markers",
     "Pens",
     "Colored Pencils"
@@ -66,17 +66,17 @@ Tools::ToolDef number2Pencil = Tools::ToolDef(
     false       // Custom
 );
 
-Tools::ToolDef charcolPencil = Tools::ToolDef(
-    "/assets/charcol-pencil",                               // Icon path
-    "Charcol Pencil",                                       // Tool name
-    "Charcol pencil that simulates smearing and textures",  // Short description
-    "circle",                                               // Tool tip shape
-    "pointed",                                              // Tool profile shape to ip from holder
-    "0,0,0,1",                                              // RGBA
-    "255,255,255",                                          // HSL
-    "#000",                                                 // HEX
-    "charcol",                                              // Texture
-    "Allows artists to simulate closely the charcol smearing and wiping effects in a pencil "
+Tools::ToolDef charcoalPencil = Tools::ToolDef(
+    "/assets/charcoal-pencil",                               // Icon path
+    "Charcoal Pencil",                                       // Tool name
+    "Charcoal pencil that simulates smearing and textures",  // Short description
+    "circle",                                                // Tool tip shape
+    "pointed",                                               // Tool profile shape to ip from holder
+    "0,0,0,1",                                               // RGBA
+    "255,255,255",                                           // HSL
+    "#000",                                                  // HEX
+    "charcoal",                                              // Texture
+    "Allows artists to simulate closely the charcoal smearing and wiping effects in a pencil "
     "shape",    // Long description
     "Pencils",  // Category
     "solid",    // Stroke type
@@ -239,7 +239,7 @@ Tools::ToolDef shader = Tools::ToolDef(
 // Create the list of default drawing tools for the application
 
 std::vector<Tools::ToolDef> Tools::defaultTools = {
-    number2Pencil, paintBrush, pastel, eraser, shader, charcolPencil, eraserRect
+    number2Pencil, paintBrush, pastel, eraser, shader, charcoalPencil, eraserRect
 };
 
 // Create the list of default drawing tools for the application

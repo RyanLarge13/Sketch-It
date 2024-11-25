@@ -206,7 +206,17 @@ void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) 
   );
 }
 
-Gtk::Grid* DefaultTools::buildToolTipProperties(const Tools::ToolDef& tool) {}
+Gtk::Grid* DefaultTools::buildToolTipProperties(const Tools::ToolDef& tool) {
+  Gtk::Grid* toolPropGrid = Widgets::Grid(20, 20, "tooltip-tool-prop-grid");
+
+  for (int i = 0; i < 10; i++) {
+    Gtk::Box* toolProp = Widgets::Box(Layouts::LayoutProps(
+        Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::ALign::FILL
+    ));
+  }
+
+  return toolPropGrid;
+}
 
 }  // namespace Components
 }  // namespace UI

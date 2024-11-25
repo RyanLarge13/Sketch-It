@@ -28,7 +28,23 @@ class Tools {
  public:
   Tools();
 
+  struct toolDef;
+
+  static std::unordered_map<std::string, std::vector<ToolDef>> categorizedTools;
+
+  // total values within struct 25
   struct ToolDef {
+    // Add data type to variant list if future properties are added / remove if tool properties no
+    // longer include type after updating
+    using ToolPropertiesVariant = std::variant<int, double, bool, std::string>;
+
+    // This map will be used to create a loop-able interface for each tool definition, such as
+    // looping over the tool properties and creating widgets for each property. This map includes
+    // the variant type defined above
+
+    std::unordered_map<std::string, ToolPropertiesVariant> toolPropsMap;
+
+    // Tool properties ---------------------------------------------------------------
     std::string icon;         // Path to tool icon
     std::string name;         // Tool name
     std::string toolTip;      // Short description
@@ -63,6 +79,62 @@ class Tools {
     // tilt effects?
     // Speed effects
     // Hot keys
+    // Tool properties -------------------------------------------------------------
+
+    ToolDef()
+        : icon(icon)
+        , name(name)
+        , toolTip(toolTip)
+        , toolShape(toolShape)
+        , toolProfile(toolProfile)
+        , rgba(rgba)
+        , hsl(hsl)
+        , hex(hex)
+        , texture(texture)
+        , desc(desc)
+        , category(category)
+        , strokeType(strokeType)
+        , drawType(drawType)
+        , opacity(opacity)
+        , minPressure(minPressure)
+        , maxPressure(maxPressure)
+        , minWidth(minWidth)
+        , maxWidth(maxWidth)
+        , tipDiam(tipDiam)
+        , edgeSharpness(edgeSharpness)
+        , smoothing(smoothing)
+        , additive(additive)
+        , transformative(transformative)
+        , subtractive(subtractive)
+        , custom(custom)
+        , toolPropsMap(
+              {{"icon", icon},
+               {"name", name},
+               {"toolTip", toolTip},
+               {"toolShape", toolShape},
+               {"toolProfile", toolProfile},
+               {"rgba", rgba},
+               {"hsl", hsl},
+               {"hex", hex},
+               {"texture", texture},
+               {"desc", desc},
+               {"category", category},
+               {"strokeType", strokeType},
+               {"drawType", drawType},
+               {"opacity", opacity},
+               {"minPressure", minPressure},
+               {"maxPressure", maxPressure},
+               {"minWidth", minWidth},
+               {"maxWidth", maxWidth},
+               {"tipDiam", tipDiam},
+               {"edgeSharpness", edgeSharpness},
+               {"smoothing", smoothing},
+               {"additive", additive},
+               {"transformative", transformative},
+               {"subtractive", subtractive},
+               {"custom", custom}}
+          );
+    { categorizedTools[ this.category ].push_back(this); }
   };
 
   static std::vector<ToolDef> defaultTools;
