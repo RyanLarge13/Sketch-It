@@ -34,22 +34,20 @@ void DefaultSession::create(Gtk::Box* contentContainer) {
       Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
       ),
-      "default-session-lesson-container"
+      "default-session-lesson-container",
+      true
   );
 
   Gtk::Box* freeDraw = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
       ),
-      "default-session-free-draw-container"
+      "default-session-free-draw-container",
+      true
   );
 
   Glib::RefPtr<Gtk::GestureClick> gesture_click_lessons = Gtk::GestureClick::create();
   Glib::RefPtr<Gtk::GestureClick> gesture_click_freehand = Gtk::GestureClick::create();
-  Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover_lessons =
-      Gtk::EventControllerMotion::create();
-  Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover_free_draw =
-      Gtk::EventControllerMotion::create();
 
   gesture_click_lessons->signal_released().connect(
       [ lessons, freeDraw ](const int& z, const double& x, const double& y) {
@@ -65,16 +63,8 @@ void DefaultSession::create(Gtk::Box* contentContainer) {
       }
   );
 
-  gesture_hover_lessons->signal_enter().connect([ lessons ](const double& x, const double& y) {
-    lessons->set_cursor("pointer");
-  });
-  gesture_hover_free_draw->signal_enter().connect([ freeDraw ](const double& x, const double& y) {}
-  );
-
   lessons->add_controller(gesture_click_lessons);
-  lessons->add_controller(gesture_hover_lessons);
   freeDraw->add_controller(gesture_click_freehand);
-  freeDraw->add_controller(gesture_hover_free_draw);
 
   Gtk::Label* lessonHeading = Widgets::Label(
       "Lessons",

@@ -35,13 +35,15 @@ Gtk::Box* SetUpNotebookTab::createTab(const std::string& titleTxt, const std::st
       Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "set-up-page"
+      "set-up-page",
+      false
   );
   Gtk::Box* pageContainer = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "set-up-container"
+      "set-up-container",
+      false
   );
   Gtk::ScrolledWindow* descContainer = Widgets::ScrollWin(
       {300, 200},
@@ -55,13 +57,15 @@ Gtk::Box* SetUpNotebookTab::createTab(const std::string& titleTxt, const std::st
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "set-up-content-container"
+      "set-up-content-container",
+      false
   );
   Gtk::Box* btnContainer = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "set-up-btn-container"
+      "set-up-btn-container",
+      false
   );
 
   // Create text elements

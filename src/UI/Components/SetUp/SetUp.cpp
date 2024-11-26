@@ -325,7 +325,8 @@ void SetUp::buildNavigation(
         Layouts::LayoutProps(
             Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
         ),
-        "null"
+        "null",
+        false
     );
 
     UIUtils::addWidget(btnHolder, spacer, 0);
@@ -363,7 +364,8 @@ void SetUp::addMainContent(Gtk::Notebook* notebook) {
             Layouts::LayoutProps(
                 Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
             ),
-            "img-container"
+            "img-container",
+            false
         );
         if (contentContainer == nullptr) {
           std::cout << "NULL content container when appending image to Welcome tab" << "\n";
@@ -379,6 +381,9 @@ void SetUp::addMainContent(Gtk::Notebook* notebook) {
       } break;
       case 3: {
         Components::DefaultTools::create(contentContainer);
+      }
+      case 4: {
+        Components::CustomTools::create(contentContainer);
       }
     }
   }

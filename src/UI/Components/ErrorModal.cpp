@@ -35,7 +35,8 @@ Gtk::Window* ErrorModal::create(const std::string& title, const std::string& mes
       Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "error-modal-message-container"
+      "error-modal-message-container",
+      false
   );
   Gtk::Label* label = Widgets::Label(
       message,

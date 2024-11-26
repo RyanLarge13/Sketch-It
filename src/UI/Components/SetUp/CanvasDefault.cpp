@@ -75,7 +75,8 @@ void CanvasDefault::create(Gtk::Box* contentContainer) {
       Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "canvas-default-size-input-container"
+      "canvas-default-size-input-container",
+      false
   );
 
   addInputsAndSelect(inputContainer);
@@ -92,7 +93,8 @@ void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
         Layouts::LayoutProps(
             Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
         ),
-        "canvas-default-select-btn"
+        "canvas-default-select-btn",
+        true
     );
 
     std::ostringstream ss;
@@ -181,13 +183,15 @@ void CanvasDefault::addInputsAndSelect(Gtk::Box* inputContainer) {
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
       ),
-      "null"
+      "null",
+      false
   );
   Gtk::Box* hBox = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, false, false, Gtk::Align::START, Gtk::Align::START
       ),
-      "null"
+      "null",
+      false
   );
 
   Gtk::Label* wLabel = Widgets::Label(

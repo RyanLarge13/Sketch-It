@@ -51,7 +51,9 @@ Widgets::Widgets() {}
 // Custom Widgets
 // ------------------------------------------------
 
-Gtk::Box* Widgets::Box(const Layouts::LayoutProps& props, const std::string& className) {
+Gtk::Box* Widgets::Box(
+    const Layouts::LayoutProps& props, const std::string& className, const bool& cursor
+) {
   // Build layout for a custom Gtk::Box
   // and return it
   Gtk::Box* box = Gtk::make_managed<Gtk::Box>(props.orientation);
@@ -62,6 +64,16 @@ Gtk::Box* Widgets::Box(const Layouts::LayoutProps& props, const std::string& cla
   box->set_vexpand(props.vexpand);
   box->set_halign(props.halign);
   box->set_valign(props.valign);
+
+  if (cursor) {
+    Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover = Gtk::EventControllerMotion::create();
+
+    auto hover = [ box ](const double& x, const double& y) { box->set_cursor("pointer"); };
+
+    gesture_hover->signal_enter().connect(hover);
+
+    box->add_controller(gesture_click);
+  }
 
   return box;
 }

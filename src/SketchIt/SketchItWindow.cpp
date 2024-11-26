@@ -54,7 +54,8 @@ void SketchItWindow::loadMainAppUI() {
       UI::Layouts::LayoutProps(
           Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
-      "main-win-container"
+      "main-win-container",
+      false
   );
 
   this->set_child(*mainWinContainer);
@@ -77,7 +78,8 @@ void SketchItWindow::checkConfig() {
           UI::Layouts::LayoutProps(
               Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::END
           ),
-          "error-modal-btn-container"
+          "error-modal-btn-container",
+          false
       );
 
       UI::UIUtils::addBtns(
