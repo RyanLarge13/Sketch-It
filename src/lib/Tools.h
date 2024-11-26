@@ -19,7 +19,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef TOOLS
 #define TOOLS
 
+#include <memory>
 #include <string>
+#include <unordered_map>
+#include <variant>
 #include <vector>
 
 namespace SketchItApplication {
@@ -27,10 +30,6 @@ namespace SketchItApplication {
 class Tools {
  public:
   Tools();
-
-  struct toolDef;
-
-  static std::unordered_map<std::string, std::vector<ToolDef>> categorizedTools;
 
   // total values within struct 25
   struct ToolDef {
@@ -81,7 +80,33 @@ class Tools {
     // Hot keys
     // Tool properties -------------------------------------------------------------
 
-    ToolDef()
+    ToolDef(
+        std::string icon,
+        std::string name,
+        std::string toolTip,
+        std::string toolShape,
+        std::string toolProfile,
+        std::string rgba,
+        std::string hsl,
+        std::string hex,
+        std::string texture,
+        std::string desc,
+        std::string category,
+        std::string strokeType,
+        std::string drawType,
+        int opacity,
+        double minPressure,
+        double maxPressure,
+        double minWidth,
+        double maxWidth,
+        double tipDiam,
+        double edgeSharpness,
+        double smoothing,
+        bool additive,
+        bool transformative,
+        bool subtractive,
+        bool custom
+    )
         : icon(icon)
         , name(name)
         , toolTip(toolTip)
@@ -133,10 +158,10 @@ class Tools {
                {"transformative", transformative},
                {"subtractive", subtractive},
                {"custom", custom}}
-          );
-    { categorizedTools[ this.category ].push_back(this); }
+          ) {}
   };
 
+  static std::unordered_map<std::string, std::vector<std::shared_ptr<ToolDef>>> categorizedTools;
   static std::vector<ToolDef> defaultTools;
   static std::vector<std::string> toolCategories;
   static void toolsNew();

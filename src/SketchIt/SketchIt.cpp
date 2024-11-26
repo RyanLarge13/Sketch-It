@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <iostream>
 
+#include "../lib/Tools.h"
 #include "SketchItWindow.h"
 
 namespace SketchItApplication {
@@ -34,6 +35,10 @@ Glib::RefPtr<SketchIt> SketchIt::create() {
 
 SketchIt::SketchIt() : styleSheets("../src/Styles/styleSheets/global.css") {
   // Initialize core application logic and state
+
+  // Create default tools and initialize their categorization
+  // "../lib/Tools.h"
+  Tools();
 }
 
 void SketchIt::on_startup() { Gtk::Application::on_startup(); }

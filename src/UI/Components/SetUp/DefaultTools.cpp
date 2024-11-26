@@ -31,24 +31,12 @@ namespace Components {
 DefaultTools::DefaultTools() {}
 
 void DefaultTools::create(Gtk::Box* contentContainer) {
-  std::vector<Tools::ToolDef> tools = Tools::defaultTools;
-
-  std::unordered_map<std::string, std::vector<Tools::ToolDef>>
-      categorizedTools;  // Don't forget to parse the users config for custom built tools
-
-  // Fill in the categorized map with tools from each category sorted
-  for (int i = 0; i < tools.size(); i++) {
-    categorizedTools[ tools[ i ].category ].push_back(tools[ i ]);
-  }
-
-  Gtk::ScrolledWindow* child = buildCategoryGUI(categorizedTools);
+  Gtk::ScrolledWindow* child = buildCategoryGUI();
 
   contentContainer->append(*child);
 }
 
-Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
-    std::unordered_map<std::string, std::vector<Tools::ToolDef>>& categorizedTools
-) {
+Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI() {
   Gtk::ScrolledWindow* scrollContainer = Widgets::ScrollWin(
       {1050, 500},
       "default-tools-scroll-container",
@@ -63,7 +51,7 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
   // Build the selectable icons for each category grid item
   int colIndex = 0;
   int rowIndex = 0;
-  for (const auto& [ catName, catTools ] : categorizedTools) {
+  for (const auto& [ catName, catTools ] : Tools::categorizedTools) {
     Gtk::Box* catContainer = Widgets::Box(
         Layouts::LayoutProps(
             Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -78,7 +66,7 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
         "default-tools-tool-container"
     );
 
-    for (const Tools::ToolDef& tool : catTools) {
+    for (const std::shared_ptr<Tools::ToolDef>& tool : catTools) {
       Gtk::Box* toolBtn = buildToolBtn(tool);
 
       toolContainer->append(*toolBtn);
@@ -112,7 +100,7 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI(
   return scrollContainer;
 }
 
-Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
+Gtk::Box* DefaultTools::buildToolBtn(const std::shared_ptr<Tools::ToolDef>& tool) {
   Gtk::Box* toolBtn = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::CENTER
@@ -121,7 +109,7 @@ Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
   );
 
   Gtk::Image* toolIcon = Widgets::Img(
-      tool.icon,
+      tool->icon,
       "default-tools-tool",
       25,
       Layouts::LayoutProps(
@@ -130,7 +118,7 @@ Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
   );
 
   Gtk::Label* toolName = Widgets::Label(
-      tool.name,
+      tool->name,
       "default-tools-tool-name",
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::FILL
@@ -145,7 +133,7 @@ Gtk::Box* DefaultTools::buildToolBtn(const Tools::ToolDef& tool) {
   return toolBtn;
 }
 
-void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) {
+void DefaultTools::createSignals(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool) {
   toolBtn->set_has_tooltip(true);
 
   toolBtn->signal_query_tooltip().connect(
@@ -167,7 +155,7 @@ void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) 
         );
 
         Gtk::Label* toolName = Widgets::Label(
-            tool.name,
+            tool->name,
             "tooltip-name",
             Layouts::LayoutProps(
                 Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
@@ -175,7 +163,7 @@ void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) 
         );
 
         Gtk::Label* tooltipDesc = Widgets::Label(
-            tool.desc,
+            tool->desc,
             "tooltip-desc",
             Layouts::LayoutProps(
                 Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::START
@@ -183,7 +171,7 @@ void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) 
         );
 
         Gtk::Image* toolIcon = Widgets::Img(
-            tool.icon,
+            tool->icon,
             "tooltip-img",
             100,
             Layouts::LayoutProps(
@@ -206,13 +194,16 @@ void DefaultTools::createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool) 
   );
 }
 
-Gtk::Grid* DefaultTools::buildToolTipProperties(const Tools::ToolDef& tool) {
+Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::ToolDef>& tool) {
   Gtk::Grid* toolPropGrid = Widgets::Grid(20, 20, "tooltip-tool-prop-grid");
 
   for (int i = 0; i < 10; i++) {
-    Gtk::Box* toolProp = Widgets::Box(Layouts::LayoutProps(
-        Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::ALign::FILL
-    ));
+    Gtk::Box* toolProperty = Widgets::Box(
+        Layouts::LayoutProps(
+            Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+        ),
+        "tooltip-property"
+    );
   }
 
   return toolPropGrid;

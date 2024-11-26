@@ -39,13 +39,11 @@ class DefaultTools {
   static void create(Gtk::Box* contentContainer);
 
  protected:
-  static Gtk::ScrolledWindow* buildCategoryGUI(
-      std::unordered_map<std::string, std::vector<Tools::ToolDef>>& categorizedTools
-  );
+  static Gtk::ScrolledWindow* buildCategoryGUI();
 
-  static Gtk::Box* buildToolBtn(const Tools::ToolDef& tool);
-  static void createSignals(Gtk::Box* toolBtn, const Tools::ToolDef& tool);
-  static Gtk::Grid* buildToolTipProperties(const Tools::ToolDef& tool);
+  static Gtk::Box* buildToolBtn(const std::shared_ptr<Tools::ToolDef>& tool);
+  static void createSignals(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool);
+  static Gtk::Grid* buildToolTipProperties(const std::shared_ptr<Tools::ToolDef>& tool);
 
  private:
 };

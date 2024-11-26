@@ -18,6 +18,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "./Tools.h"
 
+#include <iostream>
+#include <memory>
+
 namespace SketchItApplication {
 
 // List available default categories all default tools should have
@@ -242,9 +245,20 @@ std::vector<Tools::ToolDef> Tools::defaultTools = {
     number2Pencil, paintBrush, pastel, eraser, shader, charcoalPencil, eraserRect
 };
 
+std::unordered_map<std::string, std::vector<std::shared_ptr<Tools::ToolDef>>>
+    Tools::categorizedTools;
+
 // Create the list of default drawing tools for the application
 
-Tools::Tools() {}
+Tools::Tools() {
+  std::cout << Tools::defaultTools.size() << "\n";
+  for (int i = 0; i < Tools::defaultTools.size(); i++) {
+    Tools::categorizedTools[ Tools::defaultTools[ i ].category ].push_back(
+        std::make_shared<Tools::ToolDef>(Tools::defaultTools[ i ])
+    );
+  }
+  // Don't forget to parse the users config for custom built tools!!!!!!!!!!!!!
+}
 
 void Tools::toolsNew() {}
 
