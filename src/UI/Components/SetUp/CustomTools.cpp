@@ -18,6 +18,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "./CustomTools.h"
 
+#include <gtkmm.h>
+
 namespace SketchItApplication {
 namespace UI {
 namespace Components {

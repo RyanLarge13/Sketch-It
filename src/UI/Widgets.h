@@ -42,7 +42,9 @@ class Widgets {
       const Layouts::LayoutProps& props
   );
 
-  static Gtk::Box* Box(const Layouts::LayoutProps& props, const std::string& className);
+  static Gtk::Box* Box(
+      const Layouts::LayoutProps& props, const std::string& className, const bool& cursor
+  );
 
   static Gtk::Label* Label(
       const std::string& label, const std::string& className, const Layouts::LayoutProps& props

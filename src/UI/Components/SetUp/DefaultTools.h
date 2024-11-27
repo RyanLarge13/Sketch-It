@@ -36,6 +36,16 @@ class DefaultTools {
  public:
   DefaultTools();
 
+  struct StringFromVariantVisitor {
+    std::string operator()(int value) const { return std::to_string(value); }
+
+    std::string operator()(double value) const { return std::to_string(value); }
+
+    std::string operator()(bool value) const { return value ? "true" : "false"; }
+
+    std::string operator()(const std::string& value) const { return value; }
+  };
+
   static void create(Gtk::Box* contentContainer);
   static std::vector<std::shared_ptr<Tools::ToolDef>> selectedTools;
   static std::vector<Gtk::Box*> toolTips;

@@ -131,8 +131,8 @@ Gtk::Box* DefaultTools::buildToolBtn(const std::shared_ptr<Tools::ToolDef>& tool
       )
   );
 
-  buildToolTip(tool, toolBtn);
-  buildSelectableBtn(tool, toolBtn);
+  buildToolTip(toolBtn, tool);
+  buildSelectableBtn(toolBtn, tool);
 
   toolBtn->append(*toolIcon);
   toolBtn->append(*toolName);
@@ -205,12 +205,18 @@ void DefaultTools::buildToolTip(Gtk::Box* toolBtn, const std::shared_ptr<Tools::
 }
 
 Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::ToolDef>& tool) {
-  Gtk::Grid* toolPropGrid = Widgets::Grid(20, 20, "tooltip-tool-prop-grid");
+  Gtk::Grid* toolPropGrid = Widgets::Grid(5, 5, "tooltip-tool-prop-grid");
 
   // Loop through tool properties and create an information grid
   int colIndex = 0;
   int rowIndex = 0;
   for (const auto& [ toolPropName, toolProp ] : tool->toolPropsMap) {
+    // Skip displaying non user friendly information
+    if (toolPropName == "Description" || toolPropName == "Tool Tip" || toolPropName == "Icon" ||
+        toolPropName == "rgba" || toolPropName == "hsl" || toolPropName == "hex") {
+      continue;
+    }
+
     Gtk::Box* toolPropertyBox = Widgets::Box(
         Layouts::LayoutProps(
             Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -219,7 +225,7 @@ Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::Too
         false
     );
 
-    Gtk::Label* propLabel = Widgets::Label(
+    Gtk::Label* propName = Widgets::Label(
         toolPropName + ": ",
         "tooltip-prop-title",
         Layouts::LayoutProps(
@@ -227,17 +233,22 @@ Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::Too
         )
     );
 
-    Gtk::Label* propLabel = Widgets::Label(
-        toolProp,
-        "tooltip-prop-title",
+    Gtk::Label* propValue = Widgets::Label(
+        // Use the variant operator overload to determine the type of toolProp being passed to the
+        // Label
+        std::visit(DefaultTools::StringFromVariantVisitor{}, toolProp),
+        "tooltip-prop-desc",
         Layouts::LayoutProps(
             Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::END, Gtk::Align::FILL
         )
     );
 
+    toolPropertyBox->append(*propName);
+    toolPropertyBox->append(*propValue);
+
     toolPropGrid->attach(*toolPropertyBox, colIndex, rowIndex, 1, 1);
 
-    if (colIndex == 1) {
+    if (colIndex == 3) {
       colIndex = 0;
       rowIndex++;
       continue;

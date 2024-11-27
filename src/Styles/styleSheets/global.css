@@ -189,7 +189,14 @@ window {
   font-weight: 600;
 }
 
-.tooltip-desc {
+.tooltip-property {
+  padding: 5px;
+  background: #222;
+  border-radius: 5px;
+  box-shadow: 10px 10px 25px -6px rgba(0, 0, 0, 0.1);
 }
-.tooltip-img {
+
+.tooltip-prop-title {
+  color: #f37e7e;
+  font-weight: 600;
 }

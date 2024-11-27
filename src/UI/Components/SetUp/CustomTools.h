@@ -19,6 +19,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef CUSTOM_TOOLS
 #define CUSTOM_TOOLS
 
+#include <gtkmm.h>
+
 namespace SketchItApplication {
 namespace UI {
 namespace Components {

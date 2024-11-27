@@ -50,10 +50,10 @@ class UIUtils {
   static void addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index);
 
   template <typename W>
-  static void hasCssClass(const std::string& className, W* widget) {
+  static bool hasCssClass(const std::string& className, W* widget) {
     std::vector<Glib::ustring> classes = widget->get_css_classes();
 
-    if (std::find(classes.begin(), classes.end(), className) != classes.end()) {
+    if (std::find(classes.begin(), classes.end(), Glib::ustring(className)) != classes.end()) {
       return true;
     } else {
       return false;

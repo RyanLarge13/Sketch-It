@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "../../Widgets.h"
 #include "../ErrorModal.h"
 #include "./CanvasDefault.h"
+#include "./CustomTools.h"
 #include "./DefaultSession.h"
 #include "./DefaultTools.h"
 #include "./SetUpNotebookTab.h"

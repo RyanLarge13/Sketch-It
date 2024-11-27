@@ -72,7 +72,7 @@ Gtk::Box* Widgets::Box(
 
     gesture_hover->signal_enter().connect(hover);
 
-    box->add_controller(gesture_click);
+    box->add_controller(gesture_hover);
   }
 
   return box;
@@ -204,7 +204,7 @@ Gtk::Grid* Widgets::Grid(
 }
 
 Gtk::Box* Widgets::GestureBtn(const std::string& className, const Layouts::LayoutProps& props) {
-  Gtk::Box* box = Box(props, className);
+  Gtk::Box* box = Box(props, className, false);
 
   Glib::RefPtr<Gtk::GestureClick> gesture_click = Gtk::GestureClick::create();
   Glib::RefPtr<Gtk::EventControllerMotion> gesture_hover = Gtk::EventControllerMotion::create();
