@@ -20,13 +20,109 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../../../lib/Tools.h"
+#include "../../Layouts.h"
+#include "../../UiUtils.h"
+#include "../../Widgets.h"
+
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
 
 CustomTools::CustomTools() {}
 
-void CustomTools::create(Gtk::Box* contentContainer) {}
+void CustomTools::create(Gtk::Box* contentContainer) {
+  contentContainer->set_orientation(Gtk::Orientation::VERTICAL);
+
+  // Define container widgets
+  Gtk::Box* customImgContainer = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-img-container",
+      false
+  );
+
+  Gtk::Grid* toolPropsContainer = Widgets::Grid(5, 5, "custom-tools-props-container");
+
+  Gtk::Box* inputContainer = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-input-container",
+      false
+  );
+
+  // Fill in container widget UI && logic
+  buildImgContainer(customImgContainer);
+  buildToolPropsContainer(toolPropsContainer);
+  buildInputContainer(inputContainer);
+
+  // Append containers
+  contentContainer->append(*customImgContainer);
+  contentContainer->append(*toolPropsContainer);
+  contentContainer->append(*inputContainer);
+}
+
+// Protected
+void CustomTools::buildImgContainer(Gtk::Box* customImgContainer) {
+  // Build tool image containers. One image for each part of the tool
+  // e.g tip, collar, body, ferrule, eraser
+  Gtk::Box* tip = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-img-tip",
+      false
+  );
+  Gtk::Box* tip = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-img-tip",
+      false
+  );
+  Gtk::Box* tip = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-img-tip",
+      false
+  );
+  Gtk::Box* tip = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-img-tip",
+      false
+  );
+}
+
+void CustomTools::buildToolPropsContainer(Gtk::Grid* toolPropsContainer) {
+  // Remove all props from the container, then update them
+  UI::UIUtils::removeAllChildren(toolPropsContainer);
+
+  // Grab custom tool properties that have been defined and create the boxes to be displayed
+  int colIndex = 0;
+  int rowIndex = 0;
+  for (const Tools::ToolProp toolProp : toolProps) {
+    Gtk::Box* prop = Components::ToolProperty::create(toolProp.property, toolProp.value);
+
+    toolPropsContainer->attach(*prop, colIndex, rowIndex, 1, 1);
+
+    if (colIndex == 3) {
+      colIndex = 0;
+      rowIndex++;
+      continue;
+    }
+
+    colIndex++;
+  }
+}
+
+void CustomTools::buildInputContainer(Gtk::Box* inputContainer) {}
+
+bool CustomTools::addProp(const Tools::ToolProp& prop) {}
 
 }  // namespace Components
 }  // namespace UI

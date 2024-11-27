@@ -15,35 +15,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-
-#ifndef CUSTOM_TOOLS
-#define CUSTOM_TOOLS
-
-#include <gtkmm.h>
-
-namespace SketchItApplication {
-namespace UI {
-namespace Components {
-
-class CustomTools {
- public:
-  CustomTools();
-
-  std::vector<Tools::ToolProp> toolProps;
-
-  static void create(Gtk::Box* contentContainer);
-  static bool addProp(const Tools::ToolProp& prop);
-
- protected:
-  static void buildImgContainer(Gtk::Box* customImgContainer);
-  static void buildToolPropsContainer(Gtk::Grid* toolPropsContainer);
-  static void buildInputContainer(Gtk::Box* inputContainer);
-
- private:
-};
-
-}  // namespace Components
-}  // namespace UI
-}  // namespace SketchItApplication
-
-#endif

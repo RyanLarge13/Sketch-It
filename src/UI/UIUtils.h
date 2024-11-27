@@ -60,6 +60,23 @@ class UIUtils {
     }
   };
 
+  template <typename T>
+  static void removeAllChildren(T* parent) {
+    Gtk::Widget* container = dynamic_cast<Gtk::Widget*>(parent);
+
+    if (!container) {
+      std::cout << "Error removing children of parent. Parent cannot be cast to widget or container"
+                << "\n";
+      return;
+    }
+
+    auto children = container->get_children();
+
+    for (auto* child : children) {
+      container->remove(*child);
+    }
+  };
+
  protected:
  private:
 };

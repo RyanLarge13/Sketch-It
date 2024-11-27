@@ -31,6 +31,24 @@ class Tools {
  public:
   Tools();
 
+  struct ToolProp {
+    std::string property;
+    template <typename T>
+    T value;
+
+    ToolProp(std::string property, T value) : property(property), value(value) {}
+  };
+
+  struct StringFromVariantVisitor {
+    std::string operator()(int value) const { return std::to_string(value); }
+
+    std::string operator()(double value) const { return std::to_string(value); }
+
+    std::string operator()(bool value) const { return value ? "true" : "false"; }
+
+    std::string operator()(const std::string& value) const { return value; }
+  };
+
   // total values within struct 25
   struct ToolDef {
     // Add data type to variant list if future properties are added / remove if tool properties no

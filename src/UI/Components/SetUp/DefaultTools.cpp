@@ -40,6 +40,7 @@ void DefaultTools::create(Gtk::Box* contentContainer) {
 }
 
 Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI() {
+  // Build a scrollable grid that will contain all of the default tools that come with Sketch It
   Gtk::ScrolledWindow* scrollContainer = Widgets::ScrollWin(
       {1050, 500},
       "default-tools-scroll-container",
@@ -51,10 +52,11 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI() {
 
   Gtk::Grid* sections = Widgets::Grid(20, 20, "default-tools-grid");
 
-  // Build the selectable icons for each category grid item
+  // Build the selectable icons for each category that is defined for default tools
   int colIndex = 0;
   int rowIndex = 0;
   for (const auto& [ catName, catTools ] : Tools::categorizedTools) {
+    // Build a category container
     Gtk::Box* catContainer = Widgets::Box(
         Layouts::LayoutProps(
             Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -71,6 +73,8 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI() {
         false
     );
 
+    // For each tool within the specified category, create a selectable button and add it to the
+    // categories container
     for (const std::shared_ptr<Tools::ToolDef>& tool : catTools) {
       Gtk::Box* toolBtn = buildToolBtn(tool);
 
@@ -100,12 +104,14 @@ Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI() {
     colIndex++;
   }
 
+  // Append the grid to the scrolled window
   scrollContainer->set_child(*sections);
 
   return scrollContainer;
 }
 
 Gtk::Box* DefaultTools::buildToolBtn(const std::shared_ptr<Tools::ToolDef>& tool) {
+  // Create a tool button with the title icon and short description of the tool
   Gtk::Box* toolBtn = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::CENTER
@@ -141,6 +147,9 @@ Gtk::Box* DefaultTools::buildToolBtn(const std::shared_ptr<Tools::ToolDef>& tool
 }
 
 void DefaultTools::buildToolTip(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool) {
+  // Tool tip will show the user more information about the tool they are about to select
+  // such as properties of the tool, a larger image, and all other important non rendering
+  // information
   toolBtn->set_has_tooltip(true);
 
   toolBtn->signal_query_tooltip().connect(
@@ -217,34 +226,9 @@ Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::Too
       continue;
     }
 
-    Gtk::Box* toolPropertyBox = Widgets::Box(
-        Layouts::LayoutProps(
-            Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
-        ),
-        "tooltip-property",
-        false
+    Gtk::Box* toolPropertyBox = Components::ToolProperty::create(
+        toolPropName + ": ", std::visit(DefaultTools::StringFromVariantVisitor{}, toolProp)
     );
-
-    Gtk::Label* propName = Widgets::Label(
-        toolPropName + ": ",
-        "tooltip-prop-title",
-        Layouts::LayoutProps(
-            Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::START, Gtk::Align::FILL
-        )
-    );
-
-    Gtk::Label* propValue = Widgets::Label(
-        // Use the variant operator overload to determine the type of toolProp being passed to the
-        // Label
-        std::visit(DefaultTools::StringFromVariantVisitor{}, toolProp),
-        "tooltip-prop-desc",
-        Layouts::LayoutProps(
-            Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::END, Gtk::Align::FILL
-        )
-    );
-
-    toolPropertyBox->append(*propName);
-    toolPropertyBox->append(*propValue);
 
     toolPropGrid->attach(*toolPropertyBox, colIndex, rowIndex, 1, 1);
 
@@ -263,6 +247,7 @@ Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::Too
 void DefaultTools::buildSelectableBtn(
     Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool
 ) {
+  // Make the default tool boxes selectable for users to add them to their tool belt
   Glib::RefPtr<Gtk::GestureClick> gesture_click = Gtk::GestureClick::create();
 
   auto click = [ toolBtn ](const double& x, const double& y, const double& z) {

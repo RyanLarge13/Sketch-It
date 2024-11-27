@@ -16,37 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFAULT_TOOLS
-#define DEFAULT_TOOLS
+#ifndef TOOL_PROPERTY
+#define TOOL_PROPERTY
 
 #include <gtkmm.h>
-
-#include "../../../lib/Tools.h"
 
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
 
-// TODO:
-// How do I want to define the application default drawing tools?
-// Think about this one and probably store these in a more global
-// setting
-
-class DefaultTools {
+class ToolProperty {
  public:
-  DefaultTools();
+  ToolProperty();
 
-  static void create(Gtk::Box* contentContainer);
-  static std::vector<std::shared_ptr<Tools::ToolDef>> selectedTools;
-  static std::vector<Gtk::Box*> toolTips;
+  Gtk::Box* create(const std::string& name, const std::string& value);
 
  protected:
-  static Gtk::ScrolledWindow* buildCategoryGUI();
-  static Gtk::Box* buildToolBtn(const std::shared_ptr<Tools::ToolDef>& tool);
-  static void buildToolTip(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool);
-  static Gtk::Grid* buildToolTipProperties(const std::shared_ptr<Tools::ToolDef>& tool);
-  static void buildSelectableBtn(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool);
-
  private:
 };
 
