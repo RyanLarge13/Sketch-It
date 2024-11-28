@@ -15,3 +15,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
+
+#include "./ToolBuilder.h"
+
+namespace SketchItApplication {
+
+std::unordered_map<std::string, std::string> customToolSpecs;
+std::vector<std::string> images = {};
+
+ToolBuilder::ToolBuilder(){};
+
+}  // namespace SketchItApplication

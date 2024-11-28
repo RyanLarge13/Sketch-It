@@ -20,16 +20,18 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../../../lib/ToolBuilder.h"
 #include "../../../lib/Tools.h"
 #include "../../Layouts.h"
-#include "../../UiUtils.h"
+#include "../../UIUtils.h"
 #include "../../Widgets.h"
+#include "../ToolProperty.h"
 
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
 
-CustomTools::CustomTools() {}
+CustomTools::CustomTools() { CustomTools::myTool = ToolBuilder(); }
 
 void CustomTools::create(Gtk::Box* contentContainer) {
   contentContainer->set_orientation(Gtk::Orientation::VERTICAL);
@@ -70,28 +72,35 @@ void CustomTools::buildImgContainer(Gtk::Box* customImgContainer) {
   // e.g tip, collar, body, ferrule, eraser
   Gtk::Box* tip = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
       "custom-tools-img-tip",
       false
   );
-  Gtk::Box* tip = Widgets::Box(
+  Gtk::Box* collar = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
       "custom-tools-img-tip",
       false
   );
-  Gtk::Box* tip = Widgets::Box(
+  Gtk::Box* body = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
       "custom-tools-img-tip",
       false
   );
-  Gtk::Box* tip = Widgets::Box(
+  Gtk::Box* ferrule = Widgets::Box(
       Layouts::LayoutProps(
-          Gtk::Orientation::HORIZONTAL, true, true, Gtk::ALign::FILL, Gtk::Align::FILL
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "custom-tools-img-tip",
+      false
+  );
+  Gtk::Box* eraser = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
       ),
       "custom-tools-img-tip",
       false
@@ -103,26 +112,28 @@ void CustomTools::buildToolPropsContainer(Gtk::Grid* toolPropsContainer) {
   UI::UIUtils::removeAllChildren(toolPropsContainer);
 
   // Grab custom tool properties that have been defined and create the boxes to be displayed
-  int colIndex = 0;
-  int rowIndex = 0;
-  for (const Tools::ToolProp toolProp : toolProps) {
-    Gtk::Box* prop = Components::ToolProperty::create(toolProp.property, toolProp.value);
+  //   int colIndex = 0;
+  //   int rowIndex = 0;
+  //   for (const Tools::ToolProp& toolProp : CustomTools::toolProps) {
+  //     Gtk::Box* prop = Components::ToolProperty::create(
+  //         toolProp.property, std::any_cast<std::string>(toolProp.value)
+  //     );
 
-    toolPropsContainer->attach(*prop, colIndex, rowIndex, 1, 1);
+  //     toolPropsContainer->attach(*prop, colIndex, rowIndex, 1, 1);
 
-    if (colIndex == 3) {
-      colIndex = 0;
-      rowIndex++;
-      continue;
-    }
+  //     if (colIndex == 3) {
+  //       colIndex = 0;
+  //       rowIndex++;
+  //       continue;
+  //     }
 
-    colIndex++;
-  }
+  //     colIndex++;
+  //   }
 }
 
 void CustomTools::buildInputContainer(Gtk::Box* inputContainer) {}
 
-bool CustomTools::addProp(const Tools::ToolProp& prop) {}
+bool CustomTools::addProp(const Tools::ToolProp& prop) { return true; }
 
 }  // namespace Components
 }  // namespace UI

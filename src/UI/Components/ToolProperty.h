@@ -29,7 +29,7 @@ class ToolProperty {
  public:
   ToolProperty();
 
-  Gtk::Box* create(const std::string& name, const std::string& value);
+  static Gtk::Box* create(const std::string& name, const std::string& value);
 
  protected:
  private:

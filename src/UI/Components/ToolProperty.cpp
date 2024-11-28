@@ -16,18 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "./ToolProperty.h"
+
 #include <gtkmm.h>
 
 #include "../../lib/Tools.h"
 #include "../Layouts.h"
 #include "../Widgets.h"
 
-
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
 
-ToolProperty::ToolProperty();
+ToolProperty::ToolProperty(){};
 
 Gtk::Box* ToolProperty::create(const std::string& name, const std::string& value) {
   Gtk::Box* prop = Widgets::Box(
@@ -49,7 +50,7 @@ Gtk::Box* ToolProperty::create(const std::string& name, const std::string& value
   Gtk::Label* propValue = Widgets::Label(
       // Use the variant operator overload to determine the type of toolProp being passed to the
       // Label
-      std::visit(Tools::StringFromVariantVisitor{}, value),
+      value,
       "tooltip-prop-desc",
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::END, Gtk::Align::FILL

@@ -21,6 +21,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "../../../lib/ToolBuilder.h"
+#include "../../../lib/Tools.h"
+
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
@@ -29,7 +32,7 @@ class CustomTools {
  public:
   CustomTools();
 
-  std::vector<Tools::ToolProp> toolProps;
+  ToolBuilder myTool;
 
   static void create(Gtk::Box* contentContainer);
   static bool addProp(const Tools::ToolProp& prop);

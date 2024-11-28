@@ -19,6 +19,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <gtkmm.h>
 
 #include <iostream>
+#include <type_traits>
 
 namespace SketchItApplication {
 namespace UI {
@@ -60,22 +61,9 @@ class UIUtils {
     }
   };
 
-  template <typename T>
-  static void removeAllChildren(T* parent) {
-    Gtk::Widget* container = dynamic_cast<Gtk::Widget*>(parent);
-
-    if (!container) {
-      std::cout << "Error removing children of parent. Parent cannot be cast to widget or container"
-                << "\n";
-      return;
-    }
-
-    auto children = container->get_children();
-
-    for (auto* child : children) {
-      container->remove(*child);
-    }
-  };
+  // Function overloading for removing all childred of different container widget types
+  static void removeAllChildren(Gtk::Box* parent);
+  static void removeAllChildren(Gtk::Grid* parent);
 
  protected:
  private:

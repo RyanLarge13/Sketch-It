@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "../../Layouts.h"
 #include "../../UIUtils.h"
 #include "../../Widgets.h"
+#include "../ToolProperty.h"
 
 namespace SketchItApplication {
 namespace UI {
@@ -227,7 +228,7 @@ Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::Too
     }
 
     Gtk::Box* toolPropertyBox = Components::ToolProperty::create(
-        toolPropName + ": ", std::visit(DefaultTools::StringFromVariantVisitor{}, toolProp)
+        toolPropName + ": ", std::visit(Tools::StringFromVariantVisitor{}, toolProp)
     );
 
     toolPropGrid->attach(*toolPropertyBox, colIndex, rowIndex, 1, 1);

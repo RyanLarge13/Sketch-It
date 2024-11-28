@@ -60,5 +60,27 @@ void UIUtils::addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index) 
   parent->insert_child_after(*child, *containerChild);
 }
 
+// Function overloading for removing all children of different types of container widgets
+void UIUtils::removeAllChildren(Gtk::Box* parent) {
+  auto child = parent->get_first_child();
+
+  while (child) {
+    auto next_child = child->get_next_sibling();
+    parent->remove(*child);
+    child = next_child;
+  }
+}
+
+void UIUtils::removeAllChildren(Gtk::Grid* parent) {
+  auto child = parent->get_first_child();
+
+  while (child) {
+    auto next_child = child->get_next_sibling();
+    parent->remove(*child);
+    child = next_child;
+  }
+}
+// Function overloading for removing all children of different types of container widgets
+
 }  // namespace UI
 }  // namespace SketchItApplication

@@ -19,6 +19,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef TOOLS
 #define TOOLS
 
+#include <any>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -33,10 +34,9 @@ class Tools {
 
   struct ToolProp {
     std::string property;
-    template <typename T>
-    T value;
-
-    ToolProp(std::string property, T value) : property(property), value(value) {}
+    std::any value;
+    ToolProp(const std::string& property, const std::any& value)
+        : property(property), value(value) {}
   };
 
   struct StringFromVariantVisitor {
