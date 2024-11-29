@@ -31,7 +31,9 @@ namespace SketchItApplication {
 namespace UI {
 namespace Components {
 
-CustomTools::CustomTools() { CustomTools::myTool = ToolBuilder(); }
+ToolBuilder CustomTools::myTool;
+
+CustomTools::CustomTools() {}
 
 void CustomTools::create(Gtk::Box* contentContainer) {
   contentContainer->set_orientation(Gtk::Orientation::VERTICAL);
@@ -112,26 +114,28 @@ void CustomTools::buildToolPropsContainer(Gtk::Grid* toolPropsContainer) {
   UI::UIUtils::removeAllChildren(toolPropsContainer);
 
   // Grab custom tool properties that have been defined and create the boxes to be displayed
-  //   int colIndex = 0;
-  //   int rowIndex = 0;
-  //   for (const Tools::ToolProp& toolProp : CustomTools::toolProps) {
-  //     Gtk::Box* prop = Components::ToolProperty::create(
-  //         toolProp.property, std::any_cast<std::string>(toolProp.value)
-  //     );
+  int colIndex = 0;
+  int rowIndex = 0;
+  for (const auto& [ property, value ] : CustomTools::myTool.customToolSpecs) {
+    Gtk::Box* prop = Components::ToolProperty::create(property, value);
 
-  //     toolPropsContainer->attach(*prop, colIndex, rowIndex, 1, 1);
+    toolPropsContainer->attach(*prop, colIndex, rowIndex, 1, 1);
 
-  //     if (colIndex == 3) {
-  //       colIndex = 0;
-  //       rowIndex++;
-  //       continue;
-  //     }
+    if (colIndex == 3) {
+      colIndex = 0;
+      rowIndex++;
+      continue;
+    }
 
-  //     colIndex++;
-  //   }
+    colIndex++;
+  }
 }
 
-void CustomTools::buildInputContainer(Gtk::Box* inputContainer) {}
+void CustomTools::buildInputContainer(Gtk::Box* inputContainer) {
+  Gtk::Grid* inputGrid = Widgets::Grid(8, 8, "custom-tools-input-grid");
+
+  inputContainer->append(*inputGrid);
+}
 
 bool CustomTools::addProp(const Tools::ToolProp& prop) { return true; }
 

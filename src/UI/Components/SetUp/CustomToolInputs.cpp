@@ -16,37 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef CUSTOM_TOOLS
-#define CUSTOM_TOOLS
+#include "./CustomToolInputs.h"
 
 #include <gtkmm.h>
-
-#include "../../../lib/ToolBuilder.h"
-#include "../../../lib/Tools.h"
 
 namespace SketchItApplication {
 namespace UI {
 namespace Components {
+namespace SetUp {
+CustomToolInputs::CustomToolInputs(){};
 
-class CustomTools {
- public:
-  CustomTools();
+static void CustomToolInputs::create(Gtk::Grid* container) {}
 
-  static ToolBuilder myTool;
-
-  static void create(Gtk::Box* contentContainer);
-  static bool addProp(const Tools::ToolProp& prop);
-
- protected:
-  static void buildImgContainer(Gtk::Box* customImgContainer);
-  static void buildToolPropsContainer(Gtk::Grid* toolPropsContainer);
-  static void buildInputContainer(Gtk::Box* inputContainer);
-
- private:
-};
-
+}  // namespace SetUp
 }  // namespace Components
 }  // namespace UI
 }  // namespace SketchItApplication
-
-#endif
