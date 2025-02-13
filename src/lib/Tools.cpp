@@ -251,7 +251,6 @@ std::unordered_map<std::string, std::vector<std::shared_ptr<Tools::ToolDef>>>
 // Create the list of default drawing tools for the application
 
 Tools::Tools() {
-  std::cout << Tools::defaultTools.size() << "\n";
   for (int i = 0; i < Tools::defaultTools.size(); i++) {
     Tools::categorizedTools[ Tools::defaultTools[ i ].category ].push_back(
         std::make_shared<Tools::ToolDef>(Tools::defaultTools[ i ])

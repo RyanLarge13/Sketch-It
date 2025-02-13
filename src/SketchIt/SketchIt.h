@@ -21,7 +21,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "../Files/Config.h"
 #include "../Renderer/Canvas.h"
-#include "../Styles/Styles.h"
 #include "gtkmm.h"
 
 namespace SketchItApplication {
@@ -42,8 +41,9 @@ class SketchIt : public Gtk::Application {
  private:
   // Load classes using namespaces and use them
   // throughout the app
-  UI::Styles styleSheets;
   CanvasManager::Canvas canvas;
+
+  void initializeStyles();
 };
 }  // namespace SketchItApplication
 

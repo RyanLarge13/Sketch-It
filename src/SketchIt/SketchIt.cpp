@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <iostream>
 
+#include "../Styles/Styles.h"
 #include "../lib/Tools.h"
 #include "SketchItWindow.h"
 
@@ -33,7 +34,7 @@ Glib::RefPtr<SketchIt> SketchIt::create() {
   return Glib::make_refptr_for_instance<SketchIt>(new SketchIt());
 }
 
-SketchIt::SketchIt() : styleSheets("../src/Styles/styleSheets/global.css") {
+SketchIt::SketchIt() {
   // Initialize core application logic and state
 
   // Create default tools and initialize their categorization
@@ -41,12 +42,41 @@ SketchIt::SketchIt() : styleSheets("../src/Styles/styleSheets/global.css") {
   Tools();
 }
 
-void SketchIt::on_startup() { Gtk::Application::on_startup(); }
+void SketchIt::on_startup() {
+  // Load up stuff before the window is ready to show
+  Gtk::Application::on_startup();
+
+  initializeStyles();
+}
 
 void SketchIt::on_activate() {
   Gtk::Application::on_activate();
   // Call add_window() and present the window.
   // Set up logic for when window is shown
+}
+
+void SketchIt::initializeStyles() {
+  auto settings = Gtk::Settings::get_default();
+  bool darkMode = false;
+
+  // Style sheet path references
+  // darkModePath = "src/Styles/styleSheets/globalDark.css";
+  // lightModePath = "src/Styles/styleSheets/globalLight.css";
+
+  if (!settings) {
+    UI::Styles("src/Styles/styleSheets/globalDark.css");
+    std::cout << "No settings detected when trying to initialize stylesheet" << "\n";
+    // Set the style to automatic dark mode the user can change this later
+    return;
+  }
+
+  settings->get_property("gtk-application-prefer-dark-theme", darkMode);
+
+  if (!darkMode) {
+    UI::Styles("src/Styles/styleSheets/globalDark.css");
+  } else {
+    UI::Styles("src/Styles/styleSheets/globalLight.css");
+  }
 }
 
 }  // namespace SketchItApplication

@@ -228,7 +228,7 @@ Gtk::Grid* DefaultTools::buildToolTipProperties(const std::shared_ptr<Tools::Too
     }
 
     Gtk::Box* toolPropertyBox = Components::ToolProperty::create(
-        toolPropName + ": ", std::visit(Tools::StringFromVariantVisitor{}, toolProp)
+        toolPropName, std::visit(Tools::StringFromVariantVisitor{}, toolProp)
     );
 
     toolPropGrid->attach(*toolPropertyBox, colIndex, rowIndex, 1, 1);

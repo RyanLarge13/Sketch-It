@@ -19,6 +19,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef CUSTOM_TOOL_INPUT
 #define CUSTOM_TOOL_INPUT
 
+#include <gtkmm.h>
+
 namespace SketchItApplication {
 namespace UI {
 namespace Components {

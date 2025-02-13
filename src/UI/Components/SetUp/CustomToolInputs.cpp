@@ -26,7 +26,7 @@ namespace Components {
 namespace SetUp {
 CustomToolInputs::CustomToolInputs(){};
 
-static void CustomToolInputs::create(Gtk::Grid* container) {}
+void CustomToolInputs::create(Gtk::Grid* container) {}
 
 }  // namespace SetUp
 }  // namespace Components

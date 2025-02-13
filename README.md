@@ -11,7 +11,7 @@
 1. Clone the repo
 
 ```
-$ git clone https://github.com/RyanLArge13/Sketch-It
+$ git clone https://github.com/RyanLarge13/Sketch-It
 ```
 
 2. Install dependencies
@@ -23,7 +23,7 @@ $ git clone https://github.com/RyanLArge13/Sketch-It
 
    [gtkmm >= 4.0](https://gtkmm.org/en/download.html)
 
-   [jnlohmann](https://json.nlohmann.me/integration/package_managers/)
+   [nlohmann-json3](https://json.nlohmann.me/integration/package_managers/)
 
    [openGL](https://www.opengl.org/)
 
@@ -39,6 +39,32 @@ install it locally and add it to CMake. Check it out form the link above
 
 ```
 $ cd includes/ && wget https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp
+```
+
+### Installing OpenGL on Ubuntu
+
+```
+glxinfo | grep "OpenGL"
+```
+
+If glxinfo is not installed, install it with
+
+```
+sudo apt update
+sudo apt install mesa-utils
+```
+
+Install the missing libraries
+
+```
+sudo apt update
+sudo apt install libgl1-mesa-dev
+```
+
+Install additional deps
+
+```
+sudo apt install libglu1-mesa-dev freeglut3-dev
 ```
 
 3. Run with CMake

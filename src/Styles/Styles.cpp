@@ -25,6 +25,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace SketchItApplication {
 namespace UI {
+
 Styles::Styles(const std::string& cssFilePath) {
   // Load appropriate css file from path in parameters upon class initialization
   Glib::RefPtr<Gtk::CssProvider> css_provider = Gtk::CssProvider::create();
@@ -37,7 +38,9 @@ Styles::Styles(const std::string& cssFilePath) {
 
   Glib::RefPtr<Gdk::Display> display = Gdk::Display::get_default();
   Gtk::StyleContext::add_provider_for_display(
-      display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
+      display, css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER
+  );
 }
+
 }  // namespace UI
 }  // namespace SketchItApplication

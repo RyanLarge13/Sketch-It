@@ -1,0 +1,3 @@
+/home/ryan/Coding/C++/Sketch-It/CMakeFiles/sketch_it.dir
+/home/ryan/Coding/C++/Sketch-It/CMakeFiles/edit_cache.dir
+/home/ryan/Coding/C++/Sketch-It/CMakeFiles/rebuild_cache.dir
