@@ -72,6 +72,9 @@ void CustomTools::create(Gtk::Box* contentContainer) {
 void CustomTools::buildImgContainer(Gtk::Box* customImgContainer) {
   // Build tool image containers. One image for each part of the tool
   // e.g tip, collar, body, ferrule, eraser
+
+  // Tip image and container
+  // ------------------------------------------------------------------------------------
   Gtk::Box* tip = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -79,6 +82,22 @@ void CustomTools::buildImgContainer(Gtk::Box* customImgContainer) {
       "custom-tools-img-tip",
       false
   );
+
+  Gtk::Image* tipImg = Widgets::Img(
+      "assets/images/tool-point.png",
+      "custom-tool-img",
+      200,
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      )
+  );
+
+  tip->append(*tipImg);
+  // Tip image and container
+  // ------------------------------------------------------------------------------------
+
+  // Collar image and container
+  // ------------------------------------------------------------------------------------
   Gtk::Box* collar = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -86,6 +105,20 @@ void CustomTools::buildImgContainer(Gtk::Box* customImgContainer) {
       "custom-tools-img-tip",
       false
   );
+
+  Gtk::Image* collarImg = Widgets::Img(
+      "assets/images/collar.png",
+      "custom-tool-img",
+      200,
+      Layouts::LayoutProps(
+          Gtk::Orientation::VERTICAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      )
+  );
+
+  collar->append(*collarImg);
+
+  // Collar image and container
+  // ------------------------------------------------------------------------------------
   Gtk::Box* body = Widgets::Box(
       Layouts::LayoutProps(
           Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
@@ -107,6 +140,12 @@ void CustomTools::buildImgContainer(Gtk::Box* customImgContainer) {
       "custom-tools-img-tip",
       false
   );
+
+  customImgContainer->append(*tip);
+  customImgContainer->append(*collar);
+  customImgContainer->append(*body);
+  customImgContainer->append(*ferrule);
+  customImgContainer->append(*eraser);
 }
 
 void CustomTools::buildToolPropsContainer(Gtk::Grid* toolPropsContainer) {

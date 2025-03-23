@@ -243,7 +243,7 @@ void DefaultTools::buildToolTip(Gtk::Box* toolBtn, const std::shared_ptr<Tools::
         Gtk::Image* toolIcon = Widgets::Img(
             tool->icon,
             "tooltip-img",
-            100,
+            200,
             Layouts::LayoutProps(
                 Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
             )

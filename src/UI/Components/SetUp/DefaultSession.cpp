@@ -100,7 +100,7 @@ void DefaultSession::create(Gtk::Box* contentContainer) {
   );
 
   Gtk::Image* lessonImg = Widgets::Img(
-      "assets/images/lesson-learn.png",
+      "assets/images/lesson-img.png",
       "lesson-desc-img",
       200,
       Layouts::LayoutProps(
@@ -122,7 +122,7 @@ void DefaultSession::create(Gtk::Box* contentContainer) {
   );
 
   Gtk::Image* freeHandImg = Widgets::Img(
-      "assets/images/free-hand.png",
+      "assets/images/freehand-img.png",
       "free-hand-desc-img",
       200,
       Layouts::LayoutProps(

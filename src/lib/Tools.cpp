@@ -41,15 +41,15 @@ std::vector<std::string> Tools::toolCategories = {
 
 // Create the list of default drawing tools for the application
 Tools::ToolDef number2Pencil = Tools::ToolDef(
-    "/assets/2-pencil",          // Icon path
-    "Basic Pencil",              // Tool name
-    "Standard number 2 pencil",  // Short description
-    "circle",                    // Tool tip shape
-    "pointed",                   // Tool profile shape to ip from holder
-    "0,0,0,1",                   // RGBA
-    "255,255,255",               // HSL
-    "#000",                      // HEX
-    "pencil",                    // Texture
+    "assets/images/pencil-img.png",  // Icon path
+    "Basic Pencil",                  // Tool name
+    "Standard number 2 pencil",      // Short description
+    "circle",                        // Tool tip shape
+    "pointed",                       // Tool profile shape to ip from holder
+    "0,0,0,1",                       // RGBA
+    "255,255,255",                   // HSL
+    "#000",                          // HEX
+    "pencil",                        // Texture
     "A basic number 2 pencil for drawing and sketching effects, simulates real life most "
     "closely",  // Long description
     "Pencils",  // Category
@@ -70,7 +70,7 @@ Tools::ToolDef number2Pencil = Tools::ToolDef(
 );
 
 Tools::ToolDef charcoalPencil = Tools::ToolDef(
-    "/assets/charcoal-pencil",                               // Icon path
+    "assets/images/pencil-img.png",                          // Icon path
     "Charcoal Pencil",                                       // Tool name
     "Charcoal pencil that simulates smearing and textures",  // Short description
     "circle",                                                // Tool tip shape
@@ -99,7 +99,7 @@ Tools::ToolDef charcoalPencil = Tools::ToolDef(
 );
 
 Tools::ToolDef paintBrush = Tools::ToolDef(
-    "/assets/2-pencil",     // Icon path
+    "assets/2-pencil",      // Icon path
     "Paintbrush",           // Tool name
     "Standard paintbrush",  // Short description
     "circle",               // Tool tip shape
@@ -128,7 +128,7 @@ Tools::ToolDef paintBrush = Tools::ToolDef(
 );
 
 Tools::ToolDef pastel = Tools::ToolDef(
-    "/assets/2-pencil",   // Icon path
+    "assets/2-pencil",    // Icon path
     "Pastel",             // Tool name
     "Standard pastel",    // Short description
     "circle",             // Tool tip shape
@@ -156,15 +156,15 @@ Tools::ToolDef pastel = Tools::ToolDef(
 );
 
 Tools::ToolDef eraser = Tools::ToolDef(
-    "/assets/eraser",         // Icon path
-    "Eraser",                 // Tool name
-    "Standard Round Eraser",  // Short description
-    "circle",                 // Tool tip shape
-    "cylindrical",            // Tool profile shape to ip from holder
-    "0,0,0,1",                // RGBA
-    "255,255,255",            // HSL
-    "#000",                   // HEX
-    "null",                   // Texture
+    "assets/images/rect-eraser.png",  // Icon path
+    "Eraser",                         // Tool name
+    "Standard Round Eraser",          // Short description
+    "circle",                         // Tool tip shape
+    "cylindrical",                    // Tool profile shape to ip from holder
+    "0,0,0,1",                        // RGBA
+    "255,255,255",                    // HSL
+    "#000",                           // HEX
+    "null",                           // Texture
     "Standard eraser removes all types of additive material",  // Long description
     "Erasers",                                                 // Category
     "solid",                                                   // Stroke type
@@ -184,15 +184,15 @@ Tools::ToolDef eraser = Tools::ToolDef(
 );
 
 Tools::ToolDef eraserRect = Tools::ToolDef(
-    "/assets/eraser",               // Icon path
-    "Rectangular Eraser",           // Tool name
-    "Standard Rectangular Eraser",  // Short description
-    "rect",                         // Tool tip shape
-    "canonical",                    // Tool profile shape to ip from holder
-    "0,0,0,1",                      // RGBA
-    "255,255,255",                  // HSL
-    "#000",                         // HEX
-    "null",                         // Texture
+    "assets/images/rect-eraser.png",  // Icon path
+    "Rectangular Eraser",             // Tool name
+    "Standard Rectangular Eraser",    // Short description
+    "rect",                           // Tool tip shape
+    "canonical",                      // Tool profile shape to ip from holder
+    "0,0,0,1",                        // RGBA
+    "255,255,255",                    // HSL
+    "#000",                           // HEX
+    "null",                           // Texture
     "Standard eraser removes all types of additive material with straight edges",  // Long
                                                                                    // description
     "Erasers",                                                                     // Category
@@ -213,7 +213,7 @@ Tools::ToolDef eraserRect = Tools::ToolDef(
 );
 
 Tools::ToolDef shader = Tools::ToolDef(
-    "/assets/Shader",                                        // Icon path
+    "assets/Shader",                                         // Icon path
     "Shading Tool",                                          // Tool name
     "Standard shading tool",                                 // Short description
     "circle",                                                // Tool tip shape

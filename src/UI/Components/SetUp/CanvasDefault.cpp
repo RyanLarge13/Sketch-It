@@ -111,7 +111,7 @@ void CanvasDefault::addButtons(Gtk::Grid* gridContainer) {
     );
 
     Gtk::Image* canvasImage = Widgets::Img(
-        "assets/images/canvas-size.png",
+        "assets/images/canvas-img.png",
         "null",
         200,
         Layouts::LayoutProps(

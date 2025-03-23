@@ -356,8 +356,8 @@ void SetUp::addMainContent(Gtk::Notebook* notebook) {
     switch (i) {
       case 0: {
         Gtk::Image* img = Widgets::Img(
-            "assets/images/test1.png",
-            "null",
+            "assets/images/welcome-img.png",
+            "welcome-img",
             500,
             Layouts::LayoutProps(
                 Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::CENTER, Gtk::Align::CENTER
