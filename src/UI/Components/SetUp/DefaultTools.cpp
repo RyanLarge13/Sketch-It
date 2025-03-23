@@ -32,12 +32,63 @@ namespace Components {
 
 std::vector<std::shared_ptr<Tools::ToolDef>> DefaultTools::selectedTools = {};
 
+// Store all of the selectable button pointers into this vector so I can update
+// All of the button styles via select all and de-select all methods
+std::vector<Gtk::Box*> selectableBtns = {};
+
 DefaultTools::DefaultTools() {}
 
 void DefaultTools::create(Gtk::Box* contentContainer) {
   Gtk::ScrolledWindow* child = buildCategoryGUI();
 
+  Gtk::Box* selectionButtons = Widgets::Box(
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      ),
+      "",
+      false
+  );
+
+  Gtk::Button* selectAll = Widgets::Button(
+      "Select All",
+      "",
+      DefaultTools::selectAllTools,
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      )
+  );
+
+  Gtk::Button* deSelectAll = Widgets::Button(
+      "De-select All",
+      "",
+      DefaultTools::deSelectAllTools,
+      Layouts::LayoutProps(
+          Gtk::Orientation::HORIZONTAL, true, true, Gtk::Align::FILL, Gtk::Align::FILL
+      )
+  );
+
+  // Append buttons to select buttons container
+  selectionButtons->append(*selectAll);
+  selectionButtons->append(*deSelectAll);
+
   contentContainer->append(*child);
+  contentContainer->append(*selectionButtons);
+}
+
+void DefaultTools::selectAllTools() {
+  // Add all catTools to the vector of selected tools
+  // and update css
+  for (Gtk::Box* toolBtn : selectableBtns) {
+    toolBtn->add_css_class("selected");
+  }
+}
+
+void DefaultTools::deSelectAllTools() {
+  // Remove all catTools to the vector of selected tools
+  // and update css
+  for (Gtk::Box* toolBtn : selectableBtns) {
+    toolBtn->remove_css_class("selected");
+  }
 }
 
 Gtk::ScrolledWindow* DefaultTools::buildCategoryGUI() {
@@ -266,6 +317,8 @@ void DefaultTools::buildSelectableBtn(
   gesture_click->signal_released().connect(click);
 
   toolBtn->add_controller(gesture_click);
+
+  selectableBtns.push_back(toolBtn);
 }
 
 }  // namespace Components

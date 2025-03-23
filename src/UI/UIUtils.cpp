@@ -60,6 +60,26 @@ void UIUtils::addWidget(Gtk::Box* parent, Gtk::Widget* child, const int& index) 
   parent->insert_child_after(*child, *containerChild);
 }
 
+std::vector<Gtk::Widget*> UIUtils::getAllChildren(Gtk::Widget* parent) {
+  std::vector<Gtk::Widget*> children = {};
+
+  Gtk::Widget* child = parent->get_first_child();
+
+  if (child) {
+    children.push_back(child);
+  }
+
+  while (child) {
+    Gtk::Widget* next_child = child->get_next_sibling();
+    if (next_child) {
+      children.push_back(next_child);
+    }
+    child = next_child;
+  }
+
+  return children;
+}
+
 // Function overloading for removing all children of different types of container widgets
 void UIUtils::removeAllChildren(Gtk::Box* parent) {
   auto child = parent->get_first_child();

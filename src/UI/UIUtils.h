@@ -64,6 +64,7 @@ class UIUtils {
   // Function overloading for removing all childred of different container widget types
   static void removeAllChildren(Gtk::Box* parent);
   static void removeAllChildren(Gtk::Grid* parent);
+  static std::vector<Gtk::Widget*> getAllChildren(Gtk::Widget* parent);
 
  protected:
  private:

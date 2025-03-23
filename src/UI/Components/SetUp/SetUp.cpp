@@ -106,7 +106,7 @@ std::vector<Widgets::WidgetNotebookTabs> SetUp::getSetUpTabs() {
               "will be available, and other free hand drawing utilities. "
               "On the other hand, if you choose training, the app will default to opening on your "
               "last "
-              "training session where you left off.\n\n You can change or switch between different "
+              "training session where you left off.\n\nYou can change or switch between different "
               "kinds of sessions at any time when using the application, so Do not worry about "
               "picking the wrong choice"
           ),
@@ -142,7 +142,9 @@ std::vector<Widgets::WidgetNotebookTabs> SetUp::getSetUpTabs() {
               "accessible to you via quick toolbox while using the "
               "application. Here you can define what kind of tool you want available "
               "to you durring each kind of session (free draw or lessons). "
-              "You can also build your own tools at the bottom."
+              "You can also build your own tools in the next section."
+              "\nFor more information about a tool, hover over the tool button to the specs and "
+              "what makes that tool special."
           ),
           Widgets::Label(
               "Default Tools",
@@ -159,7 +161,7 @@ std::vector<Widgets::WidgetNotebookTabs> SetUp::getSetUpTabs() {
               "and are happy with the built in tools provided with the app. Otherwise, get "
               "creative with your tooling and give yourself the best possible experience within "
               "the app and your learning adventure. Here you can configure every aspect your your "
-              "tool and how it meets the canvas and it will be saved in your settings.\n\n You can "
+              "tool and how it meets the canvas and it will be saved in your settings.\n\nYou can "
               "build new tools at anytime under your art set tab."
           ),
           Widgets::Label(
@@ -177,7 +179,7 @@ std::vector<Widgets::WidgetNotebookTabs> SetUp::getSetUpTabs() {
               "you have gone through completing your education within the app. With these lessons "
               "and the mini lessons within each section there are hundreds of different training "
               "images that will be used. To incorporate them into the application it is best to "
-              "install them in sets.\n\n When first installing the application it comes with a "
+              "install them in sets.\n\nWhen first installing the application it comes with a "
               "default set of training images to get you started and automatically installs sets "
               "as you progress and deletes old ones to help prevent taking up too much room on "
               "your hard drive. You can configure this behavior in many ways in this tab."
@@ -194,7 +196,7 @@ std::vector<Widgets::WidgetNotebookTabs> SetUp::getSetUpTabs() {
           Components::SetUpNotebookTab::createTab(
               "Misc Settings",
               "Here you can define miscellaneous settings that are important to consider when "
-              "using the application in either the free draw mode or the lesson mode.\n\n Such "
+              "using the application in either the free draw mode or the lesson mode.\n\nSuch "
               "as\n - measurement units\n - themes\n - styling and more."
           ),
           Widgets::Label(

@@ -46,6 +46,8 @@ class DefaultTools {
   static void buildToolTip(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool);
   static Gtk::Grid* buildToolTipProperties(const std::shared_ptr<Tools::ToolDef>& tool);
   static void buildSelectableBtn(Gtk::Box* toolBtn, const std::shared_ptr<Tools::ToolDef>& tool);
+  static void selectAllTools();
+  static void deSelectAllTools();
 
  private:
 };
